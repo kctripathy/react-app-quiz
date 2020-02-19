@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.layout{
+  min-height: 600px;
+}
+
+.header {
+  color: white;
+  text-align: center;
+  padding: 10px 0px;
+}
+
+.navbar{
+  background-color: aquamarine;
+  padding: 1px;
+  border-top: solid 1px #ccc !important;
+}
+
+.footer{
+  font-size: .9em;
+  text-align: center;
+  color: white;
+}
+
+
+
+.active{
+  color: white !important;  
+}
+
+.inactive{
+  color: black !important;
+}
+
+.question-box
+{
+  height: 250px;
+  background-color: white !important;
+}
+
+.user-register-image {
+  background-image: url('https://wphero.io/wp-content/uploads/2017/03/how-to-add-user-to-wordpress.jpg');
+  height: 400px;
+}
+
+.user-login-image {
+  background-image: url('https://cdn3.vectorstock.com/i/1000x1000/70/87/user-icon-white-silhouette-on-blue-square-vector-20607087.jpg');
+  background-size: 400px;
+  background-repeat: no-repeat;  
+  height: 400px;
+}
