@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
- 
-import MainQuizApplication from './components/pages/Main';
-
-import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
+import registerServiceWorker from './registerServiceWorker';
+import MainQuizApplication from './components/pages/Main';
 import { store } from './store';
 
-import {BrowserRouter} from 'react-router-dom';
+// Stylesheets
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 ReactDOM.render(
     <BrowserRouter>

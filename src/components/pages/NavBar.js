@@ -1,9 +1,8 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-
+import {isAuthenticated,logout} from '../auth';
 
 const isActive = (history, path) => {
-
     if (history.location.pathname === path) {
         return ("nav-link active")
     }
@@ -13,6 +12,47 @@ const isActive = (history, path) => {
 }
 
 function NavBar({history}) {
+    
+    const showCustomLinks = () =>{
+        const user  =    isAuthenticated();    
+        if (user !== undefined)
+        {
+            if (user.accessLevel === 0)
+            {
+                return showUserLinks();
+            }
+            if (user.accessLevel === 1)
+            {
+                return  showAdminLinks();
+            }
+        }
+    }
+    
+    const showUserLinks = () => {
+        return (
+            <Fragment>
+                <li className="nav-item">
+                    <Link className={isActive(history, "/quiz")} to="/quiz">Quiz</Link>
+                </li> 
+                <li className="nav-item">
+                    <Link className={isActive(history, "/user/dashboard")} to="/user/dashboard">Dashboard</Link>
+                </li>  
+            </Fragment>
+        )
+    }
+
+    const showAdminLinks = () => {
+        return (
+            <Fragment>
+                <li className="nav-item">
+                    <Link className={isActive(history, "/quiz")} to="/quiz">Quiz</Link>
+                </li> 
+                <li className="nav-item">
+                    <Link className={isActive(history, "/admin/dashboard")} to="/admin/dashboard">Dashboard</Link>
+                </li>  
+            </Fragment>
+        )
+    }
     return (        
         <nav className="navbar navbar-expand-lg navbar-light bg-secondary">
                 <Link className="navbar-brand" to="/">&nbsp;</Link>
@@ -32,24 +72,36 @@ function NavBar({history}) {
                         <li className="nav-item">
                             <Link className={isActive(history, "/about")} to="/about">About</Link>
                         </li> 
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link className={isActive(history, "/quiz")} to="/quiz">Quiz</Link>
-                        </li>                         
+                        </li>  */}
+                        { showCustomLinks()}                                               
                     </ul>                   
 
                     <ul className="navbar-nav mr-auto col-3">                         
-                            <Fragment>
+                           
+                            {(!isAuthenticated()) && (
+                                <Fragment>
+                                    <li className="nav-item">
+                                        <Link className={isActive(history, "/login")} to="/login">Login</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={isActive(history, "/register")} to="/register">Register</Link>
+                                    </li>    
+                                </Fragment>                             
+                            )}
+                            {(isAuthenticated()) && (
                                 <li className="nav-item">
-                                    <Link className={isActive(history, "/login")} to="/login">Login</Link>
+                                    <Link className={isActive(history, "/logout")} to="#"
+                                            onClick={() => logout(() => {
+                                                history.push("/")
+                                            })}>Logout</Link> 
                                 </li>
-                                <li className="nav-item">
-                                    <Link className={isActive(history, "/register")} to="/register">Register</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className={isActive(history, "/contact")} to="/contact">Contact</Link>
-                                </li>   
-                            </Fragment>                                            
-                            <Fragment>
+                            )}
+                            <li className="nav-item">
+                                <Link className={isActive(history, "/contact")} to="/contact">Contact</Link>
+                            </li>                                                                                                      
+                            {(isAuthenticated()) && (
                                 <li className="nav-item dropdown">
                                     <Link className="nav-link nav-link-topmenu dropdown-toggle" to="/"
                                         id="navbarDropdown" role="button"
@@ -58,24 +110,13 @@ function NavBar({history}) {
                                         My Profile
                                     </Link>
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <Link className="dropdown-item" to="/">Update Profile</Link>                                                                                 
+                                        <Link className="dropdown-item" to="/user/profile">Update My Profile</Link>                                                                                 
                                     </div>
-                                </li>                                
-                            </Fragment>                        
-                            
+                                </li>  
+                            )}                                                                                                              
                     </ul>
                 </div>
         </nav>
-
-
-        // <div className="navbar">                           
-        //     <Link to="/home">Home</Link> :: 
-        //     <Link to="/about">About</Link> ::
-        //     <Link to="/quiz">Quiz</Link> ::
-        //     <Link to="/login">Login</Link> ::
-        //     <Link to="/register">Register</Link> ::           
-            
-        // </div>
     );
 }
 

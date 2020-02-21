@@ -15,7 +15,7 @@ function Contact() {
                 <div className="card border-primary rounded-0">
                     <div className="card-header p-0">
                         <div className="bg-info text-white text-center py-2">
-                            <h3><i className="fa fa-envelope"></i> Contact us:</h3>
+                            <h3><i className="fa fa-envelope"></i> Contact</h3>
                         </div>
                     </div>
                     <div className="card-body p-3">
@@ -61,7 +61,7 @@ function Contact() {
     const address = () => {
         return (
             <div className="card bg-light mb-3">
-                <div className="card-header bg-success text-white text-uppercase"><i class="fa fa-home"></i> Address</div>
+                <div className="card-header bg-info text-white text-uppercase"><i class="fa fa-home"></i> Address</div>
                 <div className="card-body">
                     <p>Address 1</p>
                     <p>BANGALORE</p>

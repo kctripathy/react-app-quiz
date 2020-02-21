@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ActionTypes } from '../constants/actionTypes';
-import Review from './Review';
-import Questions from './Questions';
-import Result from './Result';
+import Review from './_Review';
+import Questions from './_Questions';
+import Result from './_Result';
 import { connect } from 'react-redux';
 import Layout from './pages/Layout';
 
