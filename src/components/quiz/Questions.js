@@ -30,7 +30,7 @@ class Questions extends Component {
                 {questions.map(q =>
                     <div key={q.id} className="question-box">
                         <div className="badge badge-info">Question {this.props.pager.index + 1} of {this.props.pager.count}.</div>
-                        <h3 className="font-weight-normal">{this.props.pager.index + 1}. <span>{q.name}</span></h3>
+                        <h3 className="font-weight-normal">{this.props.pager.index + 1}. <span>{q.questionName}</span></h3>
                         <div className="row text-left options">
                             {
                                 q.options.map(option =>
@@ -38,7 +38,7 @@ class Questions extends Component {
                                         <div className="option">
                                             <label className="font-weight-normal" htmlFor={option.id}>
                                                 <input id={option.id} checked={option.selected} type="checkbox" onChange={() => this.onAnswer(q, option)} />
-                                                {option.name}
+                                                {option.optionName}
                                             </label>
                                         </div>
                                     </div>
@@ -49,10 +49,10 @@ class Questions extends Component {
                 )}
                 <hr />
                 <div className="text-center">
-                    {this.props.quiz.config.allowBack && <button id="first" className="btn btn-default" onClick={this.props.move}>First</button>}
-                    {this.props.quiz.config.allowBack && <button id="prev" className="btn btn-default" onClick={this.props.move}>Prev</button>}
+                    {this.props.quiz.config.allowBack && <button id="first" className="btn btn-primary" onClick={this.props.move}>First</button>}
+                    {this.props.quiz.config.allowBack && <button id="prev" className="btn btn-primary" onClick={this.props.move}>Prev</button>}
                     <button id="next" className="btn btn-primary" onClick={this.props.move}>Next</button>
-                    <button id="last" className="btn btn-default" onClick={this.props.move}>Last</button>
+                    <button id="last" className="btn btn-primary" onClick={this.props.move}>Last</button>
                 </div>
             </div >
         )

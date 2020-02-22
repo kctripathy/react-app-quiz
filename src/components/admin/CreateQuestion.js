@@ -241,7 +241,7 @@ function CreateQuestion() {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
-                    <div className="bg-info text-white text-center py-2">
+                    <div className="bg-info text-white text-center py-2 mb-4">
                         <h3><i className="fa fa-question-circle"></i> Creat New Question</h3>
                         {populateClasses()}
                         {populateSubjects()}

@@ -20,6 +20,24 @@ export const getAllClassSubjectsByAccountId = (accountId) => {
         })
 };
 
+export const getAvailbleClassSubjectsByAccountId = (accountId) => {
+    const url = `${API_URL}/classessubjects/QuestionsAvailable/${accountId}`;
+    console.log("url=", url);
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
 
 export const removeDuplicates = (sourceArray, fieldName) => {
 

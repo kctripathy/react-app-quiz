@@ -10,12 +10,12 @@ function Result(props) {
             {questions.map((q, index) =>
                 <div key={q.id} className={`mb-2 ${q.isCorrect ? 'bg-success' : 'bg-danger'}`}>
                     <div className="result-question">
-                        <h5>{index + 1}. {q.name}</h5>
+                        <h5>{index + 1}. {q.questionName}</h5>
                         <div className="row">
                             {
                                 q.options.map(option =>
                                     <div key={option.id} className="col-6">
-                                        <input id={option.id} type="checkbox" disabled="disabled" checked={option.selected} /> {option.name}
+                                        <input id={option.id} type="checkbox" disabled="disabled" checked={option.selected} /> {option.optionName}
                                     </div>
                                 )
                             }

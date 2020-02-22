@@ -16,21 +16,21 @@ function Home() {
             <div className="row">
                 <div className="col-4">
                     <p className="text-center">
-                        <i class="fa fa-trophy fa-2x"></i>
+                        {/* <i className="fa fa-trophy fa-2x"></i> */}
                         <h3>Easy to use</h3>
                     </p>                    
                     <p>Our quiz creator is simple and easy to use. For student as well as for the administrators. With our online quiz creator it's easy to start, which makes it more fun.</p>
                 </div>
                 <div className="col-4">
                     <p className="text-center">
-                        <i class="fa fa-2x fa-certificate"></i>
+                        {/* <i className="fa fa-2x fa-certificate"></i> */}
                         <h3>Looks great on all devices</h3>
                     </p>
                     <p>It doesn't matter if you are on a phone, tablet or pc: your online quiz will look beautiful. Our quiz creator is fully responsive, so you can engage your audience on any platform.</p>                    
                 </div>
                 <div className="col-4">
                     <p className="text-center">
-                        <i class="fa fa-2x fa-life-ring"></i>
+                        {/* <i className="fa fa-2x fa-life-ring"></i> */}
                         <h3>Awesome support</h3>
                     </p>                    
                     <p>Do you have any questions about our online quiz software? Our support owls are always by your side and provide you with the best possible support!</p>                    
