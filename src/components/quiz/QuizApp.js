@@ -4,9 +4,14 @@ import { connect } from 'react-redux';
 import './QuizApp.css';
 import Quiz from './Quiz';
 import { ActionTypes } from '../../constants/actionTypes';
-import {getAvailbleClassSubjectsByAccountId,
-        removeDuplicates,
-        getSubjectsByClassID} from '../admin/index';
+import {
+  getAvailbleClassSubjectsByAccountId,
+  removeDuplicates,
+  getSubjectsByClassID,
+  getQuestions
+} from '../admin/index';
+import Layout from '../pages/Layout';
+import { isAuthenticated } from '../auth';
 
 const mapStateToProps = state => { return { ...state.quiz } };
 
@@ -24,9 +29,10 @@ class QuizApp extends Component {
       { id: 'data/designPatterns.json', name: 'Design Patterns' }
     ],
     quizClassessSubects: [],
-    quizClassess:[],
-    quizSubjects:[],
-    quizId: 17
+    quizClassess: [],
+    quizSubjects: [],
+    quizId: 0,
+    accountId: 1
   };
 
   pager = {
@@ -37,114 +43,120 @@ class QuizApp extends Component {
 
   componentDidMount() {
     this.loadClassAndSubjects();
-     this.load(this.state.quizId);
+    //this.load(this.state.quizId, this.state.accountId);
   }
 
-  loadClassAndSubjects = () =>{
+  //========================================================
+  loadClassAndSubjects = () => {
     getAvailbleClassSubjectsByAccountId(1)
-    .then(res =>{
-      const classSubjectsArrayList = removeDuplicates(res.result,'classID');
-      this.setState({        
-        quizClassessSubects: res.result,
-          quizClassess: classSubjectsArrayList
-        });      
-    })   
+      .then(res => {
+        const classSubjectsArrayList = removeDuplicates(res.result, 'classID');
+        const user = isAuthenticated()
+        const accountId = user.accountId;
+        const quizId = 0;
+
+        this.setState({
+          quizClassessSubects: res.result,
+          quizClassess: classSubjectsArrayList,
+          accountId: accountId,
+          quizId: quizId
+        });
+      })
   }
 
 
-  load(quizClassSubjectId) {
-    // let url = quizId || this.props.quizId;
-    // fetch(`../${url}`).then(res => res.json()).then(res => {
-    //   let quiz = res;
-    //   quiz.questions.forEach(q => {
-    //     q.options.forEach(o => o.selected = false);
-    //   });
+  //========================================================
+  load(quizClassSubjectId, accountId) {
 
-    let url = `http://localhost:5555/api/questions/${quizClassSubjectId}/1`;
-    fetch(`${url}`)
-    .then(res => res.json())
-    .then(res => {
-      //debugger;
-      let quiz = res;
-      quiz.questions.forEach(q => {
-        q.options.forEach(o => o.selected = false);
-      });
+    getQuestions(quizClassSubjectId, accountId).then(
+      response => {
+        let quiz = response;
+        quiz.questions.forEach(q => {
+          q.options.forEach(o => o.selected = false);
+        });
+        quiz.config = Object.assign(this.props.quiz.config || {}, quiz.config);
+        this.pager.count = quiz.questions.length / this.pager.size;
+        this.props.onQuizLoad(quiz);
+        this.props.onPagerUpdate(this.pager);
+      }
 
-
-      quiz.config = Object.assign(this.props.quiz.config || {}, quiz.config);
-      this.pager.count = quiz.questions.length / this.pager.size;
-      this.props.onQuizLoad(quiz);
-      this.props.onPagerUpdate(this.pager);
-    });
+    )
   }
 
+  //=================================================================
   onChange = (e) => {
     if (e.target.value.length === 0) return;
 
     const classSubjectId = parseInt(e.target.value);
-    this.setState({ quizId: classSubjectId  });
-    this.load(classSubjectId);
+    this.setState({ quizId: classSubjectId });
+    this.load(classSubjectId, this.state.accountId);
   }
 
-onChangeClassDropDown = (e) =>{
-  if (e.target.value.length === 0) return;
+  //=================================================================
+  onChangeClassDropDown = (e) => {
+    if (e.target.value.length === 0) return;
 
-  console.log("e=", e.target.value);
-  const quizClassessSubects = this.state.quizClassessSubects;
-  const quizSubjects = getSubjectsByClassID(quizClassessSubects, parseInt(e.target.value));
-  console.log('quizSubjects',quizSubjects);
-  debugger;
-
-  this.setState({quizSubjects: quizSubjects});
-console.log(this.state);
-debugger;
-
-}
-
-
+    const quizClassessSubects = this.state.quizClassessSubects;
+    const quizSubjects = getSubjectsByClassID(quizClassessSubects, parseInt(e.target.value));
+    this.setState({ quizSubjects: quizSubjects });
+  }
 
   //========================================================
-  availableClasses = () =>{ 
+  availableClasses = () => {
     return (
-         <select onChange={this.onChangeClassDropDown}>
-           <option value="">--Select Class--</option>
-            {this.state.quizClassess.map(q => <option key={q.classSubjectID} value={q.classID}>{q.classDesc}</option>)}
-            {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
-          </select> 
+      <select onChange={this.onChangeClassDropDown}>
+        <option value="">--Select Class--</option>
+        {this.state.quizClassess.map(q => <option key={q.classSubjectID} value={q.classID}>{q.classDesc}</option>)}
+        {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
+      </select>
 
     )
-  } 
+  }
 
-  availableSubjects = () =>{ 
-    console.log("available subjects ===========",this.state.quizSubjects)
+  //========================================================
+  availableSubjects = () => {
+    console.log("available subjects ===========", this.state.quizSubjects)
     return (
-         <select onChange={this.onChange}>
-           <option value="">--Select Subject--</option>
-            {this.state.quizSubjects.map(q => <option key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</option>)}
-            {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
-          </select> 
+      <select onChange={this.onChange}>
+        <option value="">--Select Subject--</option>
+        {this.state.quizSubjects.map(q => <option key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</option>)}
+        {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
+      </select>
 
     )
-  } 
-//=========================================================================
+  }
+
+  //=========================================================================
+  //
+  //=========================================================================
+  displayQuiz = () => {
+    return (
+      this.state.quizId && this.state.quizId > 0 ?
+        (
+          <Quiz quiz={this.state.quiz} quizId={this.state.quizId} mode={this.state.mode} />
+        )
+        :
+        (
+          <h4 className="alert alert-success" style={{ padding: "50px", marginTop: "20px" }}>Please select class and subject to load quiz</h4>
+        )
+    )
+  }
+
+  //=========================================================================
   render() {
     return (
-      <div className="container">
-        <div className="p-2">
-          <div className="row">
-            <div className="col-6">             
-                <h3>Quiz:</h3>
-            </div>
-            <div className="col-6 text-right">
-              <label className="mr-1">Quiz: </label>
-              {this.availableClasses()}
-              {this.availableSubjects()}
-              {/* {JSON.stringify(this.state.quizes)} */}
-            </div>
+      <Layout>
+        <div className="row">
+          <div className="col-12 text-center">
+            <label className="mr-1">Quiz: </label>
+            {this.availableClasses()}
+            {this.availableSubjects()}
+          </div>
+          <div className="col-12">
+            {this.displayQuiz()}
           </div>
         </div>
-        <Quiz quiz={this.state.quiz} quizId={this.state.quizId} mode={this.state.mode} />
-      </div>
+      </Layout>
     );
   }
 }

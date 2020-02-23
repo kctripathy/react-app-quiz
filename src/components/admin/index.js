@@ -2,6 +2,7 @@ import { API_URL } from '../../config';
 import { DEFAULT_ACCOUNT_ID } from '../../config';
 
 
+//=====================================================================
 export const getAllClassSubjectsByAccountId = (accountId) => {
     const url = `${API_URL}/ClassesSubjects/all/${accountId}`;
     console.log("url=", url);
@@ -20,9 +21,10 @@ export const getAllClassSubjectsByAccountId = (accountId) => {
         })
 };
 
+//=====================================================================
 export const getAvailbleClassSubjectsByAccountId = (accountId) => {
     const url = `${API_URL}/classessubjects/QuestionsAvailable/${accountId}`;
-    console.log("url=", url);
+    //console.log("url=", url);
     return fetch(url, {
         method: "GET",
         headers: {
@@ -38,7 +40,7 @@ export const getAvailbleClassSubjectsByAccountId = (accountId) => {
         })
 };
 
-
+//=====================================================================
 export const removeDuplicates = (sourceArray, fieldName) => {
 
     // Declare a new array 
@@ -66,10 +68,11 @@ export const removeDuplicates = (sourceArray, fieldName) => {
 }
 
 
+//=====================================================================
 export const getSubjectsByClassID = (sourceArray, classID) => {
     // Declare a new array 
     let newArray = [];
-    debugger;
+    //debugger;
     // Loop for the array elements 
     for (let i in sourceArray) {
 
@@ -83,6 +86,7 @@ export const getSubjectsByClassID = (sourceArray, classID) => {
 
 
 
+//=====================================================================
 export const addQuestion = (question) => {
 
     return fetch(`${API_URL}/questions/add`, {
@@ -100,3 +104,60 @@ export const addQuestion = (question) => {
             console.log(err)
         })
 }
+
+
+//=====================================================================
+export const getQuestions = (classSubjectId, accountId) => {
+    let url = `${API_URL}/questions/${classSubjectId}/${accountId}`;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+}
+//=====================================================================
+export const getAllQuestionsByAccountId = (accountId) => {
+    let url = `${API_URL}/questions/all/${accountId}`;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+}
+
+export const getQuestionById = (qId) => {
+    let url = `${API_URL}/questions/getbyid/${qId}`;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+}
+

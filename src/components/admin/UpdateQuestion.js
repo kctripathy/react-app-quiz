@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import { isAuthenticated } from '../auth/index';
 
 import {
@@ -7,12 +8,12 @@ import {
     getAllClassSubjectsByAccountId,
     removeDuplicates,
     getSubjectsByClassID,
-    getAllQuestionsByAccountId
+    getQuestionById
 } from './index';
 
 import Layout from '../pages/Layout';
 
-function ManageQuestions({ match }) {
+function UpdateQuestion({ match }) {
 
     const [values, setValues] = useState({
         id: 0,
@@ -31,32 +32,15 @@ function ManageQuestions({ match }) {
         success: ''
     });
 
-    const [questions, setQuestions] = useState([]);
     const [classSubjects, setClassSubjects] = useState([]);
     const [subjects, setSubjects] = useState([]);
-
     const { questionName } = values;
 
 
     useEffect(() => {
-
-        const questionId = match.params.questionId;
-        console.log('questionId', questionId);
-
-
         //Set the AccountId for the user
         const user = isAuthenticated();
-        console.log('user', user);
-
-        getAllQuestionsByAccountId(user.accountId)
-            .then(data => {
-                setQuestions(data);
-            })
-
-        setValues({
-            ...values,
-            accountId: user.accountId
-        })
+        const qId = match.params.questionId;
 
         // Load all classes after getting all class subjects for the account id
         getAllClassSubjectsByAccountId(user.accountId)
@@ -64,19 +48,48 @@ function ManageQuestions({ match }) {
                 if (data !== undefined && data.status.code > 0) {
                     setClassSubjects(data.result);
                 }
-            })
+            });
+
+        // Load the question by id
+        getQuestionById(qId)
+            .then(data => {
+                if (data !== undefined)
+                    populateValuesByQuestion(data)
+            });
+
     }, [])
 
+    //=================================================
+    const populateValuesByQuestion = (question) => {
+        //console.log('question=', question);
+        const q_options = [...question.options];
+
+        setValues({
+            ...values,
+            id: question.id,
+            questionTypeId: 1, // Multiple type questions
+            classSubjectId: question.classSubjectId,
+            accountId: question.accountId,
+            questionName: question.questionName,
+            options: q_options,
+            questionType: { id: 0, name: "Multiple Type" }
+        });
+
+    };
 
     //================================================
     // Get the classes dropdown options
     //================================================
     const populateClassesDropDown = (arrSource) => {
+        //console.log(values);
         return (
-            <select name="ddlClass" onChange={handleClassOnChange} required>
-                <option value="">--All Classes --</option>
+            <select name="ddlClass" onChange={handleClassOnChange} required value={values.classSubjectId} >
+                <option value="">--Select Class --</option>
                 {arrSource.map(c => {
-                    return <option key={c.classSubjectID} value={c.classID}>{c.classDesc}</option>
+                    return (
+                        <option key={c.classSubjectID} value={c.classSubjectID}>
+                            {c.classDesc}
+                        </option>)
                 })
                 }
             </select>
@@ -86,8 +99,8 @@ function ManageQuestions({ match }) {
     //================================================
     const populateSubjects = () => {
         return (
-            <select name="ddlSubject" onChange={handleSubjectOnChange} required>
-                <option value="">--All Subjects --</option>
+            <select name="ddlSubject" onChange={handleSubjectOnChange} required value={values.classSubjectId}>
+                <option value="">--Select Subject --</option>
                 {subjects.map(c => {
                     return <option key={c.classSubjectID} value={c.classSubjectID}>{c.subjectDesc}</option>
                 })
@@ -251,10 +264,15 @@ function ManageQuestions({ match }) {
     }
 
     //================================================
-    const editQuestionForm = () => {
+    const showQuestionForm = () => {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
+                    <div className="bg-info text-white text-center py-2 mb-4">
+                        <h3><i className="fa fa-question-circle"></i> Update Question</h3>
+                        {populateClasses()}
+                        {populateSubjects()}
+                    </div>
                     <div className="form-group" style={{ display: "none" }}>
                         <div className="input-group mb-2">
                             <div className="input-group-append">
@@ -385,7 +403,9 @@ function ManageQuestions({ match }) {
                         </div>
                     </div>
                     <div className="form-group text-center">
-                        <button className="btn btn-primary">Submit</button>
+                        <button className="btn btn-primary">UPDATE QUESTION</button>
+
+                        <Link className="btn btn-primary ml-4" to="/questions/manage">Question List</Link>
                     </div>
                     <div>
 
@@ -394,43 +414,6 @@ function ManageQuestions({ match }) {
             </div>
         );
     }
-
-    //================================================
-    const listOfQuestions = () => {
-        return (
-            <div className="row">
-                <div className="col-12">
-                    <h5>Questions List</h5>
-                    {
-                        questions.map((q, i) => {
-                            return (
-                                <ul key={q.id} className="questionList">
-                                    <li className="id">{++i}</li>
-                                    <li className="name">
-                                        <Link to={`/question/update/${q.id}`}>{q.questionName}</Link>
-                                        <ul className="optionList">
-                                            {
-                                                q.options.map((o) => <li key={o.id}>{o.optionName}</li>)
-                                            }
-                                        </ul>
-                                    </li>
-                                    <li className="id">
-                                        <button className="btn btn-primary btn-sm"
-                                            onClick={() => deleteQuestion(q.id)}>
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>)
-                        })
-                    }
-                </div>
-            </div >
-        )
-    }
-    const deleteQuestion = (id) => {
-        alert(id);
-    }
-
     //================================================
     //
     //================================================
@@ -438,26 +421,16 @@ function ManageQuestions({ match }) {
         <Layout>
             <div className="row">
                 <div className="col-12">
-                    <div className="bg-info text-white text-center py-2 mb-2">
-                        <h4><i className="fa fa-question-circle"></i> Manage Question</h4>
-                        {populateClasses()}
-                        {populateSubjects()}
-                    </div>
-                </div>
-            </div>
-            {listOfQuestions()}
-            <div className="row">
-                <div className="col-12">
-                    {/* {editQuestionForm()} */}
+                    {showQuestionForm()}
                     {showErrorMessage()}
                     {showSuccessMessage()}
                 </div>
             </div>
             <div>
-                {JSON.stringify(questions)}
+                {/* {JSON.stringify(values, null, 4)} */}
             </div>
         </Layout>
     );
 }
 
-export default ManageQuestions;
+export default UpdateQuestion;

@@ -62,3 +62,44 @@ body {
   padding: 20px;
   height: 280px; 
 }
+
+
+
+
+
+/* Manage questions*/
+.questionList{
+  display: block;
+  list-style-type: none;
+  margin: 2px 0;
+  padding: 5px 0;
+  width: 100%;
+  height: auto;
+  min-height: 140px;
+  border-bottom: solid 1px #ccc;
+}
+
+.questionList > li{
+  display: block;
+  float: left;
+}
+
+.questionList > li.id{
+  width: 5%;
+}
+
+
+.questionList > li.name{
+  width: 90%;
+}
+
+.optionList{  
+  width: 100%;
+}
+
+.optionList > li{
+  display: block;
+  float: left;  
+  width: 100%;
+}
+

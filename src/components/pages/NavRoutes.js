@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 
 import PrivateRoute from '../auth/PrivateRoute';
@@ -22,6 +22,8 @@ import PageNotFound from '../pages/PageNotFound';
 
 import AdminDashboard from '../admin/AdminDashboard';
 import CreateQuestion from '../admin/CreateQuestion';
+import ManageQuestions from '../admin/ManageQuestions';
+import UpdateQuestion from '../admin/UpdateQuestion';
 
 function NavRoutes() {
     return (
@@ -35,18 +37,20 @@ function NavRoutes() {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/contact" component={Contact} />
-                
-                <AdminRoute path="/admin/dashboard" component={AdminDashboard}  exact/>
-                <AdminRoute path="/create/question" component={CreateQuestion}  exact/>
-                
-                <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />
-                <PrivateRoute path="/user/quiz/results" component={QuizResults}  exact/>
-                <PrivateRoute path="/user/profile" component={Profile}  exact/>
 
-                
+                <AdminRoute path="/admin/dashboard" component={AdminDashboard} exact />
+                <AdminRoute path="/question/create" component={CreateQuestion} exact />
+                <AdminRoute path="/questions/manage" component={ManageQuestions} exact />
+                <AdminRoute path="/question/update/:questionId" component={UpdateQuestion} exact />
+
+                <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />
+                <PrivateRoute path="/user/quiz/results" component={QuizResults} exact />
+                <PrivateRoute path="/user/profile" component={Profile} exact />
+
+
                 <Route component={PageNotFound} />
 
-            </Switch>             
+            </Switch>
         </div>
     );
 }

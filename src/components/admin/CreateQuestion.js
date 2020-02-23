@@ -18,12 +18,12 @@ function CreateQuestion() {
         questionTypeId: 1, // Multiple type questions
         classSubjectId: 0,
         accountId: 0,
-        questionName: 'qqqqqq qqq qqq ',
+        questionName: '',
         options: [
-            { id: 1, questionId: 0, optionName: 'aa', isAnswer: true },
-            { id: 2, questionId: 0, optionName: 'bb', isAnswer: false },
-            { id: 3, questionId: 0, optionName: 'cc', isAnswer: false },
-            { id: 4, questionId: 0, optionName: 'dd', isAnswer: false }
+            { id: 1, questionId: 0, optionName: '', isAnswer: false },
+            { id: 2, questionId: 0, optionName: '', isAnswer: false },
+            { id: 3, questionId: 0, optionName: '', isAnswer: false },
+            { id: 4, questionId: 0, optionName: '', isAnswer: false }
         ],
         questionType: { id: 0, name: "Multiple Type" },
         error: '',
