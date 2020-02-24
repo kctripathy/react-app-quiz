@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import Layout from '../pages/Layout';
 import { isAuthenticated } from '../auth/index';
-
 import {
-    addQuestion,
+    updateQuestion,
     getAllClassSubjectsByAccountId,
     removeDuplicates,
     getSubjectsByClassID,
+    getClassSubjectByID,
     getQuestionById
 } from './index';
 
-import Layout from '../pages/Layout';
-
+//================================================================
+// This component update a question
+//================================================================
 function UpdateQuestion({ match }) {
 
     const [values, setValues] = useState({
         id: 0,
         questionTypeId: 1, // Multiple type questions
         classSubjectId: 0,
+        classId: 0,
+        subjectId: 0,
         accountId: 0,
         questionName: '',
         options: [
@@ -37,31 +40,46 @@ function UpdateQuestion({ match }) {
     const { questionName } = values;
 
 
+    //=======================================================
     useEffect(() => {
         //Set the AccountId for the user
         const user = isAuthenticated();
         const qId = match.params.questionId;
 
-        // Load all classes after getting all class subjects for the account id
-        getAllClassSubjectsByAccountId(user.accountId)
-            .then(data => {
-                if (data !== undefined && data.status.code > 0) {
-                    setClassSubjects(data.result);
-                }
-            });
-
         // Load the question by id
         getQuestionById(qId)
             .then(data => {
-                if (data !== undefined)
-                    populateValuesByQuestion(data)
+                if (data !== undefined) {
+
+                    //populateValuesByQuestion(data);
+                    getAllClassSubjectsByAccountId(user.accountId)
+                        .then(data1 => {
+                            if (data1 !== undefined && data1.status.code > 0) {
+
+                                //Set Class
+                                setClassSubjects(data1.result);
+
+                                const objClassSubject = getClassSubjectByID(data1.result, data.classSubjectId);
+                                data.classId = objClassSubject[0].classID;
+                                data.subjectId = objClassSubject[0].subjectID;
+
+                                //Set Subject
+                                const subjectsForTheClass = getSubjectsByClassID(data1.result, data.classId);
+                                setSubjects(subjectsForTheClass);
+
+                                //Populate the question with options;
+                                populateValuesByQuestion(data);
+
+                            } //if (data1 !== undefined && data1.status.code > 0) 
+                        });
+                } //if (data !== undefined)
             });
 
     }, [])
 
     //=================================================
     const populateValuesByQuestion = (question) => {
-        //console.log('question=', question);
+
         const q_options = [...question.options];
 
         setValues({
@@ -70,24 +88,25 @@ function UpdateQuestion({ match }) {
             questionTypeId: 1, // Multiple type questions
             classSubjectId: question.classSubjectId,
             accountId: question.accountId,
+            classId: question.classId,
+            subjectId: question.subjectId,
             questionName: question.questionName,
             options: q_options,
             questionType: { id: 0, name: "Multiple Type" }
         });
-
     };
 
     //================================================
     // Get the classes dropdown options
     //================================================
     const populateClassesDropDown = (arrSource) => {
-        //console.log(values);
+
         return (
-            <select name="ddlClass" onChange={handleClassOnChange} required value={values.classSubjectId} >
+            <select name="ddlClass" onChange={handleClassOnChange} required value={values.classId} >
                 <option value="">--Select Class --</option>
                 {arrSource.map(c => {
                     return (
-                        <option key={c.classSubjectID} value={c.classSubjectID}>
+                        <option key={c.classSubjectID} value={c.classID}>
                             {c.classDesc}
                         </option>)
                 })
@@ -98,6 +117,7 @@ function UpdateQuestion({ match }) {
 
     //================================================
     const populateSubjects = () => {
+
         return (
             <select name="ddlSubject" onChange={handleSubjectOnChange} required value={values.classSubjectId}>
                 <option value="">--Select Subject --</option>
@@ -154,13 +174,14 @@ function UpdateQuestion({ match }) {
 
     //================================================    
     const handleClassOnChange = (e) => {
-        debugger;
+
         e.preventDefault();
         //console.log("class id", e.target.value);
         setValues({
             ...values,
             classSubjectId: 0
         })
+        //debugger;
         const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
         setSubjects(subjectsForTheClass);
     }
@@ -227,7 +248,7 @@ function UpdateQuestion({ match }) {
         e.preventDefault();
         if (validateForm() === true) {
             //alert("submitted");
-            addQuestion(values)
+            updateQuestion(values)
                 .then(data => {
                     console.log(data);
                     if (data !== undefined && data.status.code > 0) {
@@ -414,6 +435,7 @@ function UpdateQuestion({ match }) {
             </div>
         );
     }
+
     //================================================
     //
     //================================================
@@ -427,7 +449,7 @@ function UpdateQuestion({ match }) {
                 </div>
             </div>
             <div>
-                {/* {JSON.stringify(values, null, 4)} */}
+                {JSON.stringify(values, null, 4)}
             </div>
         </Layout>
     );

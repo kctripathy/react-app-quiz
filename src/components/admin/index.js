@@ -84,7 +84,37 @@ export const getSubjectsByClassID = (sourceArray, classID) => {
     return newArray;
 }
 
+//=====================================================================
+export const getSubjectsByClassSubjectID = (sourceArray, classSubjectID) => {
+    // Declare a new array 
+    let newArray = [];
+    debugger;
+    // Loop for the array elements 
+    for (let i in sourceArray) {
 
+        if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+            newArray.push(sourceArray[i]);
+        }
+
+    }
+    return newArray;
+}
+
+//=====================================================================
+export const getClassSubjectByID = (sourceArray, classSubjectID) => {
+    // Declare a new array 
+    let newArray = [];
+    //debugger;
+    // Loop for the array elements 
+    for (let i in sourceArray) {
+
+        if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+            newArray.push(sourceArray[i]);
+        }
+
+    }
+    return newArray;
+}
 
 //=====================================================================
 export const addQuestion = (question) => {
@@ -105,6 +135,24 @@ export const addQuestion = (question) => {
         })
 }
 
+//=====================================================================
+export const updateQuestion = (question) => {
+
+    return fetch(`${API_URL}/questions/update`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(question)
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 
 //=====================================================================
 export const getQuestions = (classSubjectId, accountId) => {
