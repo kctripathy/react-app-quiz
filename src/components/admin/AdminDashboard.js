@@ -35,13 +35,13 @@ function AdminDashboard() {
                         </Link>
                     </li> */}
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/question/create">
-                            Create Question
+                        <Link className="nav-link" to="/question/add">
+                            Add New Question
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/questions/manage">
-                            Manage Questions
+                        <Link className="nav-link" to="/questions/list">
+                            View All Questions
                         </Link>
                     </li>
                     {/* <li className="list-group-item">

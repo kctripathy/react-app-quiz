@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../auth/index';
 
 import {
     addQuestion,
     getAllClassSubjectsByAccountId,
     removeDuplicates,
-    getSubjectsByClassID
+    getSubjectsByClassID,
+    getAllQuestionsByAccountId
 } from './index';
 
 import Layout from '../pages/Layout';
 
-function CreateQuestion() {
+function QuestionList({ match }) {
 
     const [values, setValues] = useState({
         id: 0,
@@ -30,6 +31,7 @@ function CreateQuestion() {
         success: ''
     });
 
+    const [questions, setQuestions] = useState([]);
     const [classSubjects, setClassSubjects] = useState([]);
     const [subjects, setSubjects] = useState([]);
 
@@ -37,8 +39,20 @@ function CreateQuestion() {
 
 
     useEffect(() => {
+
+        const questionId = match.params.questionId;
+        console.log('questionId', questionId);
+
+
         //Set the AccountId for the user
         const user = isAuthenticated();
+        console.log('user', user);
+
+        getAllQuestionsByAccountId(user.accountId)
+            .then(data => {
+                setQuestions(data);
+            })
+
         setValues({
             ...values,
             accountId: user.accountId
@@ -60,7 +74,7 @@ function CreateQuestion() {
     const populateClassesDropDown = (arrSource) => {
         return (
             <select name="ddlClass" onChange={handleClassOnChange} required>
-                <option value="">--Select Class --</option>
+                <option value="">--All Classes --</option>
                 {arrSource.map(c => {
                     return <option key={c.classSubjectID} value={c.classID}>{c.classDesc}</option>
                 })
@@ -73,7 +87,7 @@ function CreateQuestion() {
     const populateSubjects = () => {
         return (
             <select name="ddlSubject" onChange={handleSubjectOnChange} required>
-                <option value="">--Select Subject --</option>
+                <option value="">--All Subjects --</option>
                 {subjects.map(c => {
                     return <option key={c.classSubjectID} value={c.classSubjectID}>{c.subjectDesc}</option>
                 })
@@ -237,15 +251,10 @@ function CreateQuestion() {
     }
 
     //================================================
-    const newQuestionForm = () => {
+    const editQuestionForm = () => {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
-                    <div className="bg-info text-white text-center py-2 mb-4">
-                        <h3><i className="fa fa-question-circle"></i> Creat New Question</h3>
-                        {populateClasses()}
-                        {populateSubjects()}
-                    </div>
                     <div className="form-group" style={{ display: "none" }}>
                         <div className="input-group mb-2">
                             <div className="input-group-append">
@@ -385,6 +394,47 @@ function CreateQuestion() {
             </div>
         );
     }
+
+    //================================================
+    const listOfQuestions = () => {
+        return (
+            <div className="row">
+                <div className="col-12">
+                    <h5>Questions List</h5>
+                    {
+                        questions.map((q, i) => {
+                            return (
+                                <ul key={q.id} className="questionList">
+                                    <li className="id">{++i}</li>
+                                    <li className="name">
+                                        <Link to={`/question/edit/${q.id}`}>{q.questionName}</Link>
+                                        <ul className="optionList">
+                                            {
+                                                q.options.map((o) => <li key={o.id}>{o.optionName}</li>)
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li className="id">
+                                        <button className="btn btn-primary btn-sm"
+                                            onClick={() => {
+                                                    if(window.confirm('Delete the item?')) (deleteQuestion(q.id)) 
+                                                }
+                                            }>
+                                            Delete
+                                        </button>
+                                    </li>
+                                </ul>)
+                        })
+                    }
+                </div>
+            </div >
+        )
+    }
+    const deleteQuestion = (id) => {    
+        
+       alert(id);
+    }
+
     //================================================
     //
     //================================================
@@ -392,16 +442,26 @@ function CreateQuestion() {
         <Layout>
             <div className="row">
                 <div className="col-12">
-                    {newQuestionForm()}
+                    <div className="bg-info text-white text-center py-2 mb-2">
+                        <h4><i className="fa fa-question-circle"></i> Manage Question</h4>
+                        {populateClasses()}
+                        {populateSubjects()}
+                    </div>
+                </div>
+            </div>
+            {listOfQuestions()}
+            <div className="row">
+                <div className="col-12">
+                    {/* {editQuestionForm()} */}
                     {showErrorMessage()}
                     {showSuccessMessage()}
                 </div>
             </div>
             <div>
-                {/* {JSON.stringify(values.options[0].optionName)} */}
+                {JSON.stringify(questions)}
             </div>
         </Layout>
     );
 }
 
-export default CreateQuestion;
+export default QuestionList;

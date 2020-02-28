@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Layout from '../pages/Layout';
+
 import { isAuthenticated } from '../auth/index';
+
 import {
-    updateQuestion,
+    addQuestion,
     getAllClassSubjectsByAccountId,
     removeDuplicates,
-    getSubjectsByClassID,
-    getClassSubjectByID,
-    getQuestionById
+    getSubjectsByClassID
 } from './index';
 
-//================================================================
-// This component update a question
-//================================================================
-function UpdateQuestion({ match }) {
+import Layout from '../pages/Layout';
+
+function QuestionAdd() {
 
     const [values, setValues] = useState({
         id: 0,
         questionTypeId: 1, // Multiple type questions
         classSubjectId: 0,
-        classId: 0,
-        subjectId: 0,
         accountId: 0,
         questionName: '',
         options: [
@@ -37,78 +32,37 @@ function UpdateQuestion({ match }) {
 
     const [classSubjects, setClassSubjects] = useState([]);
     const [subjects, setSubjects] = useState([]);
+
     const { questionName } = values;
 
 
-    //=======================================================
     useEffect(() => {
         //Set the AccountId for the user
         const user = isAuthenticated();
-        const qId = match.params.questionId;
-
-        // Load the question by id
-        getQuestionById(qId)
-            .then(data => {
-                if (data !== undefined) {
-
-                    //populateValuesByQuestion(data);
-                    getAllClassSubjectsByAccountId(user.accountId)
-                        .then(data1 => {
-                            if (data1 !== undefined && data1.status.code > 0) {
-
-                                //Set Class
-                                setClassSubjects(data1.result);
-
-                                const objClassSubject = getClassSubjectByID(data1.result, data.classSubjectId);
-                                data.classId = objClassSubject[0].classID;
-                                data.subjectId = objClassSubject[0].subjectID;
-
-                                //Set Subject
-                                const subjectsForTheClass = getSubjectsByClassID(data1.result, data.classId);
-                                setSubjects(subjectsForTheClass);
-
-                                //Populate the question with options;
-                                populateValuesByQuestion(data);
-
-                            } //if (data1 !== undefined && data1.status.code > 0) 
-                        });
-                } //if (data !== undefined)
-            });
-
-    }, [])
-
-    //=================================================
-    const populateValuesByQuestion = (question) => {
-
-        const q_options = [...question.options];
-
         setValues({
             ...values,
-            id: question.id,
-            questionTypeId: 1, // Multiple type questions
-            classSubjectId: question.classSubjectId,
-            accountId: question.accountId,
-            classId: question.classId,
-            subjectId: question.subjectId,
-            questionName: question.questionName,
-            options: q_options,
-            questionType: { id: 0, name: "Multiple Type" }
-        });
-    };
+            accountId: user.accountId
+        })
+
+        // Load all classes after getting all class subjects for the account id
+        getAllClassSubjectsByAccountId(user.accountId)
+            .then(data => {
+                if (data !== undefined && data.status.code > 0) {
+                    setClassSubjects(data.result);
+                }
+            })
+    }, [])
+
 
     //================================================
     // Get the classes dropdown options
     //================================================
     const populateClassesDropDown = (arrSource) => {
-
         return (
-            <select name="ddlClass" onChange={handleClassOnChange} required value={values.classId} >
+            <select name="ddlClass" onChange={handleClassOnChange} required>
                 <option value="">--Select Class --</option>
                 {arrSource.map(c => {
-                    return (
-                        <option key={c.classSubjectID} value={c.classID}>
-                            {c.classDesc}
-                        </option>)
+                    return <option key={c.classSubjectID} value={c.classID}>{c.classDesc}</option>
                 })
                 }
             </select>
@@ -117,9 +71,8 @@ function UpdateQuestion({ match }) {
 
     //================================================
     const populateSubjects = () => {
-
         return (
-            <select name="ddlSubject" onChange={handleSubjectOnChange} required value={values.classSubjectId}>
+            <select name="ddlSubject" onChange={handleSubjectOnChange} required>
                 <option value="">--Select Subject --</option>
                 {subjects.map(c => {
                     return <option key={c.classSubjectID} value={c.classSubjectID}>{c.subjectDesc}</option>
@@ -174,14 +127,13 @@ function UpdateQuestion({ match }) {
 
     //================================================    
     const handleClassOnChange = (e) => {
-
+        debugger;
         e.preventDefault();
         //console.log("class id", e.target.value);
         setValues({
             ...values,
             classSubjectId: 0
         })
-        //debugger;
         const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
         setSubjects(subjectsForTheClass);
     }
@@ -248,7 +200,7 @@ function UpdateQuestion({ match }) {
         e.preventDefault();
         if (validateForm() === true) {
             //alert("submitted");
-            updateQuestion(values)
+            addQuestion(values)
                 .then(data => {
                     console.log(data);
                     if (data !== undefined && data.status.code > 0) {
@@ -285,12 +237,12 @@ function UpdateQuestion({ match }) {
     }
 
     //================================================
-    const showQuestionForm = () => {
+    const newQuestionForm = () => {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
                     <div className="bg-info text-white text-center py-2 mb-4">
-                        <h3><i className="fa fa-question-circle"></i> Update Question</h3>
+                        <h3><i className="fa fa-question-circle"></i> Creat New Question</h3>
                         {populateClasses()}
                         {populateSubjects()}
                     </div>
@@ -424,9 +376,7 @@ function UpdateQuestion({ match }) {
                         </div>
                     </div>
                     <div className="form-group text-center">
-                        <button className="btn btn-primary">UPDATE QUESTION</button>
-
-                        <Link className="btn btn-primary ml-4" to="/questions/manage">Question List</Link>
+                        <button className="btn btn-primary">Submit</button>
                     </div>
                     <div>
 
@@ -435,7 +385,6 @@ function UpdateQuestion({ match }) {
             </div>
         );
     }
-
     //================================================
     //
     //================================================
@@ -443,16 +392,16 @@ function UpdateQuestion({ match }) {
         <Layout>
             <div className="row">
                 <div className="col-12">
-                    {showQuestionForm()}
+                    {newQuestionForm()}
                     {showErrorMessage()}
                     {showSuccessMessage()}
                 </div>
             </div>
             <div>
-                {JSON.stringify(values, null, 4)}
+                {/* {JSON.stringify(values.options[0].optionName)} */}
             </div>
         </Layout>
     );
 }
 
-export default UpdateQuestion;
+export default QuestionAdd;

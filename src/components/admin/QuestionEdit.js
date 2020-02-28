@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Layout from '../pages/Layout';
 import { isAuthenticated } from '../auth/index';
-
 import {
-    addQuestion,
+    updateQuestion,
     getAllClassSubjectsByAccountId,
     removeDuplicates,
     getSubjectsByClassID,
-    getAllQuestionsByAccountId
+    getClassSubjectByID,
+    getQuestionById
 } from './index';
 
-import Layout from '../pages/Layout';
-
-function ManageQuestions({ match }) {
+//================================================================
+// This component update a question
+//================================================================
+function QuestionEdit({ match }) {
 
     const [values, setValues] = useState({
         id: 0,
         questionTypeId: 1, // Multiple type questions
         classSubjectId: 0,
+        classId: 0,
+        subjectId: 0,
         accountId: 0,
         questionName: '',
         options: [
@@ -31,52 +35,80 @@ function ManageQuestions({ match }) {
         success: ''
     });
 
-    const [questions, setQuestions] = useState([]);
     const [classSubjects, setClassSubjects] = useState([]);
     const [subjects, setSubjects] = useState([]);
-
     const { questionName } = values;
 
 
+    //=======================================================
     useEffect(() => {
-
-        const questionId = match.params.questionId;
-        console.log('questionId', questionId);
-
-
         //Set the AccountId for the user
         const user = isAuthenticated();
-        console.log('user', user);
+        const qId = match.params.questionId;
 
-        getAllQuestionsByAccountId(user.accountId)
+        // Load the question by id
+        getQuestionById(qId)
             .then(data => {
-                setQuestions(data);
-            })
+                if (data !== undefined) {
+
+                    //populateValuesByQuestion(data);
+                    getAllClassSubjectsByAccountId(user.accountId)
+                        .then(data1 => {
+                            if (data1 !== undefined && data1.status.code > 0) {
+
+                                //Set Class
+                                setClassSubjects(data1.result);
+
+                                const objClassSubject = getClassSubjectByID(data1.result, data.classSubjectId);
+                                data.classId = objClassSubject[0].classID;
+                                data.subjectId = objClassSubject[0].subjectID;
+
+                                //Set Subject
+                                const subjectsForTheClass = getSubjectsByClassID(data1.result, data.classId);
+                                setSubjects(subjectsForTheClass);
+
+                                //Populate the question with options;
+                                populateValuesByQuestion(data);
+
+                            } //if (data1 !== undefined && data1.status.code > 0) 
+                        });
+                } //if (data !== undefined)
+            });
+
+    }, [])
+
+    //=================================================
+    const populateValuesByQuestion = (question) => {
+
+        const q_options = [...question.options];
 
         setValues({
             ...values,
-            accountId: user.accountId
-        })
-
-        // Load all classes after getting all class subjects for the account id
-        getAllClassSubjectsByAccountId(user.accountId)
-            .then(data => {
-                if (data !== undefined && data.status.code > 0) {
-                    setClassSubjects(data.result);
-                }
-            })
-    }, [])
-
+            id: question.id,
+            questionTypeId: 1, // Multiple type questions
+            classSubjectId: question.classSubjectId,
+            accountId: question.accountId,
+            classId: question.classId,
+            subjectId: question.subjectId,
+            questionName: question.questionName,
+            options: q_options,
+            questionType: { id: 0, name: "Multiple Type" }
+        });
+    };
 
     //================================================
     // Get the classes dropdown options
     //================================================
     const populateClassesDropDown = (arrSource) => {
+
         return (
-            <select name="ddlClass" onChange={handleClassOnChange} required>
-                <option value="">--All Classes --</option>
+            <select name="ddlClass" onChange={handleClassOnChange} required value={values.classId} >
+                <option value="">--Select Class --</option>
                 {arrSource.map(c => {
-                    return <option key={c.classSubjectID} value={c.classID}>{c.classDesc}</option>
+                    return (
+                        <option key={c.classSubjectID} value={c.classID}>
+                            {c.classDesc}
+                        </option>)
                 })
                 }
             </select>
@@ -85,9 +117,10 @@ function ManageQuestions({ match }) {
 
     //================================================
     const populateSubjects = () => {
+
         return (
-            <select name="ddlSubject" onChange={handleSubjectOnChange} required>
-                <option value="">--All Subjects --</option>
+            <select name="ddlSubject" onChange={handleSubjectOnChange} required value={values.classSubjectId}>
+                <option value="">--Select Subject --</option>
                 {subjects.map(c => {
                     return <option key={c.classSubjectID} value={c.classSubjectID}>{c.subjectDesc}</option>
                 })
@@ -141,13 +174,14 @@ function ManageQuestions({ match }) {
 
     //================================================    
     const handleClassOnChange = (e) => {
-        debugger;
+
         e.preventDefault();
         //console.log("class id", e.target.value);
         setValues({
             ...values,
             classSubjectId: 0
         })
+        //debugger;
         const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
         setSubjects(subjectsForTheClass);
     }
@@ -214,7 +248,7 @@ function ManageQuestions({ match }) {
         e.preventDefault();
         if (validateForm() === true) {
             //alert("submitted");
-            addQuestion(values)
+            updateQuestion(values)
                 .then(data => {
                     console.log(data);
                     if (data !== undefined && data.status.code > 0) {
@@ -251,10 +285,15 @@ function ManageQuestions({ match }) {
     }
 
     //================================================
-    const editQuestionForm = () => {
+    const showQuestionForm = () => {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
+                    <div className="bg-info text-white text-center py-2 mb-4">
+                        <h3><i className="fa fa-question-circle"></i> Update Question</h3>
+                        {populateClasses()}
+                        {populateSubjects()}
+                    </div>
                     <div className="form-group" style={{ display: "none" }}>
                         <div className="input-group mb-2">
                             <div className="input-group-append">
@@ -385,7 +424,9 @@ function ManageQuestions({ match }) {
                         </div>
                     </div>
                     <div className="form-group text-center">
-                        <button className="btn btn-primary">Submit</button>
+                        <button className="btn btn-primary">UPDATE QUESTION</button>
+
+                        <Link className="btn btn-primary ml-4" to="/questions/list">Question List</Link>
                     </div>
                     <div>
 
@@ -396,68 +437,22 @@ function ManageQuestions({ match }) {
     }
 
     //================================================
-    const listOfQuestions = () => {
-        return (
-            <div className="row">
-                <div className="col-12">
-                    <h5>Questions List</h5>
-                    {
-                        questions.map((q, i) => {
-                            return (
-                                <ul key={q.id} className="questionList">
-                                    <li className="id">{++i}</li>
-                                    <li className="name">
-                                        <Link to={`/question/update/${q.id}`}>{q.questionName}</Link>
-                                        <ul className="optionList">
-                                            {
-                                                q.options.map((o) => <li key={o.id}>{o.optionName}</li>)
-                                            }
-                                        </ul>
-                                    </li>
-                                    <li className="id">
-                                        <button className="btn btn-primary btn-sm"
-                                            onClick={() => deleteQuestion(q.id)}>
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>)
-                        })
-                    }
-                </div>
-            </div >
-        )
-    }
-    const deleteQuestion = (id) => {
-        alert(id);
-    }
-
-    //================================================
     //
     //================================================
     return (
         <Layout>
             <div className="row">
                 <div className="col-12">
-                    <div className="bg-info text-white text-center py-2 mb-2">
-                        <h4><i className="fa fa-question-circle"></i> Manage Question</h4>
-                        {populateClasses()}
-                        {populateSubjects()}
-                    </div>
-                </div>
-            </div>
-            {listOfQuestions()}
-            <div className="row">
-                <div className="col-12">
-                    {/* {editQuestionForm()} */}
+                    {showQuestionForm()}
                     {showErrorMessage()}
                     {showSuccessMessage()}
                 </div>
             </div>
             <div>
-                {JSON.stringify(questions)}
+                {JSON.stringify(values, null, 4)}
             </div>
         </Layout>
     );
 }
 
-export default ManageQuestions;
+export default QuestionEdit;

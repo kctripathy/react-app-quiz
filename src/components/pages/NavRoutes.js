@@ -21,9 +21,9 @@ import UserDashboard from '../user/UserDashboard';
 import PageNotFound from '../pages/PageNotFound';
 
 import AdminDashboard from '../admin/AdminDashboard';
-import CreateQuestion from '../admin/CreateQuestion';
-import ManageQuestions from '../admin/ManageQuestions';
-import UpdateQuestion from '../admin/UpdateQuestion';
+import QuestionAdd from '../admin/QuestionAdd';
+import QuestionList from '../admin/QuestionList';
+import QuestionEdit from '../admin/QuestionEdit';
 
 function NavRoutes() {
     return (
@@ -39,9 +39,9 @@ function NavRoutes() {
                 <Route path="/contact" component={Contact} />
 
                 <AdminRoute path="/admin/dashboard" component={AdminDashboard} exact />
-                <AdminRoute path="/question/create" component={CreateQuestion} exact />
-                <AdminRoute path="/questions/manage" component={ManageQuestions} exact />
-                <AdminRoute path="/question/update/:questionId" component={UpdateQuestion} exact />
+                <AdminRoute path="/question/add" component={QuestionAdd} exact />
+                <AdminRoute path="/questions/list" component={QuestionList} exact />
+                <AdminRoute path="/question/edit/:questionId" component={QuestionEdit} exact />
 
                 <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />
                 <PrivateRoute path="/user/quiz/results" component={QuizResults} exact />
