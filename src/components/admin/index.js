@@ -85,35 +85,42 @@ export const getSubjectsByClassID = (sourceArray, classID) => {
 }
 
 //=====================================================================
-export const getSubjectsByClassSubjectID = (sourceArray, classSubjectID) => {
-    // Declare a new array 
-    let newArray = [];
-    debugger;
-    // Loop for the array elements 
-    for (let i in sourceArray) {
+export const getSubjectsByClassSubjectID = (sourceArray, id) => {
+    const filteredArray = sourceArray.filter((s) => s.classSubjectID == parseInt(id));
+    return filteredArray;
 
-        if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
-            newArray.push(sourceArray[i]);
-        }
+    // // Declare a new array 
+    // let newArray = [];
+    // debugger;
+    // // Loop for the array elements 
+    // for (let i in sourceArray) {
 
-    }
-    return newArray;
+    //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+    //         newArray.push(sourceArray[i]);
+    //     }
+
+    // }
+    // return newArray;
 }
 
 //=====================================================================
-export const getClassSubjectByID = (sourceArray, classSubjectID) => {
-    // Declare a new array 
-    let newArray = [];
-    //debugger;
-    // Loop for the array elements 
-    for (let i in sourceArray) {
+export const getClassSubjectByID = (sourceArray, id) => {
 
-        if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
-            newArray.push(sourceArray[i]);
-        }
+    const filteredArray = sourceArray.filter((s) => s.classSubjectID == parseInt(id));
+    return filteredArray;
 
-    }
-    return newArray;
+    // // Declare a new array 
+    // let newArray = [];
+    // //debugger;
+    // // Loop for the array elements 
+    // for (let i in sourceArray) {
+
+    //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+    //         newArray.push(sourceArray[i]);
+    //     }
+
+    // }
+    // return newArray;
 }
 
 //=====================================================================
@@ -155,6 +162,24 @@ export const updateQuestion = (question) => {
 }
 
 //=====================================================================
+export const deleteQuestion = (id) => {
+
+    return fetch(`${API_URL}/questions/delete`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(id)
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+//=====================================================================
 export const getQuestions = (classSubjectId, accountId) => {
     let url = `${API_URL}/questions/${classSubjectId}/${accountId}`;
     return fetch(url, {
@@ -174,7 +199,7 @@ export const getQuestions = (classSubjectId, accountId) => {
 }
 //=====================================================================
 export const getAllQuestionsByAccountId = (accountId) => {
-    let url = `${API_URL}/questions/all/${accountId}`;
+    let url = `${API_URL}/questions/list/${accountId}`;
     return fetch(url, {
         method: "GET",
         headers: {

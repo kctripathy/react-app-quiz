@@ -76,16 +76,32 @@ body {
   width: 100%;
   height: auto;
   min-height: 140px;
-  border-bottom: solid 1px #ccc;
+  border-bottom: double 3px #bbb;
 }
 
 .questionList > li{
   display: block;
   float: left;
 }
+.questionList > li > ul{
+  display: block;
+  float: left;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  width: 98%;
+}
 
-.questionList > li.id{
+.questionList > li.buttons{
+  padding-top: 20px;
   width: 5%;
+}
+
+.questionList > li.buttons > a > button,
+.questionList > li.buttons > button
+{
+  width: 76px;
+  margin-bottom: 15px;
 }
 
 
@@ -101,5 +117,19 @@ body {
   display: block;
   float: left;  
   width: 100%;
+  border-bottom: dotted 1px #ccc;
 }
-
+.optionList > li:last-child{
+  border: none;
+}
+.optionList li.list-answer
+{
+  /* background-color: rgb(180, 245, 180); */
+  color: green;
+  font-weight: bold;
+}
+.optionList li.list-option
+{
+  /* background-color: rgb(223, 248, 248); */
+  font-weight: normal;
+}

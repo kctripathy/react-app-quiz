@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../auth/index';
 
 import {
-    addQuestion,
+    deleteQuestion,
     getAllClassSubjectsByAccountId,
     removeDuplicates,
     getSubjectsByClassID,
@@ -28,10 +28,12 @@ function QuestionList({ match }) {
         ],
         questionType: { id: 0, name: "Multiple Type" },
         error: '',
-        success: ''
+        success: '',
+        isLoading: true
     });
 
     const [questions, setQuestions] = useState([]);
+    const [questionList, setQuestionList] = useState([]);
     const [classSubjects, setClassSubjects] = useState([]);
     const [subjects, setSubjects] = useState([]);
 
@@ -41,29 +43,30 @@ function QuestionList({ match }) {
     useEffect(() => {
 
         const questionId = match.params.questionId;
-        console.log('questionId', questionId);
+        //console.log('questionId', questionId);
 
 
         //Set the AccountId for the user
         const user = isAuthenticated();
-        console.log('user', user);
+        //console.log('user', user);
 
         getAllQuestionsByAccountId(user.accountId)
             .then(data => {
                 setQuestions(data);
-            })
-
-        setValues({
-            ...values,
-            accountId: user.accountId
-        })
-
-        // Load all classes after getting all class subjects for the account id
-        getAllClassSubjectsByAccountId(user.accountId)
-            .then(data => {
-                if (data !== undefined && data.status.code > 0) {
-                    setClassSubjects(data.result);
-                }
+                setQuestionList(data);
+                // Load all classes after getting all class subjects for the account id
+                getAllClassSubjectsByAccountId(user.accountId)
+                    .then(data1 => {
+                        if (data1 !== undefined && data1.status.code > 0) {
+                            setClassSubjects(data1.result);
+                            setValues({
+                                ...values,
+                                accountId: user.accountId,
+                                isLoading: false,
+                                error: ''
+                            })
+                        }
+                    })
             })
     }, [])
 
@@ -88,7 +91,7 @@ function QuestionList({ match }) {
         return (
             <select name="ddlSubject" onChange={handleSubjectOnChange} required>
                 <option value="">--All Subjects --</option>
-                {subjects.map(c => {
+                {subjects.length > 0 && subjects.map(c => {
                     return <option key={c.classSubjectID} value={c.classSubjectID}>{c.subjectDesc}</option>
                 })
                 }
@@ -103,131 +106,62 @@ function QuestionList({ match }) {
         return classesList;
     }
 
-    //================================================
-    const handleOnChange = (name, optionIndex) => (e) => {
-        if (name === 'option') {
-            const options = [...values.options];
-            options[optionIndex].optionName = e.target.value;
-            setValues({
-                ...values,
-                options
-            })
-        }
-        else {
-            setValues({
-                ...values,
-                [name]: e.target.value
-            })
-        }
-
-    };
-
-    //================================================
-    const handleIsAnswer = (optionIndex) => (e) => {
-        console.log(optionIndex);
-        const options = [...values.options];
-        for (let i = 0; i < 4; i++) {
-            options[i].isAnswer = (optionIndex === i);
-        }
-        //console.log(options);
-
-        setValues({
-            ...values,
-            options
-        })
-
-    }
-
 
     //================================================    
     const handleClassOnChange = (e) => {
-        debugger;
+        //debugger;
         e.preventDefault();
         //console.log("class id", e.target.value);
-        setValues({
-            ...values,
-            classSubjectId: 0
-        })
-        const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
-        setSubjects(subjectsForTheClass);
+        // setValues({
+        //     ...values,
+        //     classSubjectId: 0
+        // })
+        if (e.target.value === "") {
+            setQuestions(questionList);
+            setSubjects({});
+        }
+        else {
+
+            const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
+            setSubjects(subjectsForTheClass);
+
+            const classQuestions = questionList.filter((q) => q.classId == parseInt(e.target.value))
+            setQuestions(classQuestions);
+        }
+
     }
 
     //================================================    
     const handleSubjectOnChange = (e) => {
         e.preventDefault();
-        console.log("class subject id:", e.target.value);
+        const filteredQuestions = questionList.filter((q) => q.classSubjectId === parseInt(e.target.value));
+        setQuestions(filteredQuestions);
+
         setValues({
             ...values,
-            classSubjectId: parseInt(e.target.value)
+            isLoading: false
         })
+    }
+
+
+    //================================================
+    const showLoadingMessage = () => {
+        //const isLoading = questions && questions.length == 0; 
+        return (
+            <div className="alert alert-danger text-center" style={{ display: values.isLoading ? '' : 'none' }} >
+                Loading...
+            </div>
+        )
     }
 
     //================================================
-    const validateForm = () => {
-        let returnValue = false;
-        let errorMessage = '';
-        // check at least one answer is selected
-        debugger;
-        const options = [...values.options];
-        const isChecked = options.some(c => c.isAnswer == true);
-
-        for (let i = 0; i < 4; i++) {
-            returnValue = (options[i].isAnswer === true)
-            if (returnValue) break;
-        }
-        if (!returnValue) errorMessage = 'Please select at least one answer';
-
-        setValues({
-            ...values,
-            error: errorMessage,
-            success: returnValue
-        })
-
-        return returnValue;
-    }
-
-    //=================================================
-    const resetValuesAfterSuccess = (message) => {
-        setValues({
-            ...values,
-            questionName: '',
-            options: [
-                { id: 1, questionId: 0, optionName: '', isAnswer: false },
-                { id: 2, questionId: 0, optionName: '', isAnswer: false },
-                { id: 3, questionId: 0, optionName: '', isAnswer: false },
-                { id: 4, questionId: 0, optionName: '', isAnswer: false }
-            ],
-            error: '',
-            success: message
-        })
-    }
-
-    const resetValuesAfterError = (message) => {
-        setValues({
-            ...values,
-            error: message,
-            success: ''
-        })
-    }
-    //================================================
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (validateForm() === true) {
-            //alert("submitted");
-            addQuestion(values)
-                .then(data => {
-                    console.log(data);
-                    if (data !== undefined && data.status.code > 0) {
-                        resetValuesAfterSuccess(data.result);
-                    }
-                    else {
-                        resetValuesAfterError(data.status.message);
-                    }
-                })
-        }
-        else {
-            console.log("validation failed");
-        }
+    const showEmptyMessage = () => {
+        //const isLoading = questions && questions.length == 0; 
+        return (
+            <div className="alert alert-danger text-center" style={{ display: !values.isLoading && questions && questions.length === 0 ? '' : 'none' }} >
+                No Questions Found for the selected class and subject
+                </div>
+        )
     }
 
     //================================================
@@ -250,175 +184,51 @@ function QuestionList({ match }) {
         )
     }
 
-    //================================================
-    const editQuestionForm = () => {
-        return (
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group" style={{ display: "none" }}>
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    Ques. Type:
-                            </div>
-                            </div>
-                            <select name="questionType">
-                                <option>Multiple Type Questions</option>
-                            </select>
-                        </div>
-                    </div>
+    const showPageTitle = () => {
 
-                    <div className="form-group">
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text" style={{ alignItems: "baseline" }}>
-                                    Question:
-                            </div>
-                            </div>
-                            <textarea className="form-control"
-                                id="questionName"
-                                name="questionName"
-                                rows="2"
-                                value={questionName}
-                                onChange={handleOnChange("questionName")}
-                                placeholder="Enter the question" required />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    #1
-                            </div>
-                            </div>
-                            <input type="text" className="form-control"
-                                id="option1"
-                                name="option1"
-                                value={values.options[0].optionName}
-                                onChange={handleOnChange("option", 0)}
-                                placeholder="Enter option 1" required />
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    <input type="radio"
-                                        id="isAnswer"
-                                        name="isAnswer"
-                                        onChange={handleIsAnswer(0)}
-                                        checked={values.options[0].isAnswer} />&nbsp;is the answer
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    #2
-                            </div>
-                            </div>
-                            <input type="text" className="form-control"
-                                id="option2"
-                                name="option2"
-                                value={values.options[1].optionName}
-                                onChange={handleOnChange("option", 1)}
-                                placeholder="Enter option 2" required />
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    <input type="radio"
-                                        id="isAnswer"
-                                        name="isAnswer"
-                                        onChange={handleIsAnswer(1)}
-                                        checked={values.options[1].isAnswer} />&nbsp;is the answer
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    #3
-                            </div>
-                            </div>
-                            <input type="text" className="form-control"
-                                id="option3"
-                                name="option3"
-                                value={values.options[2].optionName}
-                                onChange={handleOnChange("option", 2)}
-                                placeholder="Enter option 3" required />
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    <input type="radio"
-                                        id="isAnswer"
-                                        name="isAnswer"
-                                        onChange={handleIsAnswer(2)}
-                                        checked={values.options[2].isAnswer} />&nbsp;is the answer
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="input-group mb-2">
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    #4
-                            </div>
-                            </div>
-                            <input type="text" className="form-control"
-                                id="option4"
-                                name="option4"
-                                value={values.options[3].optionName}
-                                onChange={handleOnChange("option", 3)}
-                                placeholder="Enter option 4" required />
-                            <div className="input-group-append">
-                                <div className="input-group-text">
-                                    <input type="radio"
-                                        id="isAnswer"
-                                        name="isAnswer"
-                                        onChange={handleIsAnswer(3)}
-                                        checked={values.options[3].isAnswer} />&nbsp;is the answer
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group text-center">
-                        <button className="btn btn-primary">Submit</button>
-                    </div>
-                    <div>
-
-                    </div>
-                </form>
-            </div>
-        );
+        return <h3>Manage Questions</h3>
     }
-
     //================================================
     const listOfQuestions = () => {
         return (
             <div className="row">
                 <div className="col-12">
-                    <h5>Questions List</h5>
                     {
                         questions.map((q, i) => {
                             return (
                                 <ul key={q.id} className="questionList">
-                                    <li className="id">{++i}</li>
                                     <li className="name">
-                                        <Link to={`/question/edit/${q.id}`}>{q.questionName}</Link>
-                                        <ul className="optionList">
-                                            {
-                                                q.options.map((o) => <li key={o.id}>{o.optionName}</li>)
-                                            }
+                                        <ul>
+                                            <li>
+                                                Question#{++i}: <Link to={`/question/edit/${q.id}`}>{q.questionName}</Link>
+
+                                                {/* ....ClassSubjectId={q.classSubjectId} | ClassId={q.classId} |SubjectId={q.subjectId} */}
+
+                                            </li>
+                                            <li>
+                                                <ul className="optionList">
+                                                    {
+                                                        q.options.map((o, i) => (
+
+                                                            <li key={o.id} className={o.isAnswer ? "list-answer" : "list-option"}>
+                                                                Option#{i + 1}: {o.optionName}
+                                                            </li>
+                                                        ))
+                                                    }
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </li>
-                                    <li className="id">
-                                        <button className="btn btn-primary btn-sm"
+                                    <li className="buttons">
+                                        <Link to={`/question/edit/${q.id}`}>
+                                            <button className="btn btn-info btn-sm">
+                                                Edit
+                                            </button>
+                                        </Link>
+                                        <button className="btn btn-danger btn-sm"
                                             onClick={() => {
-                                                    if(window.confirm('Delete the item?')) (deleteQuestion(q.id)) 
-                                                }
+                                                if (window.confirm('Delete the item?')) (deleteTheQuestion(q.id))
+                                            }
                                             }>
                                             Delete
                                         </button>
@@ -430,9 +240,27 @@ function QuestionList({ match }) {
             </div >
         )
     }
-    const deleteQuestion = (id) => {    
-        
-       alert(id);
+    const deleteTheQuestion = (id) => {
+
+        //alert(id);
+        deleteQuestion(id)
+            .then(response => {
+                const allQuestions = questionList.filter((q) => q.id !== id);
+                const freshQuestions = questions.filter((q) => q.id !== id);
+
+                setQuestionList(allQuestions);
+                setQuestions(freshQuestions);
+                //alert(values.classSubjectId);
+                // setQuestions(freshQuestions);
+                // setValues({
+                //     ...values,
+                //     classSubjectId: 0
+                // })
+                alert(id + 'deleted successfully')
+            })
+            .catch(err => {
+                alert('failed to delete because: ' + err);
+            })
     }
 
     //================================================
@@ -443,22 +271,24 @@ function QuestionList({ match }) {
             <div className="row">
                 <div className="col-12">
                     <div className="bg-info text-white text-center py-2 mb-2">
-                        <h4><i className="fa fa-question-circle"></i> Manage Question</h4>
+                        {showPageTitle()}
                         {populateClasses()}
                         {populateSubjects()}
                     </div>
                 </div>
             </div>
+            {showLoadingMessage()}
             {listOfQuestions()}
+            {showEmptyMessage()}
             <div className="row">
                 <div className="col-12">
-                    {/* {editQuestionForm()} */}
+
                     {showErrorMessage()}
                     {showSuccessMessage()}
                 </div>
             </div>
             <div>
-                {JSON.stringify(questions)}
+                {/* {JSON.stringify(questions, null, 4)} */}
             </div>
         </Layout>
     );
