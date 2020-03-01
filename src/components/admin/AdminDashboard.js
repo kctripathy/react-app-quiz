@@ -34,6 +34,22 @@ function AdminDashboard() {
                             Create Subject
                         </Link>
                     </li> */}
+                    <li className="list-group-item list-header">
+                        User Management
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/add">
+                            Add New User
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/list">
+                            Manage Users
+                        </Link>
+                    </li>
+                    <li className="list-group-item list-header">
+                        Question Management
+                    </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/question/add">
                             Add New Question
@@ -41,7 +57,7 @@ function AdminDashboard() {
                     </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/questions/list">
-                            View All Questions
+                            Manage Questions
                         </Link>
                     </li>
                     {/* <li className="list-group-item">

@@ -4,7 +4,6 @@ import { DEFAULT_ACCOUNT_ID } from '../../config';
 
 //=====================================================================
 export const getAllClassSubjectsByAccountId = (accountId) => {
-    debugger;
     const url = `${API_URL}/ClassesSubjects/all/${accountId}`;
     console.log("url=", url);
     return fetch(url, {

@@ -133,3 +133,17 @@ body {
   /* background-color: rgb(223, 248, 248); */
   font-weight: normal;
 }
+
+.list-header{
+  height: 40px;
+  background-color: #ccc;
+  font-weight: bold;
+  font-size: .9em;
+  text-align: center;
+}
+
+.user-additional-info-label
+{
+
+  width: 100px;
+}

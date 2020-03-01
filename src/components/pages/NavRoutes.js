@@ -25,6 +25,10 @@ import QuestionAdd from '../admin/QuestionAdd';
 import QuestionList from '../admin/QuestionList';
 import QuestionEdit from '../admin/QuestionEdit';
 
+import UserAdd from '../admin/UserAdd';
+import UserEdit from '../admin/UserEdit';
+import UserList from '../admin/UserList';
+
 function NavRoutes() {
     return (
         <div>
@@ -42,6 +46,11 @@ function NavRoutes() {
                 <AdminRoute path="/question/add" component={QuestionAdd} exact />
                 <AdminRoute path="/questions/list" component={QuestionList} exact />
                 <AdminRoute path="/question/edit/:questionId" component={QuestionEdit} exact />
+
+                <AdminRoute path="/user/list" component={UserList} exact />
+                <AdminRoute path="/user/add" component={UserAdd} exact />
+                <AdminRoute path="/user/edit" component={UserEdit} exact />
+
 
                 <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />
                 <PrivateRoute path="/user/quiz/results" component={QuizResults} exact />

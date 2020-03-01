@@ -1,57 +1,24 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Layout from '../pages/Layout';
-import { register, isAuthenticated } from '../auth';
+import { register } from '../auth';
 
-import { getAllClassSubjectsByAccountId, removeDuplicates } from '../admin/index';
 
 function Register(props) {
 
     const [values, setValues] = useState({
         AccountId: 0,
-        FullName: 'hari',
+        FullName: '',
         UserName: '',
-        UserEmail: 'haribolo@gmail.com',
-        UserPhone: '999988888',
-        UserPassword: 'abcd',
-        ClassId: 4,
-        SubjectIds: [1, 2, 3, 4],
-        AccessLevel: 100,
+        UserEmail: '',
+        UserPhone: '',
+        UserPassword: '',
         error: '',
         success: '',
         redirectToReferer
     })
-    const [userClasses, setUserClasses] = useState([]);
-    //const [classSubjects, setClassSubjects] = useState([]);
-    //const [subjects, setSubjects] = useState([]);
 
-
-    const { AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, SubjectIds, AccessLevel, error, success, redirectToReferer } = values;
-
-    useEffect(() => {
-        const user = isAuthenticated();
-
-        getAllClassSubjectsByAccountId(user.accountId)
-            .then(data1 => {
-                if (data1 !== undefined) {
-                    //debugger;
-                    //console.log(data1);
-                    //if (data1.status.code !== undefined && data1.status.code === "1") {
-                    const allClasses = removeDuplicates(data1.result, "classID");
-                    setUserClasses(allClasses);
-
-                    //alert(data1);
-                    //setClassSubjects(data1.result);
-                    setValues({
-                        ...values,
-                        accountId: user.accountId,
-                        isLoading: false,
-                        error: ''
-                    })
-                    //}
-                }
-            })
-    }, []);
+    const { AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, error, success, redirectToReferer } = values;
 
     const handleOnChange = name => (e) => {
         setValues({
@@ -60,26 +27,11 @@ function Register(props) {
         })
     };
 
-    const handleClassChange = e => {
-        //e.preventDefault();
-        setValues({
-            ...values,
-            ClassId: parseInt(e.target.value)
-        })
-    }
-
-    const handleAccessLevelChange = e => {
-        //e.preventDefault();
-        setValues({
-            ...values,
-            AccessLevel: parseInt(e.target.value)
-        })
-    }
 
     const handleFormSubmit = e => {
 
         e.preventDefault();
-        register({ AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, AccessLevel })
+        register({ AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword })
             .then(data => {
 
                 if (data === undefined) {
@@ -92,6 +44,13 @@ function Register(props) {
                     setValues({ ...values, error: data.status.message, success: false })
                 }
                 else {
+                    // debugger;
+                    // setValues({
+                    //     ...values,
+                    //     redirectToReferer: "/",
+                    //     error: '',
+                    //     success: false
+                    //  })
                     setValues({
                         ...values,
                         FullName: '',
@@ -99,8 +58,6 @@ function Register(props) {
                         UserEmail: '',
                         UserPhone: '',
                         UserPassword: '',
-                        classId: 0,
-                        subjectIds: [],
                         error: '',
                         success: true
                     })
@@ -121,16 +78,13 @@ function Register(props) {
     );
 
 
-    //This section will be shown to everyone for registering an account
     const userRegistrationForm = () => (
         <form onSubmit={handleFormSubmit}>
             <div className="card border-primary rounded-0">
                 <div className="card-header p-0">
                     <div className="bg-info text-white text-center py-2">
-                        <h3><i className="fa fa-user"></i>&nbsp;
-                            {props.isAdmin === 'yes' ? "Add New User" : "New User Registration"}
-                        </h3>
-                        {/* isAdmin: {props.isAdmin} */}
+                        <h3><i className="fa fa-user"></i> New User Registration</h3>
+                        isAdmin: {props.isAdmin}
                     </div>
                 </div>
                 <div className="card-body p-3">
@@ -145,7 +99,7 @@ function Register(props) {
                                 name="FullName"
                                 value={FullName}
                                 onChange={handleOnChange('FullName')}
-                                placeholder="Enter Full Name" required />
+                                placeholder="Enter your Full Name" required />
                             <label className="text-danger ml-2">*</label>
                         </div>
                     </div>
@@ -174,10 +128,24 @@ function Register(props) {
                                 name="UserEmail"
                                 value={UserEmail}
                                 onChange={handleOnChange('UserEmail')}
-                                placeholder="Enter email address  (can log on with this)" required />
+                                placeholder="Enter your email address  (can log on with this)" required />
                             <label className="text-danger ml-2">*</label>
                         </div>
                     </div>
+
+                    {/* <div className="form-group">
+                            <div className="input-group mb-2">
+                                <div className="input-group-prepend">
+                                    <div className="input-group-text"><i className="fa fa-phone text-info"></i></div>
+                                </div>
+                                <input type="number" className="form-control"
+                                       id="phone" 
+                                       name="UserPhone" 
+                                       value={UserPhone} 
+                                       onChange={handleOnChange('UserPhone')}
+                                       placeholder="Enter your phone number  (can log on with this)" required />
+                            </div>
+                        </div> */}
 
 
                     <div className="form-group">
@@ -190,13 +158,13 @@ function Register(props) {
                                 name="UserPassword"
                                 value={UserPassword}
                                 onChange={handleOnChange('UserPassword')}
-                                placeholder="Enter password" required />
+                                placeholder="Enter your password" required />
                             <label className="text-danger ml-2">*</label>
                         </div>
                     </div>
-                    {props.isAdmin === 'yes' ? newUserAdditionalInformation() : ''}
+
                     <div className="text-center">
-                        <input type="submit" value={props.isAdmin ? 'Save User' : 'Register'} className="btn btn-info rounded-0 py-2" />
+                        <input type="submit" value="Login" className="btn btn-info rounded-0 py-2" />
                     </div>
                 </div>
 
@@ -204,65 +172,11 @@ function Register(props) {
         </form>
     );
 
-    //This section will only be shown to admin while creating a new user
-    const newUserAdditionalInformation = () => {
-        return (
-            <Fragment>
-                <div className="form-group">
-                    <div className="input-group mb-2">
-                        <div className="input-group-prepend">
-                            <div className="input-group-text user-additional-info-label">Phone: <i className="fa fa-phone text-info"></i></div>
-                        </div>
-                        <input type="number" className="form-control"
-                            id="phone"
-                            name="UserPhone"
-                            value={UserPhone}
-                            onChange={handleOnChange('UserPhone')}
-                            placeholder="Enter phone number" required />
-                    </div>
-                </div>
-                <div className="form-group">
-                    <div className="input-group mb-2">
-                        <div className="input-group-prepend">
-                            <div className="input-group-text user-additional-info-label">Class: </div>
-                        </div>
-                        <select className="input-group-prepend"
-                            onChange={handleClassChange}
-                            name="ClassId"
-                            value={ClassId}
-                            required={props.isAdmin ? 'true' : 'false'}>
-                            <option value="">--Select User's Class--</option>
-                            {
-                                userClasses && userClasses.length > 0 && userClasses.map((uc) => <option key={uc.classSubjectID} value={uc.classID}>{uc.classDesc}</option>)
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <div className="input-group mb-2">
-                        <div className="input-group-prepend">
-                            <div className="input-group-text user-additional-info-label">Role: </div>
-                        </div>
-                        <select className="input-group-prepend"
-                            onChange={handleAccessLevelChange}
-                            name="AccessLevel"
-                            value={AccessLevel}>
-                            <option value="100">Quiz User</option>
-                            <option value="1">Quiz Administrator</option>
-                        </select>
-                    </div>
-                </div>
-
-            </Fragment>
-        )
-    };
-
     const redirectUser = () => {
         if (redirectToReferer) {
             return <Redirect to="/login" />
         }
-    };
-
+    }
     return (
         <Layout>
             <div className="row">
@@ -278,9 +192,6 @@ function Register(props) {
             </div>
             <div className="row">
                 {/* {JSON.stringify(values)} */}
-                {/* {JSON.stringify(userClasses)} */}
-
-
             </div>
         </Layout>
     );
