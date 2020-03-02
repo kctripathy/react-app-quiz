@@ -230,7 +230,7 @@ function Register(props) {
                             onChange={handleClassChange}
                             name="ClassId"
                             value={ClassId}
-                            required={props.isAdmin ? 'true' : 'false'}>
+                            required>
                             <option value="">--Select User's Class--</option>
                             {
                                 userClasses && userClasses.length > 0 && userClasses.map((uc) => <option key={uc.classSubjectID} value={uc.classID}>{uc.classDesc}</option>)

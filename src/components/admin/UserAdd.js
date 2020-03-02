@@ -3,16 +3,10 @@ import Layout from '../pages/Layout';
 import Register, { } from '../user/Register'
 
 function UserAdd() {
-    const userAddForm = () => {
-        return (
-            <div>
-                <Register isAdmin="yes" />
-            </div>
-        )
-    }
+     
     return (
-        <Layout>
-            {userAddForm()}
+        <Layout title="Add new user">
+            <Register isAdmin="yes" />
         </Layout>
 
     )

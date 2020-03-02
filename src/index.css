@@ -17,6 +17,15 @@ body {
   padding: 10px 0px;
 }
 
+.page-title {
+  color: darkskyblue;
+  text-align: left;
+  padding: 5px 0px;
+  border-bottom: solid 1px #ccc;
+  font-size: 1.5em !important;
+}
+
+
 .navbar{
   background-color: aquamarine;
   padding: 1px;
@@ -146,4 +155,9 @@ body {
 {
 
   width: 100px;
+}
+
+.home-page-content{
+  text-align: center;
+  color: black;
 }

@@ -144,7 +144,7 @@ function QuestionAdd() {
         console.log("class subject id:", e.target.value);
         setValues({
             ...values,
-            classSubjectId: parseInt(e.target.value)
+            classSubjectId: Number(e.target.value)
         })
     }
 
@@ -155,7 +155,7 @@ function QuestionAdd() {
         // check at least one answer is selected
         debugger;
         const options = [...values.options];
-        const isChecked = options.some(c => c.isAnswer == true);
+        //const isChecked = options.some(c => c.isAnswer == true);
 
         for (let i = 0; i < 4; i++) {
             returnValue = (options[i].isAnswer === true)
