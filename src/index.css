@@ -147,13 +147,19 @@ body {
   height: 40px;
   background-color: #ccc;
   font-weight: bold;
-  font-size: .9em;
+  font-size: 1em;
   text-align: center;
+  margin: 5px 0px !important;
+}
+.list-group-item,
+.list-group-item > a{
+  height: 40px !important;
+  padding: 5px !important;
+  margin: 0px 5px !important;
 }
 
 .user-additional-info-label
 {
-
   width: 100px;
 }
 

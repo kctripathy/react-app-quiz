@@ -29,6 +29,7 @@ function Register(props) {
     const { AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, SubjectIds, AccessLevel, error, success, redirectToReferer } = values;
 
     useEffect(() => {
+
         const user = isAuthenticated();
 
         getAllClassSubjectsByAccountId(user.accountId)
@@ -42,15 +43,38 @@ function Register(props) {
 
                     //alert(data1);
                     //setClassSubjects(data1.result);
-                    setValues({
-                        ...values,
-                        accountId: user.accountId,
-                        isLoading: false,
-                        error: ''
-                    })
+                    // setValues({
+                    //     ...values,
+                    //     accountId: user.accountId,
+                    //     isLoading: false,
+                    //     error: ''
+                    // })
                     //}
                 }
             })
+
+        if (props.mode === 'edit') {
+
+            //const { user2Edit } = props.user[0];
+            //debugger;
+            //console.log('user=', user2Edit);
+            setValues({
+                ...values,
+                accountId: props.user[0].accountId,
+                FullName: props.user[0].fullname,
+                UserEmail: props.user[0].userEmail,
+                UserPhone: props.user[0].userPhone,
+                AccessLevel: props.user[0].accessLevel,
+                ClassId: props.user[0].classId,
+                isLoading: false,
+                error: ''
+            })
+
+            //debugger;
+            return;
+
+        }
+
     }, []);
 
     const handleOnChange = name => (e) => {
@@ -79,6 +103,11 @@ function Register(props) {
     const handleFormSubmit = e => {
 
         e.preventDefault();
+
+        if (props.mode === 'edit') {
+            alert('updated....');
+            return;
+        }
         register({ AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, AccessLevel })
             .then(data => {
 
@@ -128,7 +157,7 @@ function Register(props) {
                 <div className="card-header p-0">
                     <div className="bg-info text-white text-center py-2">
                         <h3><i className="fa fa-user"></i>&nbsp;
-                            {props.isAdmin === 'yes' ? "Add New User" : "New User Registration"}
+                            {props.isAdmin === 'yes' ? props.mode === 'edit' ? "Edit User" : "Add New User" : "New User Registration"}
                         </h3>
                         {/* isAdmin: {props.isAdmin} */}
                     </div>
@@ -138,7 +167,7 @@ function Register(props) {
                     <div className="form-group">
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
-                                <div className="input-group-text"><i className="fa fa-user-circle text-info"></i></div>
+                                <div className="input-group-text user-additional-info-label">Name:<i className="fa fa-user-circle text-info"></i></div>
                             </div>
                             <input type="text" className="form-control"
                                 id="name"
@@ -167,7 +196,7 @@ function Register(props) {
                     <div className="form-group">
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
-                                <div className="input-group-text"><i className="fa fa-envelope text-info"></i></div>
+                                <div className="input-group-text user-additional-info-label">Email:<i className="fa fa-envelope text-info"></i></div>
                             </div>
                             <input type="email" className="form-control"
                                 id="email"
@@ -183,7 +212,7 @@ function Register(props) {
                     <div className="form-group">
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
-                                <div className="input-group-text"><i className="fa fa-key text-info"></i></div>
+                                <div className="input-group-text user-additional-info-label">Password<i className="fa fa-key text-info"></i></div>
                             </div>
                             <input type="password" className="form-control"
                                 id="password"
@@ -196,7 +225,7 @@ function Register(props) {
                     </div>
                     {props.isAdmin === 'yes' ? newUserAdditionalInformation() : ''}
                     <div className="text-center">
-                        <input type="submit" value={props.isAdmin ? 'Save User' : 'Register'} className="btn btn-info rounded-0 py-2" />
+                        <input type="submit" value={props.isAdmin ? props.mode === 'edit' ? 'Update User' : 'Save User' : 'Register'} className="btn btn-info rounded-0 py-2" />
                     </div>
                 </div>
 

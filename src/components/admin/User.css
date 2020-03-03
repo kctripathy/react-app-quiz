@@ -1,0 +1,51 @@
+#ulUserList{
+    display: block ;
+    float: left;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: solid 1px ddd;
+    list-style-type: none;
+}
+
+#ulUserList > li{
+    display: block ;
+    float: left;
+}
+
+#ulUserList > li.id{
+    width: 10%;
+    display: none;
+}
+
+#ulUserList > li.fullname{
+    width: 20%;
+}
+
+#ulUserList > li.email{
+    width: 20%;
+}
+
+#ulUserList > li.phone{
+    width: 20%;
+}
+
+#ulUserList > li.class{
+    width: 10%;
+}
+#ulUserList > li.role{
+    width: 10%;
+}
+#ulUserList > li.edit{
+    width: 10%;
+}
+#ulUserList > li.delete{
+    width: 10%;
+}
+#ulUserList > li.row-header{
+    font-weight: bold;
+    border-bottom: solid 1px #ddd;
+    background-color: #eee;
+}
+
+

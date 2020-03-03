@@ -1,23 +1,31 @@
-import {
-    ActionTypes
-} from '../constants/actionTypes';
+import { ActionTypes } from '../constants/actionTypes';
+
 
 let initialState = {
-	users:[],
-	loading: true,
-	error: '',
-	success: ''
+    users: [],
+    loading: true,
+    error: '',
+    success: ''
 };
 
 const userReducer = (state = initialState, action) => {
-    debugger;
-	switch (action.type) {
-        case ActionTypes.UserView:
+
+    switch (action.type) {
+
+        case ActionTypes.fetchUserSuccess:
+
             return {
-                ...state, 
-                user: action.payload, 
+                ...state,
+                users: action.payload,
                 loading: false
-            }        
+            }
+        case ActionTypes.fetchUserFailure:
+            return {
+                ...state,
+                users: [],
+                loading: false,
+                error: action.payload
+            }
         default:
             return state;
     }

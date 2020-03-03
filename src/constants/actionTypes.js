@@ -7,5 +7,6 @@ export const ActionTypes = {
     UserAdd: 'UserAdd',
     UserEdit: 'UserEdit',
     UserDelete: 'UserDelete',
-    UserView: 'UserView'
+    fetchUserSuccess: 'fetchUserSuccess',
+    fetchUserFailure: 'fetchUserFailure'
 }

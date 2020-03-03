@@ -49,7 +49,7 @@ function NavRoutes() {
 
                 <AdminRoute path="/user/list" component={UserList} exact />
                 <AdminRoute path="/user/add" component={UserAdd} exact />
-                <AdminRoute path="/user/edit" component={UserEdit} exact />
+                <AdminRoute path="/user/edit/:userId" component={UserEdit} exact />
 
 
                 <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />

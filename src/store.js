@@ -1,13 +1,14 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { promiseMiddleware } from './middleware';
+import thunk from 'redux-thunk'
 import reducer from './reducer';
 
 const getMiddleware = () => {
     if (process.env.NODE_ENV === 'production') {
-        return applyMiddleware(promiseMiddleware);
+        return applyMiddleware(thunk);
     } else {
-        return applyMiddleware(promiseMiddleware)
+        return applyMiddleware(thunk)
     }
 };
 
