@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import PrivateRoute from '../auth/PrivateRoute';
 import AdminRoute from '../auth/AdminRoute';
+import SuperAdminRoute from '../auth/SuperAdminRoute';
 
 import Home from "./Home";
 import About from "./About";
@@ -16,11 +17,12 @@ import Register from "../user/Register";
 import QuizResults from "../user/QuizResults";
 
 import Profile from "../user/Profile";
+
+
 import UserDashboard from '../user/UserDashboard';
-
-import PageNotFound from '../pages/PageNotFound';
-
 import AdminDashboard from '../admin/AdminDashboard';
+import SuperAdminDashboard from '../admin/SuperAdminDashboard';
+
 import QuestionAdd from '../admin/QuestionAdd';
 import QuestionList from '../admin/QuestionList';
 import QuestionEdit from '../admin/QuestionEdit';
@@ -28,6 +30,14 @@ import QuestionEdit from '../admin/QuestionEdit';
 import UserAdd from '../admin/UserAdd';
 import UserEdit from '../admin/UserEdit';
 import UserList from '../admin/UserList';
+
+import AccountAdd from '../admin/AccountAdd';
+import AccountEdit from '../admin/AccountEdit';
+import AccountList from '../admin/AccountList';
+
+
+import PageNotFound from '../pages/PageNotFound';
+
 
 function NavRoutes() {
     return (
@@ -56,6 +66,10 @@ function NavRoutes() {
                 <PrivateRoute path="/user/quiz/results" component={QuizResults} exact />
                 <PrivateRoute path="/user/profile" component={Profile} exact />
 
+                <SuperAdminRoute path="/SuperAdmin/dashboard" component={SuperAdminDashboard} exact />
+                <SuperAdminRoute path="/account/add" component={AccountAdd} exact />
+                <SuperAdminRoute path="/account/edit" component={AccountEdit} exact />
+                <SuperAdminRoute path="/account/list" component={AccountList} exact />
 
                 <Route component={PageNotFound} />
 

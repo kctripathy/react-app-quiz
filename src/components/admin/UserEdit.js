@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import Register from '../user/Register'
+import Layout from '../pages/Layout';
 
 function UserEdit({ usersData, match }) {
 
@@ -21,12 +22,12 @@ function UserEdit({ usersData, match }) {
         return user && <Register isAdmin="yes" mode="edit" user={user} />
     }
     return (
-        <div>
+        <Layout title="">
             {showUser()}
 
             {/* {JSON.stringify(user)} */}
 
-        </div>
+        </Layout>
     )
 };
 

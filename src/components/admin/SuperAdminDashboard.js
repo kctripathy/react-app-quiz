@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import { isAuthenticated } from "../auth";
 
-function AdminDashboard() {
+function SuperAdminDashboard() {
 
     const [user, setUser] = useState(isAuthenticated());
 
@@ -34,6 +34,19 @@ function AdminDashboard() {
                             Create Subject
                         </Link>
                     </li> */}
+                    <li className="list-group-item list-header">
+                        Account Management
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/account/add">
+                            Add New Account
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/account/list">
+                            Manage Accounts
+                        </Link>
+                    </li>
                     <li className="list-group-item list-header">
                         User Management
                     </li>
@@ -78,7 +91,7 @@ function AdminDashboard() {
                     <li className="list-group-item">{fullname}</li>
                     <li className="list-group-item">{userEmail}</li>
                     <li className="list-group-item">
-                        {accessLevel === 10 ? "Admin" : "Registered User"}
+                        {accessLevel === 1 ? "Super Admin" : accessLevel === 10 ? "Admin" : "User"}
                     </li>
                 </ul>
             </div>
@@ -100,4 +113,4 @@ function AdminDashboard() {
     );
 }
 
-export default AdminDashboard;
+export default SuperAdminDashboard;

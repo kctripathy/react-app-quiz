@@ -109,7 +109,25 @@ export const isAdmin = () => {
    if (typeof window === "undefined") {
       return false;
    }
-   debugger;
+   //debugger;
+   if (localStorage.getItem('accessToken')) {
+      var user = JSON.parse(localStorage.getItem('accessToken'));
+      if (user.accessLevel === 10)
+         return user
+      else
+         return false;
+   }
+   else {
+      return false;
+   }
+};
+
+
+export const isSuperAdmin = () => {
+   if (typeof window === "undefined") {
+      return false;
+   }
+   //debugger;
    if (localStorage.getItem('accessToken')) {
       var user = JSON.parse(localStorage.getItem('accessToken'));
       if (user.accessLevel === 1)

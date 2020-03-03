@@ -26,7 +26,10 @@ function Register(props) {
     //const [subjects, setSubjects] = useState([]);
 
 
-    const { AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, SubjectIds, AccessLevel, error, success, redirectToReferer } = values;
+    const { AccountId,
+        FullName, UserName, UserEmail,
+        UserPhone, UserPassword, ClassId, SubjectIds,
+        AccessLevel, error, success, redirectToReferer } = values;
 
     useEffect(() => {
 
@@ -55,9 +58,6 @@ function Register(props) {
 
         if (props.mode === 'edit') {
 
-            //const { user2Edit } = props.user[0];
-            //debugger;
-            //console.log('user=', user2Edit);
             setValues({
                 ...values,
                 accountId: props.user[0].accountId,
@@ -69,12 +69,7 @@ function Register(props) {
                 isLoading: false,
                 error: ''
             })
-
-            //debugger;
-            return;
-
         }
-
     }, []);
 
     const handleOnChange = name => (e) => {
@@ -156,9 +151,12 @@ function Register(props) {
             <div className="card border-primary rounded-0">
                 <div className="card-header p-0">
                     <div className="bg-info text-white text-center py-2">
-                        <h3><i className="fa fa-user"></i>&nbsp;
+                        <h4>
+                            {/* <i className="fa fa-user ml-10"></i>&nbsp; */}
                             {props.isAdmin === 'yes' ? props.mode === 'edit' ? "Edit User" : "Add New User" : "New User Registration"}
-                        </h3>
+                            {/* <i className="fa fa-user mr-10"></i> */}
+                        </h4>
+
                         {/* isAdmin: {props.isAdmin} */}
                     </div>
                 </div>
@@ -225,7 +223,8 @@ function Register(props) {
                     </div>
                     {props.isAdmin === 'yes' ? newUserAdditionalInformation() : ''}
                     <div className="text-center">
-                        <input type="submit" value={props.isAdmin ? props.mode === 'edit' ? 'Update User' : 'Save User' : 'Register'} className="btn btn-info rounded-0 py-2" />
+                        <input type="submit" value={props.isAdmin ? props.mode === 'edit' ? 'Update User' : 'Save User' : 'Register'}
+                            className="btn btn-info btn-block rounded-0 py-2" />
                     </div>
                 </div>
 
@@ -276,8 +275,8 @@ function Register(props) {
                             onChange={handleAccessLevelChange}
                             name="AccessLevel"
                             value={AccessLevel}>
-                            <option value="100">Quiz User</option>
-                            <option value="1">Quiz Administrator</option>
+                            <option value="100">User</option>
+                            <option value="10">Administrator</option>
                         </select>
                     </div>
                 </div>

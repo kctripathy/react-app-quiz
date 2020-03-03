@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import { isAuthenticated, isAdmin } from './index'
 
-const AdminRoute = ({ component: Component, ...rest }) => {
+const SuperAdminRoute = ({ component: Component, ...rest }) => {
     const user = isAuthenticated();
     return (
-        <Route {...rest} render={props => user && (user.accessLevel === 1 || user.accessLevel === 10) ? (
+        <Route {...rest} render={props => user && user.accessLevel === 1 ? (
             <Component {...props} />
         ) : (
                 <Redirect to={{ pathname: "/", state: { from: props.location } }} />
@@ -14,4 +14,4 @@ const AdminRoute = ({ component: Component, ...rest }) => {
     )
 };
 
-export default AdminRoute;
+export default SuperAdminRoute;

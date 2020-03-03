@@ -73,6 +73,8 @@ function Login() {
     const redirectUser = () => {
         if (redirectToReferer) {
             if (user && user.accessLevel === 1)
+                return <Redirect to="/superAdmin/dashboard" />
+            else if (user && user.accessLevel === 10)
                 return <Redirect to="/admin/dashboard" />
             else
                 return <Redirect to="/user/dashboard" />

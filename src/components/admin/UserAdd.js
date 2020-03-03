@@ -5,7 +5,7 @@ import Register from '../user/Register'
 function UserAdd() {
 
     return (
-        <Layout title="Add new user">
+        <Layout title="">
             <Register isAdmin="yes" />
         </Layout>
 
