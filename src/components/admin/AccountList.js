@@ -1,24 +1,26 @@
-import React, {userEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 //import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../pages/Layout';
 import { fetchAccounts } from '../../constants/actionMethodsAccounts';
 
 
-function AccountList({ accountsData, fetchAccounts }) {
+function AccountList({ accountsData, fetchAllAccounts }) {
 	//const accounts = useSelector(state=>state.account.accounts)
-    //const dispatch = useDispatch();
+	//const dispatch = useDispatch();
 
-    userEffect(()=>{
-    	fetchAccounts();
-    },[]);
+	useEffect(() => {
+		fetchAllAccounts();
+	}, []);
 
-    return (
-        <Layout title="List of Accounts">
+	return (
+		<Layout title="List of Accounts">
+			<div>
+				{JSON.stringify(accountsData, null, 4)}
+			</div>
+		</Layout>
 
-        </Layout>
-
-    )
+	)
 };
 
 const mapStateToProps = state => {
@@ -29,7 +31,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchAccounts: () => dispatch(fetchAccounts())
+		fetchAllAccounts: () => dispatch(fetchAccounts())
 	}
 };
 

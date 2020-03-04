@@ -249,12 +249,12 @@ export const loadAllUsers = () => {
             "Content-Type": "application/json"
         }
     })
-    .then(response => {
-        return response.json()
-    })
-    .catch(err => {
-        return (err)
-    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            return (err)
+        })
 };
 
 
@@ -271,10 +271,10 @@ export const loadAllAccounts = () => {
             "Content-Type": "application/json"
         }
     })
-    .then(response => {
-        return response.json()
-    })
-    .catch(err => {
-        return (err)
-    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            return (err)
+        })
 };

@@ -29,6 +29,7 @@ const addAccountFailure = (error) => {
 
 
 const fetchAccounts = () => {
+    debugger;
     return (dispatch) => loadAllAccounts()
         .then(data => {
             //debugger;
@@ -40,6 +41,7 @@ const fetchAccounts = () => {
                 dispatch(fetchAccountFailure(data.status.message))
         })
         .catch(err => {
+            debugger; ``
             dispatch(fetchAccountFailure(err))
         })
 };
