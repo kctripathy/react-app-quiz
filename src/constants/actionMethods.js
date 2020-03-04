@@ -1,20 +1,20 @@
-import { ActionTypes } from '../constants/actionTypes';
+import { UserActionTypes } from '../constants/actionTypes';
 import { loadAllUsers } from '../components/admin';
 
+
 const fetchUserSuccess = (users) => {
-    //debugger;
     return {
-        type: ActionTypes.fetchUserSuccess,
+        type: UserActionTypes.fetchUserSuccess,
         payload: users
     }
 };
-
 const fetchUserFailure = (error) => {
     return {
-        type: ActionTypes.fetchUserFailure,
+        type: UserActionTypes.fetchUserFailure,
         payload: error
     }
 };
+
 
 const fetchUsers = () => {
     return (dispatch) => loadAllUsers()
@@ -30,20 +30,7 @@ const fetchUsers = () => {
         .catch(err => {
             dispatch(fetchUserFailure(err))
         })
-
-    // return (dispatch) => {
-    //     axios.get('http://localhost:5050/api/users/all?accountId=1')
-    //         .then(response => {
-    //             debugger;
-    //             const users = response.data.result;
-    //             dispatch(fetchUserSuccess(users))
-    //         })
-    //         .catch(error => {
-    //             debugger;
-    //             const msg = error.message
-    //             dispatch(fetchUserFailure(msg))
-    //         })
-    // }
 };
+ 
 
 export { fetchUsers }

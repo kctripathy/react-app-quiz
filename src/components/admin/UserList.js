@@ -43,10 +43,6 @@ const mapStateToProps = state => {
 	}
 };
 
-// const mapDispatchToProps = dispatch => ({
-// 	loadUsers: () => dispatch({ type: ActionTypes.UserLoad })	
-// });
-
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchUsers: () => dispatch(fetchUsers())

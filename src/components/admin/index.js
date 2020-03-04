@@ -249,11 +249,32 @@ export const loadAllUsers = () => {
             "Content-Type": "application/json"
         }
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            return (err)
-        })
+    .then(response => {
+        return response.json()
+    })
+    .catch(err => {
+        return (err)
+    })
+};
 
-}
+
+//===================================
+// load All Accounts
+//===================================
+export const loadAllAccounts = () => {
+    //const { accountId } = isAuthenticated();;
+    let url = `${API_URL}/accounts/all`;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        return response.json()
+    })
+    .catch(err => {
+        return (err)
+    })
+};

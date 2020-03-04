@@ -68,7 +68,7 @@ export const register = (user) => {
    if (user.AccountId === 0) {
       user.AccountId = DEFAULT_ACCOUNT_ID;
    }
-   debugger;
+   //debugger;
    return fetch(`${API_URL}/users/register`, {
       method: "POST",
       headers: {

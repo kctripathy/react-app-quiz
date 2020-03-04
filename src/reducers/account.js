@@ -1,27 +1,28 @@
-import { UserActionTypes } from '../constants/actionTypes';
+import { AccountActionTypes } from '../constants/actionTypes';
 
 
 let initialState = {
-    users: [],
+    accounts: [],
     loading: true,
     error: '',
     success: ''
 };
 
-const userReducer = (state = initialState, action) => {
+
+const accountReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
-        case UserActionTypes.fetchUserSuccess:
+        case AccountActionTypes.fetchAccountSuccess:
             return {
                 ...state,
-                users: action.payload,
+                accounts: action.payload,
                 loading: false
             }
-        case UserActionTypes.fetchUserFailure:
+        case AccountActionTypes.fetchAccounFailure:
             return {
                 ...state,
-                users: [],
+                accounts: [],
                 loading: false,
                 error: action.payload
             }
@@ -30,4 +31,4 @@ const userReducer = (state = initialState, action) => {
     }
 };
 
-export default userReducer;
+export default accountReducer;
