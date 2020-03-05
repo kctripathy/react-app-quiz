@@ -125,7 +125,7 @@ function QuestionList({ match }) {
             const subjectsForTheClass = getSubjectsByClassID(classSubjects, e.target.value);
             setSubjects(subjectsForTheClass);
 
-            const classQuestions = questionList.filter((q) => q.classId == parseInt(e.target.value))
+            const classQuestions = questionList.filter((q) => q.classId === Number(e.target.value))
             setQuestions(classQuestions);
         }
 

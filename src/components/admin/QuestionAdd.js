@@ -127,7 +127,7 @@ function QuestionAdd() {
 
     //================================================    
     const handleClassOnChange = (e) => {
-        debugger;
+        //debugger;
         e.preventDefault();
         //console.log("class id", e.target.value);
         setValues({
@@ -153,7 +153,7 @@ function QuestionAdd() {
         let returnValue = false;
         let errorMessage = '';
         // check at least one answer is selected
-        debugger;
+        //debugger;
         const options = [...values.options];
         //const isChecked = options.some(c => c.isAnswer == true);
 

@@ -278,3 +278,31 @@ export const loadAllAccounts = () => {
             return (err)
         })
 };
+
+//==============================================
+// NEW ACCOUNT 
+//==============================================
+export const addNewAccount = (account) => {
+
+    return fetch(`${API_URL}/accounts/add`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(account)
+    })
+        .then(response => {
+            debugger;
+            if (response.status === 200) {
+                return response.json()
+            }
+            else {
+                return response
+            }
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}

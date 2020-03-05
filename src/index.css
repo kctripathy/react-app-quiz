@@ -167,3 +167,28 @@ body {
   text-align: center;
   color: black;
 }
+
+#accountClassSubjectUL{
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding:0;
+  width: 100%;
+}
+#accountClassSubjectUL > li{
+  padding: 0px;
+}
+
+#accountClassSubjectUL > li > input{
+  margin-left: 2px;
+  padding-left: 2px;
+}
+
+#accountClassSubjectUL > li:nth-child(odd){
+  background-color: #EAFFFF;
+}
+
+#accountClassSubjectUL > li:hover{
+  background-color:#17a2b8!important;
+  color: white;
+}
