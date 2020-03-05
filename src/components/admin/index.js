@@ -283,8 +283,8 @@ export const loadAllAccounts = () => {
 // NEW ACCOUNT 
 //==============================================
 export const addNewAccount = (account) => {
-
-    return fetch(`${API_URL}/accounts/add`, {
+    debugger;
+    return fetch(`${API_URL}/accounts/addnew`, {
         method: "POST",
         headers: {
             Accept: "application/json",

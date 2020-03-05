@@ -14,7 +14,8 @@ function AccountAdd() {
         loginPassword: 'aaaa',
         classSubjects: [],
         success: '',
-        error: ''
+        error: '',
+        run: false
     });
 
     const { accountName, contactName, contactPhone, contactEmail, loginPassword } = account;
@@ -43,10 +44,11 @@ function AccountAdd() {
             .catch(err => {
                 dispatch({ type: 'fetchApiError', payload: err });
             })
-    }, [])
+    }, [account.run])
+
 
     // ==========================================================
-    //Show account holders entry form
+    // Show account holders entry form
     // ==========================================================
     const showAccountAddForm = () => (
         <div className="card border-text-info rounded-10">
@@ -150,6 +152,7 @@ function AccountAdd() {
                                         <input type="checkbox"
                                             name="classSubjectCheckBox"
                                             value={cs.classSubjectID}
+                                            //checked={checkedItems && checkedItems.length > 0}
                                             onChange={handleCheckBoxChange}></input>
                                     </div>
                                     <div className="col-5 text-left">
@@ -169,7 +172,7 @@ function AccountAdd() {
     };
 
     // ==========================================================
-    //  
+    //  SUBMIT THE FOR TO CREATE A NEW ACCOUNT AND CLEAR ALL VARS
     // ==========================================================
     const handleSubmitAccountForm = (e) => {
         e.preventDefault();
@@ -178,20 +181,30 @@ function AccountAdd() {
             return;
         }
         else {
+            debugger;
             const newAccount = {
                 ...account,
-                classSubjects: checkedItems
+                classSubjects: checkedItems.join(",")
             };
 
             addNewAccount(newAccount)
                 .then(data => {
-                    debugger;
-                    if (data !== undefined && data.status === "200" && data.status.code === "1") {
+                    //debugger;
+
+                    if (data !== undefined && data.status.code && data.status.code === "1") {
                         setAccount({
                             ...account,
+                            accountName: '',
+                            contactName: '',
+                            contactPhone: '',
+                            contactEmail: '',
+                            loginPassword: '',
+                            classSubjects: [],
                             success: 'account added successfully',
-                            error: ''
-                        })
+                            error: '',
+                            run: !account.run
+                        });
+                        setCheckedItems([]);
                     }
                     else {
                         setAccount({
@@ -202,10 +215,12 @@ function AccountAdd() {
                     }
                 })
                 .catch(err => {
-
+                    setAccount({
+                        ...account,
+                        success: '',
+                        error: 'failed to add an account ' + err
+                    })
                 })
-            //console.log('newAccount', newAccount);
-            //console.log('account', account);
         }
 
     };
@@ -214,9 +229,6 @@ function AccountAdd() {
     // Handle the array when check or uncheck the class subjects
     // ==========================================================
     const handleCheckBoxChange = (e) => {
-        //e.preventDefault();
-        //console.log(e);
-        //alert(e.target.checked);
         if (e.target.checked === true) {
             setCheckedItems([...checkedItems, Number(e.target.value)])
         }
@@ -224,7 +236,6 @@ function AccountAdd() {
             setCheckedItems(checkedItems.filter((id) => id !== Number(e.target.value)));
         }
     };
-
 
     // ==========================================================
     // Handle the text box input values;
@@ -237,12 +248,18 @@ function AccountAdd() {
         })
     };
 
-
+    // ==========================================================
+    // Error message
+    // ==========================================================
     const showErrorMessage = () => (
         account.error.length > 0 && <div className="alert alert-danger  text-center">{account.error}</div>
     );
+
+    // ==========================================================
+    // Success message
+    // ==========================================================
     const showSuccessMessage = () => (
-        account.success.length > 0 && <div className="alert alert-danger text-center">{account.success}</div>
+        account.success.length > 0 && <div className="alert alert-success text-center">{account.success}</div>
     );
     // ==========================================================
     return (
@@ -253,19 +270,12 @@ function AccountAdd() {
                         {showAccountAddForm()}
                         {showErrorMessage()}
                         {showSuccessMessage()}
-                        <pre>
-                            {JSON.stringify(account, null, 4)}
-                        </pre>
                     </div>
                     <div className="col-6">
-                        {/* {JSON.stringify(checkedItems, null, 4)} */}
                         {showAccountAddFormClassSubjects()}
                     </div>
                 </div>
             </form>
-            <div className="row">
-
-            </div>
         </Layout >
     )
     // ==========================================================
