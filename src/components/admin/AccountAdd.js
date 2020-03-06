@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import Layout from '../pages/Layout';
+import SelectClasses from '../common/SelectClasses';
+
 import classSubjectReducer, { initialState } from '../../reducers/classSubject';
 import { getAllClassSubjectsByAccountId, addNewAccount } from '../admin/index';
 
@@ -93,6 +95,7 @@ function AccountAdd() {
                         <label className="text-danger ml-2">*</label>
                     </div>
                 </div>
+
                 <div className="bg-muted text-dark text-left py-2">
                     <b>Login Credentials:</b>
                 </div>
@@ -138,13 +141,15 @@ function AccountAdd() {
 
         return <div className="card border-text-muted rounded-10">
             <div className="card-header p-0">
-                <div className="bg-text-muted text-dark text-center py-2">
+                <div className="bg-text-muted text-dark text-center py-2 p-2">
                     <h5>Class and Subjects for the Account</h5>
+                    <SelectClasses onClassChange={(v) => handleClassOnChange(v)} classSubjects={state.classSubjects} />
                 </div>
+
             </div>
             <div className="card-body p-3">
                 <ul id="accountClassSubjectUL">
-                    {state && state.classSubjects.map((cs) => {
+                    {account && account.classSubjects.map((cs) => {
                         return (
                             <li key={cs.classSubjectID}>
                                 <div className="row">
@@ -247,6 +252,35 @@ function AccountAdd() {
             [e.target.name]: e.target.value
         })
     };
+
+    // ==========================================================
+    // This comes from child component
+    // ==========================================================
+
+    const handleClassOnChange = selectedOptions => {
+
+        if (selectedOptions == null) {
+            setAccount({
+                ...account,
+                classSubjects: []
+            });
+            return;
+        }
+
+        var filteredClassAndSubjects = state.classSubjects.filter(
+            function (e) {
+                console.log(e.classID);
+                return this.indexOf(e.classID) >= 0;
+            },
+            selectedOptions.map((v) => v.value)
+        );
+        //console.log('filtered', filtered);
+
+        setAccount({
+            ...account,
+            classSubjects: filteredClassAndSubjects
+        })
+    }
 
     // ==========================================================
     // Error message
