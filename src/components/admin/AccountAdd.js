@@ -9,11 +9,11 @@ function AccountAdd() {
     const [state, dispatch] = useReducer(classSubjectReducer, initialState);
     const [checkedItems, setCheckedItems] = useState([])
     const [account, setAccount] = useState({
-        accountName: 'aa',
-        contactName: 'bb',
-        contactPhone: '1111122222',
-        contactEmail: 'newAc@gmail.com',
-        loginPassword: 'aaaa',
+        accountName: '',
+        contactName: '',
+        contactPhone: '',
+        contactEmail: '',
+        loginPassword: '',
         classSubjects: [],
         success: '',
         error: '',
@@ -53,7 +53,7 @@ function AccountAdd() {
     // Show account holders entry form
     // ==========================================================
     const showAccountAddForm = () => (
-        <div className="card border-text-info rounded-10">
+        <div className="card border-text-info rounded-10" style={{ minHeight: "435px" }}>
             <div className="card-header p-0">
                 <div className="bg-muted text-dark text-center py-2">
                     <h5>Account Details</h5>
@@ -79,7 +79,7 @@ function AccountAdd() {
                             name="contactName"
                             value={contactName}
                             onChange={handleTextBoxChange}
-                            placeholder="ontact Name" required />
+                            placeholder="Contact Name" required />
                         <label className="text-danger ml-2">*</label>
                     </div>
                 </div>
@@ -123,12 +123,11 @@ function AccountAdd() {
                         <label className="text-danger ml-2">*</label>
                     </div>
                 </div>
-
-                <div className="text-center">
+                {/* <div className="text-center">
                     <input type="submit"
                         value="CREATE NEW ACCOUNT"
                         className="btn btn-info btn-block rounded-0 py-2" />
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -139,7 +138,7 @@ function AccountAdd() {
     // ==========================================================
     const showAccountAddFormClassSubjects = () => {
 
-        return <div className="card border-text-muted rounded-10">
+        return <div className="card border-text-muted rounded-10" style={{ minHeight: "435px", maxHeight: "435px", overflow: "scroll" }}>
             <div className="card-header p-0">
                 <div className="bg-text-muted text-dark text-center py-2 p-2">
                     <h5>Class and Subjects for the Account</h5>
@@ -254,26 +253,45 @@ function AccountAdd() {
     };
 
     // ==========================================================
-    // This comes from child component
+    // This comes from child component (SelectClass)
     // ==========================================================
-
     const handleClassOnChange = selectedOptions => {
 
         if (selectedOptions == null) {
-            setAccount({
-                ...account,
-                classSubjects: []
-            });
+            setAccount({ ...account, classSubjects: [] });
             return;
         }
 
-        var filteredClassAndSubjects = state.classSubjects.filter(
-            function (e) {
-                console.log(e.classID);
-                return this.indexOf(e.classID) >= 0;
-            },
-            selectedOptions.map((v) => v.value)
+        //---------------------------------------------------------
+        // Get all class and subjects based on the selected class
+        //---------------------------------------------------------
+
+        const filteredClassAndSubjects = state.classSubjects.filter(array =>
+            selectedOptions.some(filter => filter.value === array.classID)
         );
+        //console.log('filteredClassAndSubjects', filteredClassAndSubjects)
+
+
+        //---------------------------------------------------------
+        // below method also works fine 
+        //---------------------------------------------------------
+        // const filteredClassAndSubjects = state.classSubjects.filter(el => {
+        //     return selectedOptions.some(f => {
+        //         return f.value === el.classID;
+        //     });
+        // });
+        //console.log('filteredClassAndSubjects', filteredClassAndSubjects)
+
+        //---------------------------------------------------------
+        // below method also works fine 
+        //---------------------------------------------------------
+        // var filteredClassAndSubjects = state.classSubjects.filter(
+        //     function (e) {
+        //         //console.log(e.classID);
+        //         return this.indexOf(e.classID) >= 0;
+        //     },
+        //     selectedOptions.map((v) => v.value)
+        // );
         //console.log('filtered', filtered);
 
         setAccount({
@@ -307,6 +325,11 @@ function AccountAdd() {
                     </div>
                     <div className="col-6">
                         {showAccountAddFormClassSubjects()}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center mt-2">
+                        <button className="btn btn-info text-center">CREATE NEW ACCOUNT</button>
                     </div>
                 </div>
             </form>

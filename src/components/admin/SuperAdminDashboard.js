@@ -19,21 +19,16 @@ function SuperAdminDashboard() {
             <div className="card">
                 <h4 className="card-header">Admin Links</h4>
                 <ul className="list-group">
-                    {/* <li className="list-group-item">
-                        <Link className="nav-link" to="/create/user">
-                            Create User
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/classes/manage">
+                            Manage Classes
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/create/class">
-                            Create Class
+                        <Link className="nav-link" to="/subjects/manage">
+                            Manage Subjects
                         </Link>
                     </li>
-                    <li className="list-group-item">
-                        <Link className="nav-link" to="/create/subject">
-                            Create Subject
-                        </Link>
-                    </li> */}
                     <li className="list-group-item list-header">
                         Account Management
                     </li>

@@ -241,8 +241,8 @@ function QuestionAdd() {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
-                    <div className="bg-info text-white text-center py-2 mb-4">
-                        <h3><i className="fa fa-question-circle"></i> Creat New Question</h3>
+                    <div className="bg-card-header text-dark text-center py-2 mb-4">
+                        <h5>Creat New Question</h5>
                         {populateClasses()}
                         {populateSubjects()}
                     </div>
@@ -376,7 +376,7 @@ function QuestionAdd() {
                         </div>
                     </div>
                     <div className="form-group text-center">
-                        <button className="btn btn-primary">Submit</button>
+                        <button className="btn btn-primary btn-block">Submit</button>
                     </div>
                     <div>
 

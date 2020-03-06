@@ -186,7 +186,7 @@ function QuestionList({ match }) {
 
     const showPageTitle = () => {
 
-        return <h3>Manage Questions</h3>
+        return <h5>Manage Questions</h5>
     }
     //================================================
     const listOfQuestions = () => {
@@ -270,7 +270,7 @@ function QuestionList({ match }) {
         <Layout>
             <div className="row">
                 <div className="col-12">
-                    <div className="bg-info text-white text-center py-2 mb-2">
+                    <div className="bg-card-header text-dark text-center py-2 mb-2">
                         {showPageTitle()}
                         {populateClasses()}
                         {populateSubjects()}

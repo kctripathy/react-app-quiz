@@ -148,14 +148,14 @@ function Register(props) {
     //This section will be shown to everyone for registering an account
     const userRegistrationForm = () => (
         <form onSubmit={handleFormSubmit}>
-            <div className="card border-primary rounded-0">
+            <div className="card border-dark rounded-0">
                 <div className="card-header p-0">
-                    <div className="bg-info text-white text-center py-2">
-                        <h4>
+                    <div className="bg-card-header text-dark text-center py-2">
+                        <h5>
                             {/* <i className="fa fa-user ml-10"></i>&nbsp; */}
                             {props.isAdmin === 'yes' ? props.mode === 'edit' ? "Edit User" : "Add New User" : "New User Registration"}
                             {/* <i className="fa fa-user mr-10"></i> */}
-                        </h4>
+                        </h5>
 
                         {/* isAdmin: {props.isAdmin} */}
                     </div>

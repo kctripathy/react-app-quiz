@@ -84,17 +84,20 @@ function Login() {
 
     const loginForm = () => (
         <form onSubmit={handleFormSubmit}>
-            <div className="card border-primary rounded-0">
+            <div className="card border-dark rounded-0">
                 <div className="card-header p-0">
-                    <div className="bg-info text-white text-center py-2">
-                        <h3><i className="fa fa-envelope"></i> Login</h3>
+                    <div className="bg-card-header text-dark text-left py-2 p-2">
+                        <h5>User Login</h5>
                     </div>
                 </div>
                 <div className="card-body p-3">
                     <div className="form-group">
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
-                                <div className="input-group-text"><i className="fa fa-user text-info"></i></div>
+                                <div className="input-group-text user-additional-info-label">
+                                    <i className="fa fa-envelope text-info mr-2"></i>
+                                    Email:
+                                </div>
                             </div>
                             <input type="email" className="form-control"
                                 id="UserEmail"
@@ -108,7 +111,10 @@ function Login() {
                     <div className="form-group">
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
-                                <div className="input-group-text"><i className="fa fa-key text-info"></i></div>
+                                <div className="input-group-text user-additional-info-label">
+                                    <i className="fa fa-key text-info mr-2"></i>
+                                    Password:
+                                </div>
                             </div>
                             <input type="password" className="form-control"
                                 id="UserPassword"
@@ -120,7 +126,7 @@ function Login() {
                     </div>
 
                     <div className="text-center">
-                        <input type="submit" value="Login" className="btn btn-info rounded-0 py-2" />
+                        <input type="submit" value="Login" className="btn btn-info btn-block rounded-40 py-2" />
                     </div>
                 </div>
 
