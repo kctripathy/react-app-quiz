@@ -7,7 +7,7 @@ import MainQuizApplication from './components/pages/Main';
 import { store } from './store';
 
 // Stylesheets
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; 
 import './index.css';
 
 ReactDOM.render(

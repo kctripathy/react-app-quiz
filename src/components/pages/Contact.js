@@ -61,11 +61,13 @@ function Contact() {
     const address = () => {
         return (
             <div className="card bg-light mb-3">
-                <div className="card-header bg-info text-white text-uppercase"><i class="fa fa-home"></i> Address</div>
+                <div className="card-header bg-info text-white text-uppercase">
+					<i className="fa fa-home"></i> Address
+				</div>
                 <div className="card-body">
-                    <p>Address 1</p>
+                    <p>This is some address</p>
                     <p>BANGALORE</p>
-                    <p>569001 India</p>
+                    <p>569001 Karnataka (India)</p>
                     <p>Email : email@example.com</p>
                     <p>Tel. +91 22331 11122</p>
                     <p>Fax. +91 22331 11122</p>

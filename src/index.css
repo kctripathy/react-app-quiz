@@ -1,20 +1,30 @@
 body {
   margin: 0;
   padding: 0;
-  /* font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;   
 }
 
+.jumbotron {
+	background-image: url('/images/home-banner.jpg');
+	background-position: right;
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-color: #6ab8cc;
+	margin-top: -9px;
+	min-height: 340px;
+	color: #000;
+}
 
 .layout{
   min-height: 600px;
   overflow:visible;
 }
 
-.header {
+.header {	 
   color: white;
   text-align: center;
   padding: 10px 0px;
+  font-weight: 800;
 }
 
 .page-title {
@@ -23,6 +33,7 @@ body {
   padding: 5px 0px;
   border-bottom: solid 1px #ccc;
   font-size: 1.5em !important;
+  font-weight: 500;
 }
 
 
@@ -30,6 +41,7 @@ body {
   background-color: aquamarine;
   padding: 1px;
   border-top: solid 1px #ccc !important;
+  font-weight: 500;
 }
 
 .footer{
@@ -164,11 +176,6 @@ body {
 .user-additional-info-label
 {
   width: 120px;
-}
-
-.home-page-content{
-  text-align: center;
-  color: black;
 }
 
 #accountClassSubjectUL{

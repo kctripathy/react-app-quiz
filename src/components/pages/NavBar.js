@@ -55,9 +55,16 @@ function NavBar({ history }) {
         )
     }
     return (
+		
         <nav className="navbar navbar-expand-lg navbar-light bg-secondary">
             <Link className="navbar-brand" to="/">&nbsp;</Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" 
+					type="button" 
+					data-toggle="collapse" 
+					data-target="#navbarSupportedContent" 
+					aria-controls="navbarSupportedContent" 
+					aria-expanded="false" 
+					aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
@@ -67,10 +74,10 @@ function NavBar({ history }) {
                         <Link to="/"><span className="sr-only">(current)</span></Link>
                     </li>
 
-                    <li className="nav-item">
+                    <li className="nav-item ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
                         <Link className={isActive(history, "/home")} to="/home">Home</Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
                         <Link className={isActive(history, "/about")} to="/about">About</Link>
                     </li>
                     {/* <li className="nav-item">
@@ -78,15 +85,14 @@ function NavBar({ history }) {
                         </li>  */}
                     {showCustomLinks()}
                 </ul>
-
                 <ul className="navbar-nav mr-auto col-3">
 
                     {(!isAuthenticated()) && (
                         <Fragment>
-                            <li className="nav-item">
+                            <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
                                 <Link className={isActive(history, "/login")} to="/login">Login</Link>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
                                 <Link className={isActive(history, "/register")} to="/register">Register</Link>
                             </li>
                         </Fragment>
@@ -99,7 +105,7 @@ function NavBar({ history }) {
                                 })}>Logout</Link>
                         </li>
                     )}
-                    <li className="nav-item">
+                    <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
                         <Link className={isActive(history, "/contact")} to="/contact">Contact</Link>
                     </li>
                     {(isAuthenticated()) && (

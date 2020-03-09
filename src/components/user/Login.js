@@ -136,15 +136,14 @@ function Login() {
     return (
         <Layout>
             <div className="row">
-                <div className="col-lg-6 col-md-12" style={{ paddingTop: "50px" }}>
+                <div className="col-lg-6 col-sm-12">
                     {showError()}
                     {showLoading()}
                     {loginForm()}
                     {redirectUser()}
                 </div>
-                <div className="col-lg-6 col-md-12 user-login-image">
+                <div className="col-lg-6 col-sm-12 user-login-image">
                     {/* {JSON.stringify(values)} */}
-
                 </div>
             </div>
         </Layout>
