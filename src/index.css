@@ -12,12 +12,14 @@ body {
 	background-color: #6ab8cc;
 	margin-top: -9px;
 	min-height: 340px;
-	color: #000;
+  color: #000;
+  display: none;
 }
 
 .layout{
   min-height: 600px;
   overflow:visible;
+  /* border: solid 1px red;   */
 }
 
 .header {	 
@@ -25,6 +27,7 @@ body {
   text-align: center;
   padding: 10px 0px;
   font-weight: 800;
+  /* display: none; */
 }
 
 .page-title {
@@ -217,3 +220,43 @@ body {
 {
   border: solid 1px #ccc !important;
 }
+
+#classSubjectDiv > div > div > div > ul,
+#classSubjectDiv > div > ul {
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  padding: 0px 10px ;
+  border: solid 1px #ccc;
+  min-height: 400px;
+}
+
+#classSubjectDiv > div > ul > li{
+  line-height: 40px;
+}
+
+#classSubjectDiv > div > ul > li:nth-child(odd){   
+  background-color: lightcyan;
+}
+
+#classSubjectDiv > div > ul > li:nth-child(even){   
+  background-color: lightblue;
+}
+
+#classSubjectDiv > div > ul > li:first-child{
+  margin-top: 10px;
+  font-size: 10px !important;
+  color: black;
+  background-color: white;
+}
+
+#classSubjectDiv > div > div > div > ul > li> span.buttons,
+#classSubjectDiv > div > ul > li> span.buttons {  
+  float: right;
+  display: block;  
+  height: 10px;
+  margin: 2px 0px;
+}
+/* #classSubjectDiv > div > ul > li > span{
+  background-color: green;
+} */

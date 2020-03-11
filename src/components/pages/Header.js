@@ -3,7 +3,7 @@ import React from 'react';
 function Header() {
     return (
         <div className="bg-info header">
-            <h2>QUIZ</h2>
+            <h2>React JS</h2>
         </div>
     );
 }

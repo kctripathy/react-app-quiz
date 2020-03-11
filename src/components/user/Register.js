@@ -166,7 +166,7 @@ function Register(props) {
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text user-additional-info-label">
-									<i className="fa fa-user-circle text-info mr-1"></i> Name:
+                                    <i className="fa fa-user-circle text-info mr-1"></i> Name:
 								</div>
                             </div>
                             <input type="text" className="form-control"
@@ -197,7 +197,7 @@ function Register(props) {
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text user-additional-info-label">
-									<i className="fa fa-envelope text-info mr-1"></i> Email:
+                                    <i className="fa fa-envelope text-info mr-1"></i> Email:
 								</div>
                             </div>
                             <input type="email" className="form-control"
@@ -215,7 +215,7 @@ function Register(props) {
                         <div className="input-group mb-2">
                             <div className="input-group-prepend">
                                 <div className="input-group-text user-additional-info-label">
-									<i className="fa fa-key text-info mr-1"></i>	Password
+                                    <i className="fa fa-key text-info mr-1"></i>	Password
 								</div>
                             </div>
                             <input type="password" className="form-control"

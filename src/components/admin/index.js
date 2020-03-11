@@ -283,7 +283,7 @@ export const loadAllAccounts = () => {
 // NEW ACCOUNT 
 //==============================================
 export const addNewAccount = (account) => {
-    debugger;
+    //debugger;
     return fetch(`${API_URL}/accounts/addnew`, {
         method: "POST",
         headers: {
@@ -293,9 +293,9 @@ export const addNewAccount = (account) => {
         body: JSON.stringify(account)
     })
         .then(response => {
-            debugger;
+            //debugger;
             if (response.status === 200) {
-                return response.json()
+
             }
             else {
                 return response
@@ -305,4 +305,146 @@ export const addNewAccount = (account) => {
         .catch(err => {
             console.log(err)
         })
+}
+
+
+//==============================================
+// NEW CLASS 
+//==============================================
+export const addNewMasterClass = (newClass) => {
+    //debugger;
+    return fetch(`${API_URL}/classes`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newClass)
+    })
+        .then(response => {
+            //debugger;
+            return response.json()
+            // if (response.status === 200) {
+            //     return response.json()
+            // }
+            // else {
+            //     return response
+            // }
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
+
+export const deleteMasterClass = (id) => {
+    //debugger;
+    return fetch(`${API_URL}/classes/${id}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            debugger;
+            return response.json()
+            // if (response.status === 200) {
+            //     return response.json()
+            // }
+            // else {
+            //     return response
+            // }
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
+//==============================================
+// NEW SUBJECT 
+//==============================================
+export const addNewMasterSubject = (subject) => {
+    debugger;
+    return fetch(`${API_URL}/subjects/`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(subject)
+    })
+        .then(response => {
+            return response.json()
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
+//==============================================
+// NEW SUBJECT FOR A CLASS
+//==============================================
+export const addNewMasterClassSubject = (classSubject) => {
+    debugger;
+    return fetch(`${API_URL}/ClassesSubjects`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(classSubject)
+    })
+        .then(response => {
+            return response.json()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
+export const deleteMasterSubject = (id) => {
+    //debugger;
+    return fetch(`${API_URL}/subjects/${id}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            //debugger;
+            return response.json()
+            // if (response.status === 200) {
+            //     return response.json()
+            // }
+            // else {
+            //     return response
+            // }
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
+
+
+
+
+
+export const removeByAttr = function (arr, attr, value) {
+    var i = arr.length;
+    while (i--) {
+        if (arr[i]
+            && arr[i].hasOwnProperty(attr)
+            && (arguments.length > 2 && arr[i][attr] === value)) {
+
+            arr.splice(i, 1);
+
+        }
+    }
+    return arr;
 }

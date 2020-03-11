@@ -35,6 +35,8 @@ import AccountAdd from '../admin/AccountAdd';
 import AccountEdit from '../admin/AccountEdit';
 import AccountList from '../admin/AccountList';
 
+import ClassSubjectsList from '../admin/ClassSubjectsList';
+
 
 import PageNotFound from '../pages/PageNotFound';
 
@@ -60,6 +62,8 @@ function NavRoutes() {
                 <AdminRoute path="/user/list" component={UserList} exact />
                 <AdminRoute path="/user/add" component={UserAdd} exact />
                 <AdminRoute path="/user/edit/:userId" component={UserEdit} exact />
+
+                <AdminRoute path="/subjects/list" component={ClassSubjectsList} exact />
 
 
                 <PrivateRoute path="/user/dashboard" component={UserDashboard} exact />

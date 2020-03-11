@@ -20,13 +20,8 @@ function SuperAdminDashboard() {
                 <h4 className="card-header">Admin Links</h4>
                 <ul className="list-group">
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/classes/manage">
-                            Manage Classes
-                        </Link>
-                    </li>
-                    <li className="list-group-item">
-                        <Link className="nav-link" to="/subjects/manage">
-                            Manage Subjects
+                        <Link className="nav-link" to="/subjects/list">
+                            Manage Class & Subjects
                         </Link>
                     </li>
                     <li className="list-group-item list-header">
