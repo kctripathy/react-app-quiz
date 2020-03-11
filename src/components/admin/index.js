@@ -295,7 +295,7 @@ export const addNewAccount = (account) => {
         .then(response => {
             //debugger;
             if (response.status === 200) {
-
+                return response.json()
             }
             else {
                 return response

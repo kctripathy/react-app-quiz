@@ -35,6 +35,7 @@ function Register(props) {
 
         const user = isAuthenticated();
 
+        console.log(user);
         getAllClassSubjectsByAccountId(user.accountId)
             .then(data1 => {
                 if (data1 !== undefined) {
@@ -46,12 +47,7 @@ function Register(props) {
 
                     //alert(data1);
                     //setClassSubjects(data1.result);
-                    // setValues({
-                    //     ...values,
-                    //     accountId: user.accountId,
-                    //     isLoading: false,
-                    //     error: ''
-                    // })
+
                     //}
                 }
             })
@@ -103,7 +99,9 @@ function Register(props) {
             alert('updated....');
             return;
         }
-        register({ AccountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, AccessLevel })
+        const user = isAuthenticated();
+
+        register({ AccountId: user.accountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, AccessLevel })
             .then(data => {
 
                 if (data === undefined) {

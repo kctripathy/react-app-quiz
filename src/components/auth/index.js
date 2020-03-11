@@ -65,6 +65,7 @@ export const authenticate = (data, next) => {
  ****************************************************************/
 export const register = (user) => {
    // DEFAULT ACCOUNT 
+   debugger;
    if (user.AccountId === 0) {
       user.AccountId = DEFAULT_ACCOUNT_ID;
    }

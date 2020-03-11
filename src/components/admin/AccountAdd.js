@@ -132,7 +132,12 @@ function AccountAdd() {
         </div>
     );
 
-
+    const willCheck = id => {
+        const retValue = checkedItems.some(x => x === id);
+        //console.log("id", id);
+        //console.log("retValue", retValue);
+        return retValue;
+    }
     // ==========================================================
     // Show the class and subjects for the account holder
     // ==========================================================
@@ -156,7 +161,7 @@ function AccountAdd() {
                                         <input type="checkbox"
                                             name="classSubjectCheckBox"
                                             value={cs.classSubjectID}
-                                            //checked={checkedItems && checkedItems.length > 0}
+                                            checked={willCheck(cs.classSubjectID)}
                                             onChange={handleCheckBoxChange}></input>
                                     </div>
                                     <div className="col-5 text-left">
@@ -193,7 +198,7 @@ function AccountAdd() {
 
             addNewAccount(newAccount)
                 .then(data => {
-                    //debugger;
+                    debugger;
 
                     if (data !== undefined && data.status.code && data.status.code === "1") {
                         setAccount({
@@ -259,6 +264,7 @@ function AccountAdd() {
 
         if (selectedOptions == null) {
             setAccount({ ...account, classSubjects: [] });
+            setCheckedItems([]);
             return;
         }
 
@@ -269,6 +275,10 @@ function AccountAdd() {
         const filteredClassAndSubjects = state.classSubjects.filter(array =>
             selectedOptions.some(filter => filter.value === array.classID)
         );
+
+        const checkedItems = filteredClassAndSubjects.map(c => c.classSubjectID);
+        setCheckedItems(checkedItems);
+
         //console.log('filteredClassAndSubjects', filteredClassAndSubjects)
 
 
@@ -331,6 +341,7 @@ function AccountAdd() {
                     <div className="col-12 text-center mt-2">
                         <button className="btn btn-info text-center">CREATE NEW ACCOUNT</button>
                     </div>
+                    {JSON.stringify(checkedItems)}
                 </div>
             </form>
         </Layout >
