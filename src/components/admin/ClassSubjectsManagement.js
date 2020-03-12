@@ -7,11 +7,16 @@ import {
     addNewMasterSubject,
     deleteMasterSubject,
     addNewMasterClassSubject,
+    deleteMasterClassSubject,
     removeByAttr
 } from './index';
 
-
-function ClassSubjectsList(props) {
+//==========================================================
+// This component will manage master classes, subjects and 
+// It will also let super admin set which class has which subjects. 
+// It will helpful while creating a new account
+//==========================================================
+function ClassSubjectsManagement(props) {
     const [isLoadingClasses, classes] = useHttpGet('Classes')
     const [isLoadingSubjects, subjects] = useHttpGet('Subjects')
     const [isLoadingClassSubjects, allClassesSubjects] = useHttpGet('ClassesSubjects/all/0')
@@ -19,13 +24,13 @@ function ClassSubjectsList(props) {
     const [newClassName, setNewClassName] = useState('');
     const [newSubjectName, setNewSubjectName] = useState('');
     const [classSubjects, setClassSubjects] = useState([]);
-
     const [selectedClass, setSelectedClass] = useState(0);
     const [selectedSubject, setSelectedSubject] = useState(0);
-
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
     const [run, setRun] = useState(false);
-    //console.log("allClassesSubjects", allClassesSubjects);
 
+    //==========================================================
     const addNewSubject = (e) => {
         e.preventDefault();
         //console.log("newSubjectName", newSubjectName);
@@ -37,7 +42,9 @@ function ClassSubjectsList(props) {
             debugger;
             const isExists = subjects.some((c) => c.name && c.name.toUpperCase().trim() === newSubjectName.toUpperCase().trim());
             if (isExists) {
-                alert(`The subject (${newSubjectName}) already exists !`);
+                //alert(`The subject (${newSubjectName}) already exists !`);
+                setSuccess('');
+                setError(`The subject (${newSubjectName}) already exists !`);
                 return;
             }
         }
@@ -46,19 +53,26 @@ function ClassSubjectsList(props) {
                 //debugger;
                 subjects.push(data);
                 setNewSubjectName('');
+                setSuccess('Successfuly added the subject!');
+                setError('');
             })
     };
 
+    //==========================================================
     const addNewClass = (e) => {
         e.preventDefault();
         if (newClassName === '' || newClassName.length === 0) {
-            alert("Please enter a class name");
+            //alert("Please enter a class name");
+            setError('Please enter a class name');
+            setSuccess('');
             return;
         }
         else {
             const isExists = classes.some((c) => c.description.toUpperCase().trim() === newClassName.toUpperCase().trim());
             if (isExists) {
-                alert(`The class (${newClassName}) already exists !`);
+                //alert(`The class (${newClassName}) already exists !`);
+                setError(`The class (${newClassName}) already exists !`);
+                setSuccess('');
                 return;
             }
         }
@@ -68,11 +82,11 @@ function ClassSubjectsList(props) {
                 //debugger;
                 classes.push(data);
                 setNewClassName('');
+                setSuccess('Successfuly added the class!');
+                setError('');
             })
     };
 
-    //==========================================================
-    // Add New Class Subject which can be assigned to a account
     //==========================================================
     const addNewClassSubject = (e) => {
         e.preventDefault();
@@ -87,14 +101,13 @@ function ClassSubjectsList(props) {
         else {
             const isExists = classSubjects.some((cs) => cs.classID === selectedClass && cs.subjectID === selectedSubject);
             if (isExists) {
-                alert(`The subject (${subjectName}) already exists in the class ${className} !`);
+                setSuccess('');
+                setError(`The subject (${subjectName}) already exists in the class ${className} !`);
                 return;
             }
         }
         addNewMasterClassSubject({ ClassId: selectedClass, SubjectId: selectedSubject, AccountId: 0 })
             .then(data => {
-                //console.log(data);
-
                 const newId = {
                     classSubjectID: data.id,
                     classID: selectedClass,
@@ -104,18 +117,15 @@ function ClassSubjectsList(props) {
                     accountId: 0,
                     accountName: "",
                 };
-                //classSubjects.push(newId);
                 setClassSubjects([...classSubjects, newId]);
+                setSuccess('Successfully added the subject to the class');
+                setError('');
             })
 
     };
 
-    const addSubjectsToClass = (e) => {
-        e.preventDefault();
-        console.log("addSubjectsToClass", e);
-    }
 
-
+    //==========================================================
     const deleteSubject = (id) => {
         if (!(window.confirm('Delete the item?'))) {
             return;
@@ -125,15 +135,33 @@ function ClassSubjectsList(props) {
             .then(data => {
                 //debugger;
                 removeByAttr(subjects, 'id', id);
+                setSuccess('Successfuly deleted the subject!');
+                setError('');
                 setRun(!run);
-                alert("Successfuly deleted the subject");
+                //alert("Successfuly deleted the subject");
             })
-    }
+    };
 
+    //==========================================================
     const deleteClassSubject = (id) => {
-        alert(id);
-    }
+        //alert(id);
+        deleteMasterClassSubject(id)
+            .then(data => {
+                //debugger;
+                const newClassSubjects = classSubjects.filter(cs => cs.classSubjectID !== id);
+                setClassSubjects(newClassSubjects);
+                setSuccess('Succesfully deleted the subject from the class');
+                setError('');
+                setRun(!run);
+            })
+            .catch(err => {
+                setSuccess('');
+                setError(err);
+                setRun(!run);
+            })
+    };
 
+    //==========================================================
     const deleteClass = (id) => {
 
         if (!(window.confirm('Delete the item?'))) {
@@ -144,20 +172,25 @@ function ClassSubjectsList(props) {
             .then(data => {
                 //debugger;
                 removeByAttr(classes, 'id', id);
+                setSuccess('Successfully deleted the class!');
+                setError('');
                 setRun(!run);
-                alert("Successfuly deleted the class");
+                // alert("Successfuly deleted the class");
             })
-    }
+    };
 
+    //==========================================================
     const selectSubjectsByClass = (e) => {
         const classSubjects = allClassesSubjects.result.filter(c => c.classID === Number(e.target.value));
         setClassSubjects(classSubjects);
         setSelectedClass(Number(e.target.value));
-    }
+    };
 
-
+    //==========================================================
     const classesDropdownList = () => (
-        <select name="ddlClass" onChange={selectSubjectsByClass}>
+        <select name="ddlClass"
+            onChange={selectSubjectsByClass}
+            style={{ width: "225px", marginRight: "10px" }}>
             <option>--Select Class--</option>
             {
                 classes && classes.map(c => {
@@ -167,9 +200,11 @@ function ClassSubjectsList(props) {
         </select>
     );
 
-
+    //==========================================================
     const subjectsDropdownList = () => (
-        <select name="newSubject" onChange={(e) => setSelectedSubject(Number(e.target.value))}>
+        <select name="newSubject"
+            onChange={(e) => setSelectedSubject(Number(e.target.value))}
+            style={{ width: "185px", marginLeft: "10px" }}>
             <option>--Select Subject--</option>
             {
                 subjects && subjects.map(subject => {
@@ -179,14 +214,7 @@ function ClassSubjectsList(props) {
         </select>
     );
 
-    const onSelectClassChange = (e) => {
-        console.log("onSelectClassChange", e.target.value);
-    }
-
-    const onSelectSubjectChange = (e) => {
-        console.log("onSelectClassChange", e.target.value);
-    }
-
+    //==========================================================
     const classesList = () => (
         <ul>
             <li><h5>Master Classes</h5></li>
@@ -199,8 +227,7 @@ function ClassSubjectsList(props) {
                             <span>{c.id} - {c.description}</span>
                             <span className="buttons">
                                 {/* <button className="btn btn-info btn-sm mr-0 p-2" onClick={() => editClass(c.id)}>edit</button> */}
-                                <button className="btn btn-danger btn-sm ml-0 p-2"
-
+                                <button className="close btn btn-danger btn-sm ml-0 p-2"
                                     onClick={() => deleteClass(c.id)}>X</button>
                             </span>
                         </li>
@@ -209,6 +236,7 @@ function ClassSubjectsList(props) {
         </ul>
     );
 
+    //==========================================================
     const subjectsList = () => (
         <ul>
             <li>
@@ -222,7 +250,8 @@ function ClassSubjectsList(props) {
                             <span>{s.id} - {s.name}</span>
                             <span className="buttons">
                                 {/* <button className="btn btn-info btn-sm mr-0 p-2" onClick={() => editSubject(s.id)}>edit</button> */}
-                                <button className="btn btn-danger btn-sm ml-0 p-2" onClick={() => deleteSubject(s.id)}>X</button>
+                                <button className="close btn btn-danger btn-sm ml-0 p-2"
+                                    onClick={() => deleteSubject(s.id)}>X</button>
                             </span>
                         </li>
 
@@ -231,45 +260,88 @@ function ClassSubjectsList(props) {
         </ul>
     );
 
-
+    //==========================================================
     const subjectsOfClassList = () => (
         <ul>
             <li>
                 {classSubjects && classSubjects.length > 0 ? (<h5>Subjects </h5>) : ('')}
             </li>
             {
-                classSubjects && classSubjects.map(s => {
-                    return <li key={s.subjectID}>
-                        <span>{s.subjectID} - {s.subjectDesc}</span>
-                        <span className="buttons">
-                            {/* <button className="btn btn-info btn-sm mr-0 p-2" onClick={() => editSubject(s.id)}>edit</button> */}
-                            <button className="btn btn-danger btn-sm ml-0 p-2" onClick={() => deleteClassSubject(s.classSubjectID)}>X</button>
-                        </span>
+                classSubjects && classSubjects
+                    .sort((a, b) => b.classSubjectID - a.classSubjectID)
+                    .map(s => {
+                        return <li key={s.subjectID}>
+                            <span>{s.subjectID} - {s.subjectDesc}</span>
+                            <span className="buttons">
+                                {/* <button className="btn btn-info btn-sm mr-0 p-2" onClick={() => editSubject(s.id)}>edit</button> */}
+                                <button className="close btn btn-danger btn-sm ml-0 p-2"
+                                    onClick={() => deleteClassSubject(s.classSubjectID)}>X</button>
+                            </span>
 
-                    </li>
-                })
+                        </li>
+                    })
             }
         </ul>
     );
 
+    //==========================================================
     const newSubjectEntryForm = () => (
         <form onSubmit={addNewSubject}>
             {/* {classesDropdownList()} */}
-            <input required type="text" value={newSubjectName} onChange={(e) => setNewSubjectName(e.target.value)} placeholder="Enter New Subject Name" />
-            <button className="btn btn-info btn-sm">Add New Subject </button>
+            <input required
+                type="text"
+                value={newSubjectName}
+                onChange={(e) => setNewSubjectName(e.target.value)}
+                placeholder="Enter New Subject Name"
+                style={{ width: "285px" }}
+                maxLength="35" />
+            <button className="btn btn-info btn-sm ml-2">Add New Subject </button>
         </form>
     );
 
+    //==========================================================
     const newClassEntryForm = () => (
         <form onSubmit={addNewClass}>
             {/* {classesDropdownList()} */}
-            <input required type="text" value={newClassName} onChange={(e) => setNewClassName(e.target.value)} placeholder="Enter New Class Name" />
-            <button className="btn btn-info btn-sm">Add New Class </button>
+            <input required
+                type="text"
+                value={newClassName}
+                onChange={(e) => setNewClassName(e.target.value)}
+                placeholder="Enter New Class Name"
+                style={{ width: "290px" }}
+                maxLength="35"
+            />
+            <button className="btn btn-info btn-sm ml-2">Add New Class </button>
         </form>
     );
 
+    //==========================================================
+    const showSucessMessage = () => (
+        <div className="alert alert-success m-1 p-2 text-center" style={{ display: success.length > 0 ? '' : 'none' }}>
+            <b>{success}</b>
+            <button className="close" style={{ float: "right" }}
+                onClick={() => setSuccess('')}
+            >&times;</button>
+        </div>
+    );
+
+    //==========================================================
+    const showErrorMessage = () => (
+        <div className="alert alert-danger m-1 p-2 text-center" style={{ display: error.length > 0 ? '' : 'none' }}>
+            <b>{error}</b>
+            <button className="close" style={{ float: "right" }}
+                onClick={() => setError('')}
+            >&times;</button>
+        </div>
+    );
+
+    //==========================================================
     return (<Layout title="Manage Classes and Subjects">
         <div className="row" id="classSubjectDiv">
+            <div className="col-12">
+                {showSucessMessage()}
+                {showErrorMessage()}
+            </div>
             <div className="col-lg-4 col-sm-12">
                 {newClassEntryForm()}
                 {isLoadingClasses ? (<p>Loading classes...</p>) : (classesList())}
@@ -297,13 +369,9 @@ function ClassSubjectsList(props) {
                     </div>
                 </div>
             </div>
-
         </div>
-
-        {/* <pre>
-            {JSON.stringify(classes, null, 4)}
-        </pre> */}
     </Layout>);
-}
+    //==========================================================
+};
 
-export default ClassSubjectsList;
+export default ClassSubjectsManagement;

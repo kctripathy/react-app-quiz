@@ -13,7 +13,7 @@ body {
 	margin-top: -9px;
 	min-height: 340px;
   color: #000;
-  /* display: none; */
+  display: none;
 }
 
 .layout{
@@ -27,7 +27,7 @@ body {
   text-align: center;
   padding: 10px 0px;
   font-weight: 800;
-  /* display: none; */
+  display: none;
 }
 
 .page-title {
@@ -231,18 +231,24 @@ body {
   min-height: 400px;
 }
 
+#classSubjectDiv > div > div > div > ul > li,
 #classSubjectDiv > div > ul > li{
   line-height: 40px;
+  padding-left: 4px;
 }
 
+#classSubjectDiv > div > div > div > ul > li:nth-child(odd),
 #classSubjectDiv > div > ul > li:nth-child(odd){   
   background-color: lightcyan;
 }
 
+#classSubjectDiv > div > div > div > ul > li:nth-child(even),
 #classSubjectDiv > div > ul > li:nth-child(even){   
   background-color: lightblue;
 }
 
+
+#classSubjectDiv > div > div > div > ul > li:first-child,
 #classSubjectDiv > div > ul > li:first-child{
   margin-top: 10px;
   font-size: 10px !important;

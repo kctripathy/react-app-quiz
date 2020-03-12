@@ -431,7 +431,30 @@ export const deleteMasterSubject = (id) => {
         })
 };
 
+export const deleteMasterClassSubject = (id) => {
+    debugger;
+    return fetch(`${API_URL}/classessubjects/${id}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            debugger;
+            return response.json()
+            // if (response.status === 200) {
+            //     return response.json()
+            // }
+            // else {
+            //     return response
+            // }
 
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
 
 

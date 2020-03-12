@@ -1,10 +1,12 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import Layout from '../pages/Layout';
 import SelectClasses from '../common/SelectClasses';
-
 import classSubjectReducer, { initialState } from '../../reducers/classSubject';
 import { getAllClassSubjectsByAccountId, addNewAccount } from '../admin/index';
 
+// ==========================================================
+// This component will allow a new account to the system
+// ==========================================================
 function AccountAdd() {
     const [state, dispatch] = useReducer(classSubjectReducer, initialState);
     const [checkedItems, setCheckedItems] = useState([])
@@ -21,7 +23,6 @@ function AccountAdd() {
     });
 
     const { accountName, contactName, contactPhone, contactEmail, loginPassword } = account;
-
 
     // ==========================================================
     // Load all class and subjects
@@ -132,12 +133,7 @@ function AccountAdd() {
         </div>
     );
 
-    const willCheck = id => {
-        const retValue = checkedItems.some(x => x === id);
-        //console.log("id", id);
-        //console.log("retValue", retValue);
-        return retValue;
-    }
+
     // ==========================================================
     // Show the class and subjects for the account holder
     // ==========================================================
@@ -276,11 +272,11 @@ function AccountAdd() {
             selectedOptions.some(filter => filter.value === array.classID)
         );
 
-        const checkedItems = filteredClassAndSubjects.map(c => c.classSubjectID);
-        setCheckedItems(checkedItems);
-
-        //console.log('filteredClassAndSubjects', filteredClassAndSubjects)
-
+        //------------------------------------------------------
+        // Set all the items checked when selecting a class
+        //------------------------------------------------------
+        //const checkedItems = filteredClassAndSubjects.map(c => c.classSubjectID);
+        //setCheckedItems(checkedItems);
 
         //---------------------------------------------------------
         // below method also works fine 
@@ -323,6 +319,16 @@ function AccountAdd() {
     const showSuccessMessage = () => (
         account.success.length > 0 && <div className="alert alert-success text-center">{account.success}</div>
     );
+
+
+    // ==========================================================
+    // Decide if need the subject check box to be checked or unchecked
+    // ==========================================================
+    const willCheck = id => {
+        const retValue = checkedItems.some(x => x === id);
+        return retValue;
+    }
+
     // ==========================================================
     return (
         <Layout title="Add new account">
