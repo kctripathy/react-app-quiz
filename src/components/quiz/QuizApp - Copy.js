@@ -32,8 +32,7 @@ class QuizApp extends Component {
     quizClassess: [],
     quizSubjects: [],
     quizId: 0,
-    accountId: 1,
-	classId: 0
+    accountId: 1
   };
 
   pager = {
@@ -49,31 +48,17 @@ class QuizApp extends Component {
 
   //========================================================
   loadClassAndSubjects = () => {
-	const user = isAuthenticated();
-	if (user == null || user === undefined)
-	{
-		return;
-	}
-	 
-    getAvailbleClassSubjectsByAccountId(user.accountId)
+    getAvailbleClassSubjectsByAccountId(1)
       .then(res => {
-		//console.clear();
-		//debugger;
-        const user = isAuthenticated()
         const classSubjectsArrayList = removeDuplicates(res.result, 'classID');
-		const classSubjectsForUser = classSubjectsArrayList.filter(cs=> cs.classID === user.classId);
+        const user = isAuthenticated()
         const accountId = user.accountId;
         const quizId = 0;
 
-		const quizSubjects = getSubjectsByClassID(res.result, user.classId);
-    
-	
         this.setState({
           quizClassessSubects: res.result,
-          quizClassess: classSubjectsForUser,
+          quizClassess: classSubjectsArrayList,
           accountId: accountId,
-		  classId: user.classId,
-		  quizSubjects: quizSubjects,
           quizId: quizId
         });
       })
@@ -102,7 +87,7 @@ class QuizApp extends Component {
   onChange = (e) => {
     if (e.target.value.length === 0) return;
 
-    const classSubjectId = Number(e.target.value);
+    const classSubjectId = parseInt(e.target.value);
     this.setState({ quizId: classSubjectId });
     this.load(classSubjectId, this.state.accountId);
   }
@@ -112,26 +97,27 @@ class QuizApp extends Component {
     if (e.target.value.length === 0) return;
 
     const quizClassessSubects = this.state.quizClassessSubects;
-    const quizSubjects = getSubjectsByClassID(quizClassessSubects, Number(e.target.value));
+    const quizSubjects = getSubjectsByClassID(quizClassessSubects, parseInt(e.target.value));
     this.setState({ quizSubjects: quizSubjects });
   }
 
   //========================================================
   availableClasses = () => {
     return (
-      <select onChange={this.onChangeClassDropDown} value={this.state.classId}>   		 
+      <select onChange={this.onChangeClassDropDown}>
+        <option value="">--Select Class--</option>
         {this.state.quizClassess.map(q => <option key={q.classSubjectID} value={q.classID}>{q.classDesc}</option>)}
         {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
       </select>
-	  
+
     )
   }
 
   //========================================================
-  availableSubjects_DROPDOWN = () => {
-    //console.log("available subjects ===========", this.state.quizSubjects)
+  availableSubjects = () => {
+    console.log("available subjects ===========", this.state.quizSubjects)
     return (
-      <select onChange={this.onChange} className="dropdown show">
+      <select onChange={this.onChange}>
         <option value="">--Select Subject--</option>
         {this.state.quizSubjects.map(q => <option key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</option>)}
         {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
@@ -139,20 +125,6 @@ class QuizApp extends Component {
 
     )
   }
-  
-    availableSubjects = () => {
-    //console.log("available subjects ===========", this.state.quizSubjects)
-	debugger;
-    return (      
-	  <div className="btn-group dropdown" role="group" aria-label="Subjects">         
-        {this.state.quizSubjects.map(q => <button type="button" onClick={this.onChange} className="btn btn-secondary btn-sm ml-1 mr-1 " key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</button>)}         
-      </div>
-
-    )
-  }
-  
-  
- 
 
   //=========================================================================
   //
@@ -164,8 +136,8 @@ class QuizApp extends Component {
           <Quiz quiz={this.state.quiz} quizId={this.state.quizId} mode={this.state.mode} />
         )
         :
-        (			 
-			<h2 className="alert alert-success text-center" style={{ padding: "50px", marginTop: "20px" }}>Please select a subject to load quiz</h2>
+        (
+          <h4 className="alert alert-success" style={{ padding: "50px", marginTop: "20px" }}>Please select class and subject to load quiz</h4>
         )
     )
   }
@@ -176,7 +148,7 @@ class QuizApp extends Component {
       <Layout>
         <div className="row">
           <div className="col-12 text-center">
-            <label className="mr-1">Quiz for Class: </label>
+            <label className="mr-1">Quiz: </label>
             {this.availableClasses()}
             {this.availableSubjects()}
           </div>

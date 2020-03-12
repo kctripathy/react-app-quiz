@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch => ({
 class Questions extends Component {
 
     onAnswer(question, option) {
-        debugger;
+        //debugger;
         let quiz = JSON.parse(JSON.stringify(this.props.quiz));
         let q = quiz.questions.find(x => x.id === question.id);
         if (q.questionTypeId === 1) {
@@ -26,7 +26,7 @@ class Questions extends Component {
             this.props.quiz.questions.slice(this.props.pager.index, this.props.pager.index + this.props.pager.size) : [];
         return (
             <div id="quiz">
-                <h2 className="text-center font-weight-normal bg-info">{this.props.quiz.name}</h2>
+                <h2 className="text-center font-weight-normal">{this.props.quiz.name}</h2>
                 <hr />
                 {questions.map(q =>
                     <div key={q.id} className="question-box">

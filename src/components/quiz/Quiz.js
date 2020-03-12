@@ -49,12 +49,14 @@ class Quiz extends Component {
             <Layout>
                 {this.renderMode()}
                 {(this.props.mode !== 'submit') &&
-                    <div>
-                        <hr />
-                        <button id="quiz" className="btn btn-info" onClick={this.setMode}>Quiz</button>
-                        <button id="review" className="btn btn-info" onClick={this.setMode}>Review</button>
-                        <button id="submit" className="btn btn-primary" onClick={this.setMode}>Submit Quiz</button >
-                    </div >}
+                    <div className="row">
+						<div className="col-12 m-0 p-0">							
+							<button id="quiz" className="btn btn-info" onClick={this.setMode}>Quiz</button>
+							<button id="review" className="btn btn-info" onClick={this.setMode}>Review</button>
+							<button id="submit" className="btn btn-primary" onClick={this.setMode}>Submit Quiz</button >
+						</div>
+                    </div >
+				}
             </Layout>
         )
     }

@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import { register, isAuthenticated } from '../auth';
@@ -79,7 +79,7 @@ function Register(props) {
         //e.preventDefault();
         setValues({
             ...values,
-            ClassId: parseInt(e.target.value)
+            ClassId: Number(e.target.value)
         })
     }
 
@@ -87,7 +87,7 @@ function Register(props) {
         //e.preventDefault();
         setValues({
             ...values,
-            AccessLevel: parseInt(e.target.value)
+            AccessLevel: Number(e.target.value)
         })
     }
 

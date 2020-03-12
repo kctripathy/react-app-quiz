@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import Layout from '../pages/Layout'
 import { useHttpGet } from '../../hooks/useHttp';
 import {
@@ -91,8 +91,8 @@ function ClassSubjectsManagement(props) {
     const addNewClassSubject = (e) => {
         e.preventDefault();
 
-        const className = classes.filter((c) => c.id == selectedClass).map(c => c.description).toString();;
-        const subjectName = subjects.filter((s) => s.id == selectedSubject).map(s => s.description).toString();
+        const className = classes.filter((c) => c.id === selectedClass).map(c => c.description).toString();;
+        const subjectName = subjects.filter((s) => s.id === selectedSubject).map(s => s.description).toString();
 
         if (selectedClass === 0 || selectedSubject === 0) {
             alert("Please select class and subject");

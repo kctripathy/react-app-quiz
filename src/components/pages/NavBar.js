@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { isAuthenticated, logout, isSuperAdmin } from '../auth';
 
@@ -13,13 +13,17 @@ const isActive = (history, path) => {
 
 function NavBar({ history }) {
 
+	const {fullname, accessLevel} = isAuthenticated();
+	
+	//debugger;
     const showCustomLinks = () => {
-        const user = isAuthenticated();
-        if (user !== undefined) {
-            if (user.accessLevel === 100) {
+        //const user = isAuthenticated();
+		//debugger;
+        if (accessLevel !== undefined && accessLevel !== 0) {
+            if (accessLevel === 100) {
                 return showUserLinks();
             }
-            if (user.accessLevel === 1 || user.accessLevel === 10) {
+            if (accessLevel === 1 || accessLevel === 10) {
                 return showAdminLinks();
             }
         }
@@ -110,14 +114,41 @@ function NavBar({ history }) {
                     </li>
                     {(isAuthenticated()) && (
                         <li className="nav-item dropdown">
-                            <Link className="nav-link nav-link-topmenu dropdown-toggle" to="/"
+                            <Link className="nav-link active nav-link-topmenu dropdown-toggle" 								 
+								to="/"
                                 id="navbarDropdown" role="button"
                                 data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                My Profile
-                                    </Link>
+								{fullname.length > 10? fullname.toUpperCase().substring(0,9) + "...": fullname.toUpperCase() }
+                            </Link>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <Link className="dropdown-item" to="/user/profile">Update My Profile</Link>
+                                <Link className="dropdown-item" to="/user/profile">My Profile</Link>
+								{accessLevel === 1 && 
+									<Fragment>
+									<hr/>
+										<Link className="dropdown-item" to="/quiz">Manage Accounts</Link>
+										<Link className="dropdown-item" to="/quiz">Manage Users</Link>
+										<Link className="dropdown-item" to="/quiz">Manage Questions</Link>
+									<hr />
+									</Fragment>
+								}
+								{accessLevel === 10 && 
+									<Fragment>
+									<hr/>
+										<Link className="dropdown-item" to="/quiz">Manage Users</Link>
+										<Link className="dropdown-item" to="/quiz">Manage Questions</Link>
+									<hr />
+									</Fragment>
+								}
+								{accessLevel === 100 && 
+									<Fragment>
+									<hr/>
+										<Link className="dropdown-item" to="/quiz">Quiz Questions</Link>
+										<Link className="dropdown-item" to="/user/result">Quiz Results</Link>
+									<hr />
+									</Fragment>
+								}								
+								<Link className="dropdown-item" to="/user/change-password">Change Password</Link>																					
                             </div>
                         </li>
                     )}
