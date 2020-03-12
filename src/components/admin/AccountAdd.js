@@ -273,10 +273,13 @@ function AccountAdd() {
         );
 
         //------------------------------------------------------
-        // Set all the items checked when selecting a class
+        // Set the previously selected items checked when selecting a new class 
         //------------------------------------------------------
-        //const checkedItems = filteredClassAndSubjects.map(c => c.classSubjectID);
-        //setCheckedItems(checkedItems);
+		const checkedItem1 = checkedItems.filter(item=> 
+				filteredClassAndSubjects.some(filter => filter.classSubjectID === item)
+				);
+				
+		setCheckedItems(checkedItem1);
 
         //---------------------------------------------------------
         // below method also works fine 

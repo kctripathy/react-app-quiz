@@ -44,6 +44,7 @@ function SelectClasses(props) {
                 options={options}
                 isMulti={true}
                 autoFocus={false}
+				closeMenuOnSelect={false}
                 placeholder="Please select the classes available to the account"
             />
             {/* <pre>
