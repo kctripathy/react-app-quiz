@@ -20,7 +20,7 @@ function AdminDashboard() {
                 <h4 className="card-header">Admin Links</h4>
                 <ul className="list-group">
 
-                    <li className="list-group-item">
+                    {/* <li className="list-group-item">
                         <Link className="nav-link" to="/classes/manage">
                             Manage Classes
                         </Link>
@@ -29,7 +29,7 @@ function AdminDashboard() {
                         <Link className="nav-link" to="/subjects/manage">
                             Manage Subjects
                         </Link>
-                    </li>
+                    </li> */}
 
                     <li className="list-group-item list-header">
                         User Management

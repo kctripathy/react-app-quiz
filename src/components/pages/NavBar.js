@@ -13,12 +13,12 @@ const isActive = (history, path) => {
 
 function NavBar({ history }) {
 
-	const {fullname, accessLevel} = isAuthenticated();
-	
-	//debugger;
+    const { fullname, accessLevel } = isAuthenticated();
+
+    //debugger;
     const showCustomLinks = () => {
         //const user = isAuthenticated();
-		//debugger;
+        //debugger;
         if (accessLevel !== undefined && accessLevel !== 0) {
             if (accessLevel === 100) {
                 return showUserLinks();
@@ -59,16 +59,16 @@ function NavBar({ history }) {
         )
     }
     return (
-		
+
         <nav className="navbar navbar-expand-lg navbar-light bg-secondary">
             <Link className="navbar-brand" to="/">&nbsp;</Link>
-            <button className="navbar-toggler" 
-					type="button" 
-					data-toggle="collapse" 
-					data-target="#navbarSupportedContent" 
-					aria-controls="navbarSupportedContent" 
-					aria-expanded="false" 
-					aria-label="Toggle navigation">
+            <button className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
@@ -114,41 +114,41 @@ function NavBar({ history }) {
                     </li>
                     {(isAuthenticated()) && (
                         <li className="nav-item dropdown">
-                            <Link className="nav-link active nav-link-topmenu dropdown-toggle" 								 
-								to="/"
+                            <Link className="nav-link active nav-link-topmenu dropdown-toggle"
+                                to="/"
                                 id="navbarDropdown" role="button"
                                 data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-								{fullname.length > 10? fullname.toUpperCase().substring(0,9) + "...": fullname.toUpperCase() }
+                                {fullname.length > 10 ? fullname.toUpperCase().substring(0, 9) + "..." : fullname.toUpperCase()}
                             </Link>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <Link className="dropdown-item" to="/user/profile">My Profile</Link>
-								{accessLevel === 1 && 
-									<Fragment>
-									<hr/>
-										<Link className="dropdown-item" to="/quiz">Manage Accounts</Link>
-										<Link className="dropdown-item" to="/quiz">Manage Users</Link>
-										<Link className="dropdown-item" to="/quiz">Manage Questions</Link>
-									<hr />
-									</Fragment>
-								}
-								{accessLevel === 10 && 
-									<Fragment>
-									<hr/>
-										<Link className="dropdown-item" to="/quiz">Manage Users</Link>
-										<Link className="dropdown-item" to="/quiz">Manage Questions</Link>
-									<hr />
-									</Fragment>
-								}
-								{accessLevel === 100 && 
-									<Fragment>
-									<hr/>
-										<Link className="dropdown-item" to="/quiz">Quiz Questions</Link>
-										<Link className="dropdown-item" to="/user/result">Quiz Results</Link>
-									<hr />
-									</Fragment>
-								}								
-								<Link className="dropdown-item" to="/user/change-password">Change Password</Link>																					
+                                {accessLevel === 1 &&
+                                    <Fragment>
+                                        <hr />
+                                        <Link className="dropdown-item" to="/quiz">Manage Accounts</Link>
+                                        <Link className="dropdown-item" to="/quiz">Manage Users</Link>
+                                        <Link className="dropdown-item" to="/quiz">Manage Questions</Link>
+                                        <hr />
+                                    </Fragment>
+                                }
+                                {accessLevel === 10 &&
+                                    <Fragment>
+                                        <hr />
+                                        <Link className="dropdown-item" to="/quiz">Manage Users</Link>
+                                        <Link className="dropdown-item" to="/quiz">Manage Questions</Link>
+                                        <hr />
+                                    </Fragment>
+                                }
+                                {accessLevel === 100 && false &&
+                                    <Fragment>
+                                        <hr />
+                                        <Link className="dropdown-item" to="/quiz">Quiz Questions</Link>
+                                        <Link className="dropdown-item" to="/user/result">Quiz Results</Link>
+                                        <hr />
+                                    </Fragment>
+                                }
+                                <Link className="dropdown-item" to="/user/change-password">Change Password</Link>
                             </div>
                         </li>
                     )}

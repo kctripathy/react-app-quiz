@@ -8,8 +8,8 @@ function Login() {
     const [values, setValues] = useState({
         AccountId: 0,
         UserName: '',
-        UserEmail: 'haribolo@gmail.com',
-        UserPassword: 'abcd',
+        UserEmail: 'amit@gmail.com',
+        UserPassword: 'amit',
         UserPhone: '',
         loading: false,
         error: '',

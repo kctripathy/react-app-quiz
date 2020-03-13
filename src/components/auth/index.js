@@ -66,7 +66,7 @@ export const authenticate = (data, next) => {
 export const register = (user) => {
    // DEFAULT ACCOUNT 
    debugger;
-   if (user.AccountId === 0) {
+   if (user === false || user.AccountId === undefined || user.AccountId === 0) {
       user.AccountId = DEFAULT_ACCOUNT_ID;
    }
    //debugger;

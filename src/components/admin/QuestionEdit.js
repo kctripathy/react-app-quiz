@@ -50,7 +50,7 @@ function QuestionEdit({ match }) {
         getQuestionById(qId)
             .then(data => {
                 if (data !== undefined) {
-
+                    debugger;
                     //populateValuesByQuestion(data);
                     getAllClassSubjectsByAccountId(user.accountId)
                         .then(data1 => {
@@ -79,7 +79,7 @@ function QuestionEdit({ match }) {
 
     //=================================================
     const populateValuesByQuestion = (question) => {
-
+        debugger;
         const q_options = [...question.options];
 
         setValues({
@@ -449,7 +449,7 @@ function QuestionEdit({ match }) {
                 </div>
             </div>
             <div>
-                {JSON.stringify(values, null, 4)}
+                <pre>{JSON.stringify(values, null, 4)}</pre>
             </div>
         </Layout>
     );

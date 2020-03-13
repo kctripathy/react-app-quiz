@@ -99,7 +99,7 @@ function ClassSubjectsManagement(props) {
             return;
         }
         else {
-            const isExists = classSubjects.some((cs) => cs.classID === selectedClass && cs.subjectID === selectedSubject);
+            const isExists = classSubjects && classSubjects.length > 0 && classSubjects.some((cs) => cs.classID === selectedClass && cs.subjectID === selectedSubject);
             if (isExists) {
                 setSuccess('');
                 setError(`The subject (${subjectName}) already exists in the class ${className} !`);
@@ -181,7 +181,10 @@ function ClassSubjectsManagement(props) {
 
     //==========================================================
     const selectSubjectsByClass = (e) => {
-        const classSubjects = allClassesSubjects.result.filter(c => c.classID === Number(e.target.value));
+        debugger;
+        const classSubjects = allClassesSubjects &&
+            allClassesSubjects.result.length > 0 &&
+            allClassesSubjects.result.filter(c => c.classID === Number(e.target.value));
         setClassSubjects(classSubjects);
         setSelectedClass(Number(e.target.value));
     };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import './QuizApp.css';
@@ -21,19 +21,18 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class QuizApp extends Component {
+
+
   state = {
-    quizes: [
-      { id: 'data/javascript.json', name: 'Javascript' },
-      { id: 'data/aspnet.json', name: 'Asp.Net' },
-      { id: 'data/csharp.json', name: 'C Sharp' },
-      { id: 'data/designPatterns.json', name: 'Design Patterns' }
-    ],
+    quizes: [],
     quizClassessSubects: [],
     quizClassess: [],
     quizSubjects: [],
     quizId: 0,
     accountId: 1,
-	classId: 0
+    classId: 0,
+    accessLevel: 1,
+    error: ''
   };
 
   pager = {
@@ -42,6 +41,7 @@ class QuizApp extends Component {
     count: 1
   }
 
+
   componentDidMount() {
     this.loadClassAndSubjects();
     //this.load(this.state.quizId, this.state.accountId);
@@ -49,32 +49,44 @@ class QuizApp extends Component {
 
   //========================================================
   loadClassAndSubjects = () => {
-	const user = isAuthenticated();
-	if (user == null || user === undefined)
-	{
-		return;
-	}
-	 
-    getAvailbleClassSubjectsByAccountId(user.accountId)
-      .then(res => {
-		//console.clear();
-		//debugger;
-        const user = isAuthenticated()
-        const classSubjectsArrayList = removeDuplicates(res.result, 'classID');
-		const classSubjectsForUser = classSubjectsArrayList.filter(cs=> cs.classID === user.classId);
-        const accountId = user.accountId;
-        const quizId = 0;
+    // const user = isAuthenticated();
+    // if (user == null || user === undefined) {
+    //   return;
+    // }
 
-		const quizSubjects = getSubjectsByClassID(res.result, user.classId);
-    
-	
+    const { accountId, classId, accessLevel } = isAuthenticated();
+    //debugger;
+    //const acc_id = accountId === 1 ? 0 : ; //if super admin has logged on then display all class subjects
+
+    getAvailbleClassSubjectsByAccountId(accountId)
+      .then(res => {
+
+        if (res.status.code === "-200") {
+          this.setState({ ...this.state, accessLevel: accessLevel, classId: classId, error: 'No questions found this account!' });
+          return;
+        }
+        else if (res.status.code !== "1") {
+          this.setState({ ...this.state, accessLevel: accessLevel, classId: classId, error: 'some error' });
+          return;
+        }
+
+        //const user = isAuthenticated()
+        //const accountId = user.accountId;
+
+        const quizId = 0;
+        const classSubjectsArrayList = removeDuplicates(res.result, 'classID');
+        const classSubjectsForUser = classSubjectsArrayList.filter(cs => cs.classID === classId || accessLevel === 10);
+        const quizSubjects = getSubjectsByClassID(res.result, classId);
+
         this.setState({
           quizClassessSubects: res.result,
           quizClassess: classSubjectsForUser,
           accountId: accountId,
-		  classId: user.classId,
-		  quizSubjects: quizSubjects,
-          quizId: quizId
+          classId: classId,
+          quizSubjects: quizSubjects,
+          quizId: quizId,
+          accessLevel: accessLevel,
+          error: ''
         });
       })
   }
@@ -118,41 +130,46 @@ class QuizApp extends Component {
 
   //========================================================
   availableClasses = () => {
-    return (
-      <select onChange={this.onChangeClassDropDown} value={this.state.classId}>   		 
-        {this.state.quizClassess.map(q => <option key={q.classSubjectID} value={q.classID}>{q.classDesc}</option>)}
-        {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
-      </select>
-	  
+    return this.state.error.length === 0 && (
+      <Fragment>
+        <label className="mr-1">Quiz for Class: </label>
+        <select onChange={this.onChangeClassDropDown} >
+          {this.state.accessLevel === 10 ? (<option>--- Select Class --- </option>) : ('')}
+          {this.state.quizClassess.map(q => <option key={q.classSubjectID} value={q.classID}>{q.classDesc}</option>)}
+          {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
+        </select>
+      </Fragment>
     )
   }
 
   //========================================================
-  availableSubjects_DROPDOWN = () => {
-    //console.log("available subjects ===========", this.state.quizSubjects)
-    return (
-      <select onChange={this.onChange} className="dropdown show">
-        <option value="">--Select Subject--</option>
-        {this.state.quizSubjects.map(q => <option key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</option>)}
-        {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
-      </select>
+  // availableSubjects_DROPDOWN = () => {
+  //   //console.log("available subjects ===========", this.state.quizSubjects)
+  //   return (
+  //     <Fragment>
+  //       <label className="mr-1">Quiz for Class: </label>
+  //       <select onChange={this.onChange} className="dropdown show">
+  //         <option value="">--Select Subject--</option>
+  //         {this.state.quizSubjects.map(q => <option key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</option>)}
+  //         {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
+  //       </select>
+  //     </Fragment>
+  //   )
+  // }
 
-    )
-  }
-  
-    availableSubjects = () => {
+  availableSubjects = () => {
     //console.log("available subjects ===========", this.state.quizSubjects)
-	debugger;
-    return (      
-	  <div className="btn-group dropdown" role="group" aria-label="Subjects">         
-        {this.state.quizSubjects.map(q => <button type="button" onClick={this.onChange} className="btn btn-secondary btn-sm ml-1 mr-1 " key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</button>)}         
+    //debugger;
+    return (
+      <div className="btn-group dropdown" role="group" aria-label="Subjects">
+        {this.state.quizSubjects.map(q => <button type="button" onClick={this.onChange} className="btn btn-secondary btn-sm ml-1 mr-1 " key={q.classSubjectID} value={q.classSubjectID}>{q.subjectDesc}</button>)}
       </div>
 
     )
   }
-  
-  
- 
+
+
+
 
   //=========================================================================
   //
@@ -164,9 +181,22 @@ class QuizApp extends Component {
           <Quiz quiz={this.state.quiz} quizId={this.state.quizId} mode={this.state.mode} />
         )
         :
-        (			 
-			<h2 className="alert alert-success text-center" style={{ padding: "50px", marginTop: "20px" }}>Please select a subject to load quiz</h2>
+        (
+          this.state.error.length === 0 ? (
+            <h2 className="alert alert-success text-center" style={{ padding: "50px", marginTop: "20px" }}>
+              Please select a class & subject to load quiz
+              </h2>
+          ) : ('')
         )
+    )
+  }
+
+
+  displayErrorMessage() {
+    return (this.state.error.length > 0 &&
+      <h2 className="alert alert-danger text-center" style={{ padding: "50px", marginTop: "20px" }}>
+        {this.state.error}
+      </h2>
     )
   }
 
@@ -176,12 +206,15 @@ class QuizApp extends Component {
       <Layout>
         <div className="row">
           <div className="col-12 text-center">
-            <label className="mr-1">Quiz for Class: </label>
             {this.availableClasses()}
             {this.availableSubjects()}
           </div>
           <div className="col-12">
             {this.displayQuiz()}
+          </div>
+          <div className="col-12">
+            {this.displayErrorMessage()}
+            <pre>{JSON.stringify(this.state, null, 4)}</pre>
           </div>
         </div>
       </Layout>

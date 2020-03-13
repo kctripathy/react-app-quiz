@@ -8,14 +8,14 @@ import { getAllClassSubjectsByAccountId, removeDuplicates } from '../admin/index
 function Register(props) {
 
     const [values, setValues] = useState({
-        AccountId: 0,
+        AccountId: 1,
         FullName: 'hari',
         UserName: '',
         UserEmail: 'haribolo@gmail.com',
         UserPhone: '999988888',
         UserPassword: 'abcd',
-        ClassId: 4,
-        SubjectIds: [1, 2, 3, 4],
+        ClassId: 1,
+        SubjectIds: [],
         AccessLevel: 100,
         error: '',
         success: '',
@@ -32,10 +32,8 @@ function Register(props) {
         AccessLevel, error, success, redirectToReferer } = values;
 
     useEffect(() => {
-
         const user = isAuthenticated();
-
-        console.log(user);
+        //console.log(user);
         getAllClassSubjectsByAccountId(user.accountId)
             .then(data1 => {
                 if (data1 !== undefined) {
@@ -100,7 +98,6 @@ function Register(props) {
             return;
         }
         const user = isAuthenticated();
-
         register({ AccountId: user.accountId, FullName, UserName, UserEmail, UserPhone, UserPassword, ClassId, AccessLevel })
             .then(data => {
 
