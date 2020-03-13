@@ -3,17 +3,18 @@ import { Redirect, Link } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import { register, isAuthenticated } from '../auth';
 
-import { getAllClassSubjectsByAccountId, removeDuplicates } from '../admin/index';
+import { updateUser, getAllClassSubjectsByAccountId, removeDuplicates } from '../admin/index';
 
 function Register(props) {
 
     const [values, setValues] = useState({
+        Id: 0,
         AccountId: 1,
-        FullName: 'hari',
+        FullName: 'Sri HariHara Mahadev',
         UserName: '',
-        UserEmail: 'haribolo@gmail.com',
+        UserEmail: 'hari@gmail.com',
         UserPhone: '999988888',
-        UserPassword: 'abcd',
+        UserPassword: 'aaaa',
         ClassId: 1,
         SubjectIds: [],
         AccessLevel: 100,
@@ -22,38 +23,27 @@ function Register(props) {
         redirectToReferer
     })
     const [userClasses, setUserClasses] = useState([]);
-    //const [classSubjects, setClassSubjects] = useState([]);
-    //const [subjects, setSubjects] = useState([]);
 
 
-    const { AccountId,
+    const { Id, AccountId,
         FullName, UserName, UserEmail,
         UserPhone, UserPassword, ClassId, SubjectIds,
         AccessLevel, error, success, redirectToReferer } = values;
 
     useEffect(() => {
         const user = isAuthenticated();
-        //console.log(user);
         getAllClassSubjectsByAccountId(user.accountId)
             .then(data1 => {
                 if (data1 !== undefined) {
-                    //debugger;
-                    //console.log(data1);
-                    //if (data1.status.code !== undefined && data1.status.code === "1") {
                     const allClasses = removeDuplicates(data1.result, "classID");
                     setUserClasses(allClasses);
-
-                    //alert(data1);
-                    //setClassSubjects(data1.result);
-
-                    //}
                 }
             })
-
-        if (props.mode === 'edit') {
-
+        //debugger
+        if (props && props.user.length > 0 && props.mode === 'edit') {
             setValues({
                 ...values,
+                Id: props.user[0].id,
                 accountId: props.user[0].accountId,
                 FullName: props.user[0].fullname,
                 UserEmail: props.user[0].userEmail,
@@ -94,7 +84,15 @@ function Register(props) {
         e.preventDefault();
 
         if (props.mode === 'edit') {
-            alert('updated....');
+            //alert('updated....');
+
+            updateUser({ Id, AccountId, FullName, UserName, UserEmail, UserPassword, UserPhone, ClassId, AccessLevel })
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             return;
         }
         const user = isAuthenticated();

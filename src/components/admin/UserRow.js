@@ -10,11 +10,11 @@ function UserRow({ user }) {
     return (
         <Fragment>
             <li className="id">{user.id}</li>
-            <li className="col-4 fullname">{user.fullname}</li>
-            <li className="col-4 email">{user.userEmail}</li>
-            <li className="col-4 phone">{user.userPhone}</li>
-            <li className="col-4 class">{user.classId}</li>
-            <li className="col-4 role">{user.accessLevel}</li>
+            <li className="col-4 fullname">{user.fullname}&nbsp;</li>
+            <li className="col-4 email">{user.userEmail}&nbsp;</li>
+            <li className="col-4 phone">{user.userPhone}&nbsp;</li>
+            <li className="col-4 class">{user.classId}&nbsp;</li>
+            <li className="col-4 role">{user.accessLevel}&nbsp;</li>
             <li className="col-4 edit"><Link to={`/user/edit/${user.id}`}>Edit</Link></li>
             <li className="col-4 edit"><Link to={`/user/delete/${user.id}`}>Delete</Link></li>
             {/* <li className="col-4 edit">

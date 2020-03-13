@@ -5,28 +5,15 @@ import Layout from '../pages/Layout';
 
 function UserEdit({ usersData, match }) {
 
-    //const [user, setUser] = useState({});
-
-    useEffect(() => {
-        //console.log("usersData.users", usersData.users);
-        //const user = usersData.users.filter(u => u.id === Number(match.params.userId));
-        //console.log("user", user);
-        //setUser(user);
-    }, [])
-    //console.log(props);
-    console.log(match.params.userId);
-
     const showUser = () => {
         const user = usersData.users.filter(u => u.id === Number(match.params.userId));
-        debugger;
+        //debugger;
         return user && <Register isAdmin="yes" mode="edit" user={user} />
     }
     return (
         <Layout title="">
             {showUser()}
-
             {/* {JSON.stringify(user)} */}
-
         </Layout>
     )
 };

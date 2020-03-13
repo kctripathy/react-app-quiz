@@ -25,17 +25,14 @@ function UserList({ usersData, fetchUsers }) {
 				<div>No records found</div>
 			)
 	}
-	console.log('usersData', usersData);
 
 	return (
 		<Layout title="List of users" showCount={usersData && usersData.users.length}>
-
 			{loadAllUsers()}
-
 			{/* {JSON.stringify(usersData)} */}
 		</Layout>
 	)
-};
+}; //function UserList ==============================================================
 
 const mapStateToProps = state => {
 	return {

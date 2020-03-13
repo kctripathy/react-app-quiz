@@ -214,7 +214,7 @@ class QuizApp extends Component {
           </div>
           <div className="col-12">
             {this.displayErrorMessage()}
-            <pre>{JSON.stringify(this.state, null, 4)}</pre>
+            {/* <pre>{JSON.stringify(this.state, null, 4)}</pre> */}
           </div>
         </div>
       </Layout>

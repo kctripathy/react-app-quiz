@@ -49,9 +49,7 @@ function AccountList({ accountsData, fetchAllAccounts }) {
 
 			</table>
 			<div>
-				<pre>
-					{JSON.stringify(accountsData, null, 4)}
-				</pre>
+				{/* <pre>{JSON.stringify(accountsData, null, 4)}</pre> */}
 			</div>
 		</Layout>
 
