@@ -8,8 +8,8 @@ function Login() {
     const [values, setValues] = useState({
         AccountId: 0,
         UserName: '',
-        UserEmail: 'amit@gmail.com',
-        UserPassword: 'amit',
+        UserEmail: 'best-user1@gmail.com',
+        UserPassword: 'aaaa',
         UserPhone: '',
         loading: false,
         error: '',
@@ -144,6 +144,8 @@ function Login() {
                 </div>
                 <div className="col-lg-6 col-sm-12 user-login-image">
                     {/* {JSON.stringify(values)} */}
+                    <h4>Some text should go here</h4>
+                    <p>Loeriums impression test text this is some text</p>
                 </div>
             </div>
         </Layout>

@@ -13,7 +13,7 @@ const isActive = (history, path) => {
 
 function NavBar({ history }) {
 
-    const { fullname, accessLevel } = isAuthenticated();
+    const { fullname, accessLevel, accountName } = isAuthenticated();
 
     //debugger;
     const showCustomLinks = () => {
@@ -73,7 +73,7 @@ function NavBar({ history }) {
             </button>
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto col-9">
+                <ul className="navbar-nav mr-auto col-8">
                     <li className="nav-item">
                         <Link to="/"><span className="sr-only">(current)</span></Link>
                     </li>
@@ -89,14 +89,14 @@ function NavBar({ history }) {
                         </li>  */}
                     {showCustomLinks()}
                 </ul>
-                <ul className="navbar-nav mr-auto col-3">
+                <ul className="navbar-nav ml-auto navbar-right">
 
                     {(!isAuthenticated()) && (
                         <Fragment>
-                            <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
+                            <li className="nav-item  m-0" data-toggle="collapse" data-target=".navbar-collapse.show">
                                 <Link className={isActive(history, "/login")} to="/login">Login</Link>
                             </li>
-                            <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
+                            <li className="nav-item  m-0" data-toggle="collapse" data-target=".navbar-collapse.show">
                                 <Link className={isActive(history, "/register")} to="/register">Register</Link>
                             </li>
                         </Fragment>
@@ -109,18 +109,24 @@ function NavBar({ history }) {
                                 })}>Logout</Link>
                         </li>
                     )}
-                    <li className="nav-item  ml-2" data-toggle="collapse" data-target=".navbar-collapse.show">
+                    <li className="nav-item  m-0" data-toggle="collapse" data-target=".navbar-collapse.show">
                         <Link className={isActive(history, "/contact")} to="/contact">Contact</Link>
                     </li>
                     {(isAuthenticated()) && (
                         <li className="nav-item dropdown">
-                            <Link className="nav-link active nav-link-topmenu dropdown-toggle"
+                            {/* <div className="row">
+                                <div className="col-12 text-center">
+                                    <b><u>{accountName}</u></b>
+                                </div>
+                            </div> */}
+                            <Link className="nav-link active nav-link-topmenu dropdown-toggle text-center"
                                 to="/"
                                 id="navbarDropdown" role="button"
                                 data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                {fullname.length > 10 ? fullname.toUpperCase().substring(0, 9) + "..." : fullname.toUpperCase()}
+                                {fullname.length > 35 ? fullname.toUpperCase().substring(0, 34) + "..." : fullname.toUpperCase()}
                             </Link>
+                            <div className="account-name"><small>Powered By:</small> <br /><b>{accountName}</b></div>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <Link className="dropdown-item" to="/user/profile">My Profile</Link>
                                 {accessLevel === 1 &&

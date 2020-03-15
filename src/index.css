@@ -5,7 +5,7 @@ body {
 }
 
 .jumbotron {
-	background-image: url('/images/home-banner.jpg');
+	background-image: url('/images/home-banner-2.jpg');
 	background-position: right;
 	background-size: 60%;
 	background-repeat: no-repeat;
@@ -13,7 +13,7 @@ body {
 	margin-top: -9px;
 	min-height: 340px;
   color: #000;
-  display: none;
+  /* display: none; */
 }
 
 .layout{
@@ -25,9 +25,10 @@ body {
 .header {	 
   color: white;
   text-align: center;
-  padding: 10px 0px;
+  /* padding: 1%; */
+  /* width: 100% !important; */
   font-weight: 800;
-  display: none;
+  /* display: none; */
 }
 
 .page-title {
@@ -68,27 +69,6 @@ body {
   height: 250px;
   background-color: white !important;
 }
-
-.user-register-image {
-  background-image: url('https://wphero.io/wp-content/uploads/2017/03/how-to-add-user-to-wordpress.jpg');
-  height: 298px;
-}
-
-.user-login-image {
-  background-image: url('https://wphero.io/wp-content/uploads/2017/03/how-to-add-user-to-wordpress.jpg');
-  background-position: -300px;
-  /* background-image: url('https://www.sss-solutions.org/wp-content/uploads/2018/01/1116146294-login-page-background-image-112.jpg');
-  background-size:cover;
-  background-repeat: no-repeat;  
-  opacity: 90%;
-  color: black;*/
-  margin-top: 32px;
-  padding: 20px;
-  height: 280px; 
-}
-
-
-
 
 
 /* Manage questions*/
@@ -263,6 +243,11 @@ body {
   height: 10px;
   margin: 2px 0px;
 }
-/* #classSubjectDiv > div > ul > li > span{
-  background-color: green;
-} */
+
+.account-name {
+  margin-top: -90px;
+    position: relative;
+    text-align: right;
+    padding-right: 10px;
+    color: #fff;
+}

@@ -39,8 +39,8 @@ function Register(props) {
                     setUserClasses(allClasses);
                 }
             })
-        //debugger
-        if (props && props.user.length > 0 && props.mode === 'edit') {
+        debugger
+        if (props && props.user !== undefined && props.user.length > 0 && props.mode === 'edit') {
             setValues({
                 ...values,
                 Id: props.user[0].id,
@@ -89,9 +89,16 @@ function Register(props) {
             updateUser({ Id, AccountId, FullName, UserName, UserEmail, UserPassword, UserPhone, ClassId, AccessLevel })
                 .then(response => {
                     console.log(response)
+                    if (response.status.code === "1") {
+                        setValues({ ...values, success: 'Record updated successfully', error: '' })
+                    }
+                    else {
+                        setValues({ ...values, error: 'Failed to update the record', success: '' })
+                    }
                 })
                 .catch(err => {
                     console.log(err);
+                    setValues({ ...values, error: err, success: '' })
                 })
             return;
         }
@@ -119,7 +126,7 @@ function Register(props) {
                         classId: 0,
                         subjectIds: [],
                         error: '',
-                        success: true
+                        success: 'Succesfully created the new account '
                     })
                 }
             })
@@ -132,8 +139,8 @@ function Register(props) {
     );
 
     const showSuccess = () => (
-        <div className="alert alert-success" style={{ display: success ? '' : 'none' }}>
-            New account is created. Please <Link to="/login">login</Link>.
+        <div className="alert alert-success" style={{ display: success.length > 0 ? '' : 'none' }}>
+            {values.success}
         </div>
     );
 

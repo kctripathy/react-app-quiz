@@ -183,6 +183,7 @@ function ClassSubjectsManagement(props) {
     const selectSubjectsByClass = (e) => {
         debugger;
         const classSubjects = allClassesSubjects &&
+            allClassesSubjects.result !== undefined &&
             allClassesSubjects.result.length > 0 &&
             allClassesSubjects.result.filter(c => c.classID === Number(e.target.value));
         setClassSubjects(classSubjects);
