@@ -18,6 +18,7 @@ function Register(props) {
         ClassId: 1,
         SubjectIds: [],
         AccessLevel: 100,
+        AllowLogin: true,
         error: '',
         success: '',
         redirectToReferer
@@ -28,7 +29,7 @@ function Register(props) {
     const { Id, AccountId,
         FullName, UserName, UserEmail,
         UserPhone, UserPassword, ClassId, SubjectIds,
-        AccessLevel, error, success, redirectToReferer } = values;
+        AccessLevel, AllowLogin, error, success, redirectToReferer } = values;
 
     useEffect(() => {
         const user = isAuthenticated();
@@ -39,7 +40,9 @@ function Register(props) {
                     setUserClasses(allClasses);
                 }
             })
-        debugger
+        //===========================================================================
+        // Edit mode : setting values that comes from list page: 
+        //===========================================================================
         if (props && props.user !== undefined && props.user.length > 0 && props.mode === 'edit') {
             setValues({
                 ...values,
@@ -50,6 +53,7 @@ function Register(props) {
                 UserPhone: props.user[0].userPhone,
                 AccessLevel: props.user[0].accessLevel,
                 ClassId: props.user[0].classId,
+                AllowLogin: props.user[0].allowLogin,
                 isLoading: false,
                 error: ''
             })
@@ -79,6 +83,14 @@ function Register(props) {
         })
     }
 
+    const handleAllowLoginChange = e => {
+        //e.preventDefault();
+        debugger;
+        setValues({
+            ...values,
+            AllowLogin: e.target.checked
+        })
+    }
     const handleFormSubmit = e => {
 
         e.preventDefault();
@@ -86,7 +98,7 @@ function Register(props) {
         if (props.mode === 'edit') {
             //alert('updated....');
 
-            updateUser({ Id, AccountId, FullName, UserName, UserEmail, UserPassword, UserPhone, ClassId, AccessLevel })
+            updateUser({ Id, AccountId, FullName, UserName, UserEmail, UserPassword, UserPhone, ClassId, AccessLevel, AllowLogin })
                 .then(response => {
                     console.log(response)
                     if (response.status.code === "1") {
@@ -286,7 +298,22 @@ function Register(props) {
                         </select>
                     </div>
                 </div>
-
+                <div className="form-group">
+                    <div className="input-group mb-2">
+                        <div className="input-group-prepend">
+                            <div className="input-group-text user-additional-info-label">Allow Login? </div>
+                        </div>
+                        <div className="input-group-prepend p-1 mt-2 ml-2">
+                            <input type="checkbox"
+                                className="pt-6"
+                                onChange={handleAllowLoginChange}
+                                name="AllowLogin"
+                                value={AllowLogin}
+                                checked={AllowLogin}>
+                            </input>
+                        </div>
+                    </div>
+                </div>
             </Fragment>
         )
     };
@@ -300,21 +327,19 @@ function Register(props) {
     return (
         <Layout>
             <div className="row">
-                <div className="col-lg-6 col-sm-12">
+                <div className="col-lg-6 col-sm-12 mt-4 ml-4">
                     {showError()}
                     {showSuccess()}
                     {userRegistrationForm()}
                     {redirectUser()}
                 </div>
                 <div className="col-lg-6 col-sm-12 user-register-image" >
-
+                    &nbsp;
                 </div>
             </div>
             <div className="row">
                 {/* {JSON.stringify(values)} */}
                 {/* {JSON.stringify(userClasses)} */}
-
-
             </div>
         </Layout>
     );

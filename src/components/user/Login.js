@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import Layout from '../pages/Layout';
 import { login, authenticate, isAuthenticated } from '../auth';
@@ -8,7 +8,7 @@ function Login() {
     const [values, setValues] = useState({
         AccountId: 0,
         UserName: '',
-        UserEmail: 'best-user1@gmail.com',
+        UserEmail: 'best-admin1@gmail.com',
         UserPassword: 'aaaa',
         UserPhone: '',
         loading: false,
@@ -126,8 +126,13 @@ function Login() {
                     </div>
 
                     <div className="text-center">
-                        <input type="submit" value="Login" className="btn btn-info btn-block rounded-40 py-2" />
+                        <input type="submit" value="LOGIN" className="btn btn-info pl-4 pr-4 mr-2" />
                     </div>
+                    <div className="text-center mt-2">
+                        <Link className="p-4 m-4" to="/user/forgot-password">Forgot Password?</Link>
+                        <Link className="p-4 m-4" to="/register">New User? Register</Link>
+                    </div>
+
                 </div>
 
             </div>
@@ -136,13 +141,13 @@ function Login() {
     return (
         <Layout>
             <div className="row">
-                <div className="col-lg-6 col-sm-12">
+                <div className="col-lg-6 col-sm-12 mt-4 ml-4">
                     {showError()}
                     {showLoading()}
                     {loginForm()}
                     {redirectUser()}
                 </div>
-                <div className="col-lg-6 col-sm-12 user-login-image">
+                <div className="col-lg-5 col-sm-12 mt-4 ml-4">
                     {/* {JSON.stringify(values)} */}
                     <h4>Some text should go here</h4>
                     <p>Loeriums impression test text this is some text</p>

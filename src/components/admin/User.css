@@ -1,4 +1,4 @@
-#ulUserList{
+#user-list{
     display: block ;
     float: left;
     width: 100%;
@@ -8,41 +8,51 @@
     list-style-type: none;
 }
 
-#ulUserList > li{
+#user-list > li{
     display: block ;
     float: left;
 }
 
-#ulUserList > li.id{
+#user-list > li.id{
     width: 10%;
     display: none;
 }
 
-#ulUserList > li.fullname{
+#user-list > li.fullname{
     width: 20%;
 }
 
-#ulUserList > li.email{
+#user-list > li.email{
     width: 20%;
 }
 
-#ulUserList > li.phone{
-    width: 20%;
+#user-list > li.phone{
+    width: 7%;
 }
 
-#ulUserList > li.class{
+#user-list > li.class{
     width: 10%;
+    text-align: center;
 }
-#ulUserList > li.role{
+#user-list > li.role{
+    width: 5%;
+}
+#user-list > li.allow-login{
     width: 10%;
+    text-align: center;
 }
-#ulUserList > li.edit{
-    width: 10%;
+#user-list > li.last-login{
+    width: 15%;
 }
-#ulUserList > li.delete{
-    width: 10%;
+
+
+#user-list > li.edit{
+    width: 5%;
 }
-#ulUserList > li.row-header{
+#user-list > li.delete{
+    width: 8%;
+}
+#user-list > li.row-header{
     font-weight: bold;
     border-bottom: solid 1px #ddd;
     background-color: #eee;

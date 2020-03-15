@@ -15,14 +15,17 @@ function UserList({ usersData, fetchUsers }) {
 	const loadAllUsers = () => {
 		return usersData && usersData.users.length > 0 ? (
 			<div className="row">
-				<ul id="ulUserList">
+				<ul id="user-list">
 					<UserRowHeader />
 					{usersData.users.map((u, i) => <UserRow key={u.id} user={u} />)}
 				</ul>
-
+				{/* <table id="user-list">
+					<thead><tr><UserRowHeader /></tr></thead>
+					{usersData.users.map((u, i) => <tr key={u.id} ><UserRow user={u} /></tr>)}
+				</table> */}
 			</div>
 		) : (
-				<div>No records found</div>
+				<div>No records/users found</div>
 			)
 	}
 

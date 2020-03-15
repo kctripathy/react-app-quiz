@@ -15,8 +15,9 @@ import QuizApp from "../quiz/QuizApp";
 import Login from "../user/Login";
 import Register from "../user/Register";
 import QuizResults from "../user/QuizResults";
-
 import Profile from "../user/Profile";
+import ChangePassword from "../user/ChangePassword";
+import ForgotPassword from "../user/ForgotPassword";
 
 
 import UserDashboard from '../user/UserDashboard';
@@ -53,6 +54,8 @@ function NavRoutes() {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/contact" component={Contact} />
+                <Route path="/user/forgot-password" component={ForgotPassword} exact />
+                <Route path="/user/change-password" component={ChangePassword} exact />
 
                 <AdminRoute path="/admin/dashboard" component={AdminDashboard} exact />
                 <AdminRoute path="/question/add" component={QuestionAdd} exact />

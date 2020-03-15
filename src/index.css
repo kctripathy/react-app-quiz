@@ -251,3 +251,9 @@ body {
     padding-right: 10px;
     color: #fff;
 }
+
+#forgot-password {
+  width: 600px;
+  margin: 0px auto;
+  /* border: solid 1px red; */
+}

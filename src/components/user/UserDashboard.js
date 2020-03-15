@@ -1,31 +1,42 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import { isAuthenticated } from "../auth";
 
 function UserDashboard() {
 
     const [user, setUser] = useState(isAuthenticated());
- 
-    const {id, userEmail, fullname,accessLevel} = user;
 
-    
+    const { id, userEmail, fullname, accessLevel } = user;
+
+
 
     const userLinks = () => {
         return (
             <div className="card">
                 <h4 className="card-header">User Links</h4>
-                <ul className="list-group">                   
+                <ul className="list-group">
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/profile">
+                            My Profile
+                        </Link>
+                    </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/quiz">
                             Quiz
                         </Link>
-                    </li>                    
+                    </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/user/quiz/results">
                             View Results
                         </Link>
                     </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/change-password">
+                            Change Password
+                        </Link>
+                    </li>
+
                 </ul>
             </div>
         );
@@ -46,18 +57,18 @@ function UserDashboard() {
         );
     };
 
-    return (  
+    return (
         <Layout>
             <div className="row">
-                    <div className="col-12">
-                        <h4>&nbsp;</h4>   
-                    </div>                    
-            </div>  
+                <div className="col-12">
+                    <h4>&nbsp;</h4>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-3">{userLinks()}</div>
                 <div className="col-9">{userInfo()}</div>
-            </div>     
-        </Layout>               
+            </div>
+        </Layout>
     );
 }
 

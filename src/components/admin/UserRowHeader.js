@@ -7,12 +7,15 @@ function UserRowHeader() {
 
     return (
         <Fragment>
+
             <li className="id row-header">ID</li>
             <li className="col-4 fullname row-header">Name</li>
             <li className="col-4 email row-header">Email</li>
             <li className="col-4 phone row-header">Phone</li>
             <li className="col-4 class row-header">Class</li>
             <li className="col-4 role row-header">Role</li>
+            <li className="col-4 allow-login row-header">Allow Login?</li>
+            <li className="col-4 last-login row-header">Last Login Date</li>
             <li className="col-4 edit row-header">Edit?</li>
             <li className="col-4 delete row-header">Delete?</li>
             {/* <li className="col-4 edit">
@@ -24,6 +27,7 @@ function UserRowHeader() {
                     Delete
                 </button>
             </li> */}
+
         </Fragment >
     );
 }
