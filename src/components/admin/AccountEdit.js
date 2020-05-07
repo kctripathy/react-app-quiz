@@ -1,14 +1,12 @@
-import React from 'react'
-import Layout from '../pages/Layout';
-
+import React from "react";
+import LayoutSuperAdmin from "../pages/LayoutSuperAdmin";
 
 function AccountEdit() {
-    return (
-        <Layout title="Edit account of ">
-
-        </Layout>
-
-    )
-};
+  return (
+    <LayoutSuperAdmin title="Edit account of ">
+      <h4>Work in progress</h4>
+    </LayoutSuperAdmin>
+  );
+}
 
 export default AccountEdit;

@@ -1,495 +1,519 @@
-import { API_URL } from '../../config';
-import { DEFAULT_ACCOUNT_ID } from '../../config';
-import { isAuthenticated } from '../auth';
-
+import { API_URL } from "../../config";
+import { DEFAULT_ACCOUNT_ID } from "../../config";
+import { isAuthenticated } from "../auth";
 
 //=====================================================================
 export const updateUser = (user) => {
-    //console.log(user);
-    //debugger;
-    return fetch(`${API_URL}/users/update`, {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(user)
+  //console.log(user);
+  //debugger;
+  return fetch(`${API_URL}/users/update`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      console.log("response-", response);
+      return response.json();
     })
-        .then(response => {
-            console.log("response-", response);
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-            return err;
-        })
-}
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+
+//=====================================================================
+export const getResetPasswordLink = (user) => {
+  //debugger;
+  const url = `${API_URL}/users/GetResetPasswordLink`;
+  //console.log("url=", url);
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+
+//=====================================================================
+export const resetUserPassword = (user) => {
+  //debugger;
+  const url = `${API_URL}/users/ResetPassword`;
+  //console.log("url=", url);
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
 
 //=====================================================================
 export const getAllClassSubjectsByAccountId = (accountId) => {
-    //debugger;
-    const url = `${API_URL}/ClassesSubjects/all/${accountId}`;
-    console.log("url=", url);
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  //debugger;
+  const url = `${API_URL}/ClassesSubjects/all/${accountId}`;
+  console.log("url=", url);
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 //=====================================================================
 export const getAvailbleClassSubjectsByAccountId = (accountId) => {
-    const url = `${API_URL}/classessubjects/QuestionsAvailable/${accountId}`;
-    //console.log("url=", url);
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  const url = `${API_URL}/classessubjects/QuestionsAvailable/${accountId}`;
+  //console.log("url=", url);
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 //=====================================================================
 export const removeDuplicates = (sourceArray, fieldName) => {
+  // Declare a new array
+  let newArray = [];
 
-    // Declare a new array 
-    let newArray = [];
+  // Declare an empty object
+  let uniqueObject = {};
 
-    // Declare an empty object 
-    let uniqueObject = {};
+  // Loop for the array elements
+  for (let i in sourceArray) {
+    // Extract the fieldName
+    let objClassID = sourceArray[i][fieldName];
 
-    // Loop for the array elements 
-    for (let i in sourceArray) {
+    // Use the fieldName as the index
+    uniqueObject[objClassID] = sourceArray[i];
+  }
 
-        // Extract the fieldName 
-        let objClassID = sourceArray[i][fieldName];
+  // Loop to push unique object into array
+  for (let i in uniqueObject) {
+    newArray.push(uniqueObject[i]);
+  }
 
-        // Use the fieldName as the index 
-        uniqueObject[objClassID] = sourceArray[i];
-    }
-
-    // Loop to push unique object into array 
-    for (let i in uniqueObject) {
-        newArray.push(uniqueObject[i]);
-    }
-
-    return newArray;
-}
-
+  return newArray;
+};
 
 //=====================================================================
 export const getSubjectsByClassID = (sourceArray, classID) => {
-    // Declare a new array 
-    let newArray = [];
-    //debugger;
-    // Loop for the array elements 
-    for (let i in sourceArray) {
-
-        if (sourceArray[i]["classID"].toString() === classID.toString()) {
-            newArray.push(sourceArray[i]);
-        }
-
+  // Declare a new array
+  let newArray = [];
+  //debugger;
+  // Loop for the array elements
+  for (let i in sourceArray) {
+    if (sourceArray[i]["classID"].toString() === classID.toString()) {
+      newArray.push(sourceArray[i]);
     }
-    return newArray;
-}
+  }
+  return newArray;
+};
 
 //=====================================================================
 export const getSubjectsByClassSubjectID = (sourceArray, id) => {
-    const filteredArray = sourceArray.filter((s) => s.classSubjectID == parseInt(id));
-    return filteredArray;
+  const filteredArray = sourceArray.filter(
+    (s) => s.classSubjectID == parseInt(id)
+  );
+  return filteredArray;
 
-    // // Declare a new array 
-    // let newArray = [];
-    // debugger;
-    // // Loop for the array elements 
-    // for (let i in sourceArray) {
+  // // Declare a new array
+  // let newArray = [];
+  // debugger;
+  // // Loop for the array elements
+  // for (let i in sourceArray) {
 
-    //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
-    //         newArray.push(sourceArray[i]);
-    //     }
+  //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+  //         newArray.push(sourceArray[i]);
+  //     }
 
-    // }
-    // return newArray;
-}
+  // }
+  // return newArray;
+};
 
 //=====================================================================
 export const getClassSubjectByID = (sourceArray, id) => {
+  const filteredArray = sourceArray.filter(
+    (s) => s.classSubjectID == parseInt(id)
+  );
+  return filteredArray;
 
-    const filteredArray = sourceArray.filter((s) => s.classSubjectID == parseInt(id));
-    return filteredArray;
+  // // Declare a new array
+  // let newArray = [];
+  // //debugger;
+  // // Loop for the array elements
+  // for (let i in sourceArray) {
 
-    // // Declare a new array 
-    // let newArray = [];
-    // //debugger;
-    // // Loop for the array elements 
-    // for (let i in sourceArray) {
+  //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
+  //         newArray.push(sourceArray[i]);
+  //     }
 
-    //     if (sourceArray[i]["classSubjectID"].toString() === classSubjectID.toString()) {
-    //         newArray.push(sourceArray[i]);
-    //     }
-
-    // }
-    // return newArray;
-}
+  // }
+  // return newArray;
+};
 
 //=====================================================================
 export const addQuestion = (question) => {
-
-    return fetch(`${API_URL}/questions/add`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(question)
+  return fetch(`${API_URL}/questions/add`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(question),
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 //=====================================================================
 export const updateQuestion = (question) => {
-
-    return fetch(`${API_URL}/questions/update`, {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(question)
+  return fetch(`${API_URL}/questions/update`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(question),
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 //=====================================================================
 export const deleteQuestion = (id) => {
-
-    return fetch(`${API_URL}/questions/delete`, {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(id)
+  return fetch(`${API_URL}/questions/delete`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(id),
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 //=====================================================================
 export const getQuestions = (classSubjectId, accountId) => {
-    let url = `${API_URL}/questions/${classSubjectId}/${accountId}`;
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  let url = `${API_URL}/questions/${classSubjectId}/${accountId}`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 //=====================================================================
 export const getAllQuestionsByAccountId = (accountId) => {
-    let url = `${API_URL}/questions/list/${accountId}`;
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  let url = `${API_URL}/questions/list/${accountId}`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 export const getQuestionById = (qId) => {
-    let url = `${API_URL}/questions/getbyid/${qId}`;
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  let url = `${API_URL}/questions/getbyid/${qId}`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 //===================================
 // loadUsers
 //===================================
 export const loadAllUsers = () => {
-    const { accountId } = isAuthenticated();;
-    let url = `${API_URL}/users/all?accountId=${accountId}`;
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  const { accountId } = isAuthenticated();
+  let url = `${API_URL}/users/all?accountId=${accountId}`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            return (err)
-        })
+    .catch((err) => {
+      return err;
+    });
 };
-
 
 //===================================
 // load All Accounts
 //===================================
 export const loadAllAccounts = () => {
-    //const { accountId } = isAuthenticated();;
-    let url = `${API_URL}/accounts/all`;
-    return fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  //const { accountId } = isAuthenticated();;
+  let url = `${API_URL}/accounts/all`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            return (err)
-        })
+    .catch((err) => {
+      return err;
+    });
 };
 
 //==============================================
-// NEW ACCOUNT 
+// NEW ACCOUNT
 //==============================================
 export const addNewAccount = (account) => {
-    //debugger;
-    return fetch(`${API_URL}/accounts/addnew`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(account)
+  //debugger;
+  return fetch(`${API_URL}/accounts/addnew`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(account),
+  })
+    .then((response) => {
+      //debugger;
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        return response;
+      }
     })
-        .then(response => {
-            //debugger;
-            if (response.status === 200) {
-                return response.json()
-            }
-            else {
-                return response
-            }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
-
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 //==============================================
-// NEW CLASS 
+// NEW CLASS
 //==============================================
 export const addNewMasterClass = (newClass) => {
-    //debugger;
-    return fetch(`${API_URL}/classes`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newClass)
+  //debugger;
+  return fetch(`${API_URL}/classes`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newClass),
+  })
+    .then((response) => {
+      //debugger;
+      return response.json();
+      // if (response.status === 200) {
+      //     return response.json()
+      // }
+      // else {
+      //     return response
+      // }
     })
-        .then(response => {
-            //debugger;
-            return response.json()
-            // if (response.status === 200) {
-            //     return response.json()
-            // }
-            // else {
-            //     return response
-            // }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
-
 
 export const deleteMasterClass = (id) => {
-    //debugger;
-    return fetch(`${API_URL}/classes/${id}`, {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  //debugger;
+  return fetch(`${API_URL}/classes/${id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      debugger;
+      return response.json();
+      // if (response.status === 200) {
+      //     return response.json()
+      // }
+      // else {
+      //     return response
+      // }
     })
-        .then(response => {
-            debugger;
-            return response.json()
-            // if (response.status === 200) {
-            //     return response.json()
-            // }
-            // else {
-            //     return response
-            // }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 //==============================================
-// NEW SUBJECT 
+// NEW SUBJECT
 //==============================================
 export const addNewMasterSubject = (subject) => {
-    debugger;
-    return fetch(`${API_URL}/subjects/`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(subject)
+  debugger;
+  return fetch(`${API_URL}/subjects/`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(subject),
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 //==============================================
 // NEW SUBJECT FOR A CLASS
 //==============================================
 export const addNewMasterClassSubject = (classSubject) => {
-    debugger;
-    return fetch(`${API_URL}/ClassesSubjects`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(classSubject)
+  debugger;
+  return fetch(`${API_URL}/ClassesSubjects`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(classSubject),
+  })
+    .then((response) => {
+      return response.json();
     })
-        .then(response => {
-            return response.json()
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const deleteMasterSubject = (id) => {
-    //debugger;
-    return fetch(`${API_URL}/subjects/${id}`, {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  //debugger;
+  return fetch(`${API_URL}/subjects/${id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      //debugger;
+      return response.json();
+      // if (response.status === 200) {
+      //     return response.json()
+      // }
+      // else {
+      //     return response
+      // }
     })
-        .then(response => {
-            //debugger;
-            return response.json()
-            // if (response.status === 200) {
-            //     return response.json()
-            // }
-            // else {
-            //     return response
-            // }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const deleteMasterClassSubject = (id) => {
-    debugger;
-    return fetch(`${API_URL}/classessubjects/${id}`, {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
+  debugger;
+  return fetch(`${API_URL}/classessubjects/${id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      debugger;
+      return response.json();
+      // if (response.status === 200) {
+      //     return response.json()
+      // }
+      // else {
+      //     return response
+      // }
     })
-        .then(response => {
-            debugger;
-            return response.json()
-            // if (response.status === 200) {
-            //     return response.json()
-            // }
-            // else {
-            //     return response
-            // }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-
-
 export const removeByAttr = function (arr, attr, value) {
-    var i = arr.length;
-    while (i--) {
-        if (arr[i]
-            && arr[i].hasOwnProperty(attr)
-            && (arguments.length > 2 && arr[i][attr] === value)) {
-
-            arr.splice(i, 1);
-
-        }
+  var i = arr.length;
+  while (i--) {
+    if (
+      arr[i] &&
+      arr[i].hasOwnProperty(attr) &&
+      arguments.length > 2 &&
+      arr[i][attr] === value
+    ) {
+      arr.splice(i, 1);
     }
-    return arr;
-}
+  }
+  return arr;
+};
