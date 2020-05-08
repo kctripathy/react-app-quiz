@@ -141,20 +141,25 @@ class QuizApp extends Component {
       this.state.error.length === 0 &&
       this.state.accessLevel !== Role.Student && (
         <Fragment>
-          <label className="mr-1">Quiz for Class: </label>
-          <select onChange={this.onChangeClassDropDown}>
-            {this.state.accessLevel === 10 ? (
-              <option>--- Select Class --- </option>
-            ) : (
-              ""
-            )}
-            {this.state.quizClassess.map((q) => (
-              <option key={q.classSubjectID} value={q.classID}>
-                {q.classDesc}
-              </option>
-            ))}
-            {/* {this.state.quizes.map(q => <option key={q.id} value={q.id}>{q.name}</option>)} */}
-          </select>
+          <div className="input-group mb-3">
+            <div className="input-group-prepend">
+              <label className="input-group-text" for="inputGroupSelect01">
+                CLASS:{" "}
+              </label>
+            </div>
+            <select
+              className="custom-select"
+              id="inputGroupSelect01"
+              onChange={this.onChangeClassDropDown}
+            >
+              <option selected>Please choose a class...</option>
+              {this.state.quizClassess.map((q) => (
+                <option key={q.classSubjectID} value={q.classID}>
+                  {q.classDesc}
+                </option>
+              ))}
+            </select>
+          </div>
         </Fragment>
       )
     );
@@ -176,19 +181,24 @@ class QuizApp extends Component {
   // }
 
   availableSubjects = () => {
-    //console.log("available subjects ===========", this.state.quizSubjects)
+    //console.log("available subjects ===========", this.state.quizSubjects);
     //debugger;
     return (
-      <div className="btn-group dropdown" role="group" aria-label="Subjects">
+      <div
+        className="btn-group dropdown d-flex flex-columns flex-lg-rows pl-5 pr-5"
+        role="group"
+        aria-label="Subjects"
+      >
         {this.state.quizSubjects.map((q) => (
           <button
             type="button"
             onClick={this.onChange}
-            className="btn btn-secondary btn-sm ml-1 mr-1 "
+            className="btn btn-outline-secondary text-uppercase btn-sm ml-1 mr-1 p-1 pt-2 pb-2"
+            style={{ width: "175px" }}
             key={q.classSubjectID}
             value={q.classSubjectID}
           >
-            {q.subjectDesc}
+            {q.subjectDesc.replace(" Quiz", "")}
           </button>
         ))}
       </div>
@@ -234,16 +244,25 @@ class QuizApp extends Component {
   render() {
     return (
       <Layout>
-        <div className="row">
+        <div className="row d-block m-0 p-0">
           <div className="col-12 text-center">
-            {this.availableClasses()}
-            {this.availableSubjects()}
+            <div className="row m-0 p-0">
+              <div
+                className="col-lg-12 col-sm-12 text-right pl-5 pr-5 w-50"
+                style={{
+                  display:
+                    this.state.accessLevel === Role.Student ? "none" : "",
+                }}
+              >
+                {this.availableClasses()}
+              </div>
+              <div className="col-lg-12 col-sm-12 text-center p-0">
+                {this.availableSubjects()}
+              </div>
+            </div>
           </div>
           <div className="col-12">{this.displayQuiz()}</div>
-          <div className="col-12">
-            {this.displayErrorMessage()}
-            {/* <pre>{JSON.stringify(this.state, null, 4)}</pre> */}
-          </div>
+          <div className="col-12">{this.displayErrorMessage()}</div>
         </div>
       </Layout>
     );

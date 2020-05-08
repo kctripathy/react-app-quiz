@@ -1,6 +1,6 @@
 import React from "react";
-import TeachersLeftMenu from "../teacher/TeachersLeftMenu";
 import StudentsLeftMenu from "../student/StudentsLeftMenu";
+import UserLastLogin from "../common/UserLastLogin";
 
 function LayoutStudent(props) {
   return (
@@ -16,6 +16,9 @@ function LayoutStudent(props) {
               </span>
             )}
           </h2>
+          <div className="float-right last-login">
+            <UserLastLogin />
+          </div>
         </div>
       </div>
 

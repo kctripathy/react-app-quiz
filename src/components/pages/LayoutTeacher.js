@@ -1,5 +1,6 @@
 import React from "react";
 import TeachersLeftMenu from "../teacher/TeachersLeftMenu";
+import UserLastLogin from "../common/UserLastLogin";
 
 function LayoutTeacher(props) {
   return (
@@ -15,6 +16,9 @@ function LayoutTeacher(props) {
               </span>
             )}
           </h2>
+          <div className="float-right last-login">
+            <UserLastLogin />
+          </div>
         </div>
       </div>
 

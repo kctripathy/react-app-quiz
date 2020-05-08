@@ -43,7 +43,7 @@ class Quiz extends Component {
       <Layout>
         {this.renderMode()}
         {this.props.mode !== "submit" && (
-          <div className="row">
+          <div className="row m-0 p-0">
             <div className="col-12 m-0 p-0 text-center">
               <button id="quiz" className="btn btn-info" onClick={this.setMode}>
                 Quiz
@@ -60,7 +60,7 @@ class Quiz extends Component {
                 className="btn btn-success"
                 onClick={this.setMode}
               >
-                Submit Quiz
+                Submit
               </button>
             </div>
           </div>
@@ -69,6 +69,7 @@ class Quiz extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return { ...state.quiz, ...state.mode, ...state.pager };
 };

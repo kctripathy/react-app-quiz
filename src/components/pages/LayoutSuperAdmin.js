@@ -1,5 +1,6 @@
 import React from "react";
 import AdminLeftMenu from "../admin/AdminLeftMenu";
+import UserLastLogin from "../common/UserLastLogin";
 import { Role } from "../../constants";
 
 function LayoutSuperAdmin(props) {
@@ -16,6 +17,9 @@ function LayoutSuperAdmin(props) {
               </span>
             )}
           </h2>
+          <div className="float-right last-login">
+            <UserLastLogin />
+          </div>
         </div>
       </div>
 

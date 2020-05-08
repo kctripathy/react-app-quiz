@@ -58,8 +58,24 @@ body {
 }
 .active-left-menu {
   border-right: solid 2px darkcyan;
+  background-color: #eee;
+  width: 99%;
 }
 
+.active-left-menu > a {
+  color: darkcyan;
+  font-weight: 800;
+}
+
+.active-left-menu:hover {
+  border-right: solid 2px cyan;
+  color: white;
+}
+
+.inactive-left-menu:hover {
+  border-right: solid 8px darkcyan;
+  width: 99%;
+}
 .active-left-menu:after {
   content: " ";
   position: absolute;
@@ -72,10 +88,6 @@ body {
   margin-right: -20px;
 }
 
-.inactive-left-menu:hover {
-  border-right: solid 10px darkcyan;
-}
-
 .inactive {
   color: black !important;
 }
@@ -83,74 +95,10 @@ body {
 .dropdown-item {
   color: white;
 }
-.question-box {
-  height: 250px;
-  background-color: white !important;
-}
 
-/* Manage questions*/
-.questionList {
-  display: block;
+.list-group {
   list-style-type: none;
-  margin: 2px 0;
-  padding: 5px 0;
-  width: 100%;
-  height: auto;
-  min-height: 140px;
-  border-bottom: double 3px #bbb;
 }
-
-.questionList > li {
-  display: block;
-  float: left;
-}
-.questionList > li > ul {
-  display: block;
-  float: left;
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-  width: 98%;
-}
-
-.questionList > li.buttons {
-  padding-top: 20px;
-  width: 5%;
-}
-
-.questionList > li.buttons > a > button,
-.questionList > li.buttons > button {
-  width: 76px;
-  margin-bottom: 15px;
-}
-
-.questionList > li.name {
-  width: 90%;
-}
-
-.optionList {
-  width: 100%;
-}
-
-.optionList > li {
-  display: block;
-  float: left;
-  width: 100%;
-  border-bottom: dotted 1px #ccc;
-}
-.optionList > li:last-child {
-  border: none;
-}
-.optionList li.list-answer {
-  /* background-color: rgb(180, 245, 180); */
-  color: green;
-  font-weight: bold;
-}
-.optionList li.list-option {
-  /* background-color: rgb(223, 248, 248); */
-  font-weight: normal;
-}
-
 .list-group-item,
 .list-group-item > a {
   height: 40px !important;
@@ -231,19 +179,20 @@ body {
 
 #classSubjectDiv > div > div > div > ul > li:nth-child(odd),
 #classSubjectDiv > div > ul > li:nth-child(odd) {
-  background-color: #f0fff0;
+  background-color: #fff;
 }
 
 #classSubjectDiv > div > div > div > ul > li:nth-child(even),
 #classSubjectDiv > div > ul > li:nth-child(even) {
-  background-color: #f0f8ff;
+  background-color: #e9fae9;
 }
 
 #classSubjectDiv > div > div > div > ul > li:first-child,
 #classSubjectDiv > div > ul > li:first-child {
   margin-top: 10px;
-  font-size: 10px !important;
+  font-size: 1em !important;
   color: black;
+  border-bottom: dotted 1px #eee;
   background-color: white;
 }
 
@@ -326,7 +275,7 @@ body {
 .jumbotron-background {
   background-image: url("/images/home-banner-2.jpg");
   background-position: right;
-  background-size: 100%;
+  background-size: 67%;
   background-repeat: no-repeat;
   background-color: #6ab8cc;
   margin: 20px 0px 0px 0px;
@@ -335,12 +284,41 @@ body {
 }
 
 .dropdown-menu-items {
-  margin-left: "-40px";
+  margin-left: 0px !important;
+  margin-right: 0px !important;
   background-color: darkcyan;
   color: "white";
 }
 
+.text-badge-large {
+  font-weight: 800;
+  font-size: 1.7em;
+  width: 50%;
+  margin: 0px auto;
+  border-radius: 50px;
+}
+
+.quiz-spinner {
+  width: 3rem;
+  height: 3rem;
+}
+
+.last-login {
+  margin-top: -40px;
+  text-align: right;
+  width: 100%;
+}
+
 @media only screen and (max-width: 480px) {
+  .page-title {
+    text-align: center;
+    font-size: 1em;
+  }
+  .last-login {
+    margin-top: -10px;
+    text-align: center;
+    width: 100%;
+  }
   .jumbotron-background {
     background-image: url("/images/home-banner-2.jpg");
     background-position: right;

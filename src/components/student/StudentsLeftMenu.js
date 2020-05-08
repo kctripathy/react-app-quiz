@@ -6,6 +6,7 @@ export default function StudentsLeftMenu(props) {
   const showLeftMenu = () => {
     return (
       <ul className="list-group">
+        <MenuListItem tittle="" menuType="ProfileImage" />
         <MenuListItem title="Dashboard" destination="/student/dashboard" />
         <MenuListItem title="My Profile" destination="/student/profile" />
         <MenuListItem

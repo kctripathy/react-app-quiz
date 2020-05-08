@@ -7,7 +7,8 @@ import MenuListItem from "../common/MenuListItem";
 export default function AdminLeftMenu({ accessLevel }) {
   const superAdminLinks = () => (
     <ul className="list-group">
-      <MenuListItem title="" menuType="Separator" />
+      <MenuListItem tittle="" menuType="ProfileImage" />
+
       <MenuListItem title="Dashboard" destination="/superAdmin/dashboard" />
       <MenuListItem title="Profile" destination="/superAdmin/profile" />
 
@@ -33,15 +34,16 @@ export default function AdminLeftMenu({ accessLevel }) {
 
   const adminLinks = () => (
     <ul className="list-group">
-      <MenuListItem title="" menuType="Separator" />
+      <MenuListItem tittle="" menuType="ProfileImage" />
+
       <MenuListItem title="Dashboard" destination="/admin/dashboard" />
       <MenuListItem title="Profile" destination="/admin/profile" />
 
-      <MenuListItem title="User Management" menuType="Separator" />
+      <MenuListItem title="Users Management" menuType="Separator" />
       <MenuListItem title="Add New User" destination="/user/add" />
-      <MenuListItem title="View / Manage User" destination="/user/list" />
+      <MenuListItem title="View / Manage Users" destination="/user/list" />
 
-      <MenuListItem title="Question Bank Management" menuType="Separator" />
+      <MenuListItem title="Questions Management" menuType="Separator" />
       <MenuListItem title="Add New Question" destination="/question/add" />
       <MenuListItem
         title="View / Manage Questions"

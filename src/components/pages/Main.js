@@ -5,16 +5,9 @@ import NavRoutes from "./NavRoutes";
 import Footer from "./Footer";
 
 function Main() {
-  const [run, setRun] = useState(false);
-
-  const changeHeader = () => {
-    console.log("header chaged...");
-
-    setRun(!run);
-  };
   return (
     <Fragment>
-      <Header onHeaderChage={changeHeader} />
+      <Header />
       <NavBar />
       <NavRoutes />
       <Footer />

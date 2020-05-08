@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
+import ProfileImage from "./ProfileImage";
 
 function MenuListItem({
   history,
@@ -26,13 +27,30 @@ function MenuListItem({
     }
   };
 
+  // const showLeftMenuItem = () => (
+  //   <li
+  //     className={`list-group-item list-group-item-action ${isActiveLeftMenu(
+  //       destination
+  //     )}`}
+  //   >
+  //     <Link to={`${destination}`}>{title}</Link>
+  //   </li>
+  // );
+
   const showLeftMenuItem = () => (
     <li
       className={`list-group-item list-group-item-action ${isActiveLeftMenu(
         destination
       )}`}
     >
-      <Link to={`${destination}`}>{title}</Link>
+      {/* <Link to={`${destination}`}>{title}</Link> */}
+      <Link
+        className="nav-link ml-2"
+        to="#"
+        onClick={() => history.push(`${destination}`)}
+      >
+        {title}
+      </Link>
     </li>
   );
 
@@ -71,10 +89,18 @@ function MenuListItem({
     </li>
   );
 
+  const showProfilePhoto = () => (
+    <li className="nav-item">
+      <ProfileImage />
+    </li>
+  );
+
   return menuType && menuType === "NavBar"
     ? showNavMenuItem()
     : menuType === "Separator"
     ? showLeftMenuItemSeparator()
+    : menuType === "ProfileImage"
+    ? showProfilePhoto()
     : showLeftMenuItem();
 }
 

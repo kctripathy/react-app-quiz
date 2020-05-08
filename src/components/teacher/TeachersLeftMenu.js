@@ -5,11 +5,7 @@ import MenuListItem from "../common/MenuListItem";
 export default function TeachersLeftMenu() {
   return (
     <ul className="list-group">
-      {/* <li className="list-group-item">
-        <Link className="nav-link" to="/user/profile">
-          My Profile
-        </Link>
-      </li> */}
+      <MenuListItem tittle="" menuType="ProfileImage" />
       <MenuListItem title="Dashboard" destination="/teacher/dashboard" />
       <MenuListItem title="Profile" destination="/teacher/profile" />
       <MenuListItem title="Calendar" destination="/teacher/exam-calendar" />

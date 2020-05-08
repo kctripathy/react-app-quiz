@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import UserInformation from "../common/UserInformation";
 import LayoutStudent from "../pages/LayoutStudent";
+import StudentSummary from "./StudentSummary";
+import UserExamSummary from "../common/UserExamSummary";
 
 function StudentsDashboard() {
   return (
     <LayoutStudent title="Student's Dashboard">
-      <UserInformation />
+      <StudentSummary />
+      <UserExamSummary />
     </LayoutStudent>
   );
 }

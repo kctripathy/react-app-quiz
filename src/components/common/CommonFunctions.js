@@ -1,4 +1,6 @@
 //import moment from "moment";
+import moment from "moment-timezone";
+import { ADD_MINUTES } from "../../config";
 
 export default function titleCase(str) {
   if (str === undefined || str.length === 0) return "";
@@ -179,14 +181,38 @@ function notNull(data) {
   return false;
 }
 
-// function defaultDate(date) {
-//   return moment(date).format("DD/MM/YYYY");
-// }
+function defaultDate(date) {
+  return moment(date).format("DD/MM/YYYY");
+}
 
-// function defaultDateTime(date) {
-//   return moment(date).format("DD/MM/YYYY: hh:mm A");
-// }
+function defaultDateTime(date) {
+  var a = moment.tz(date, "Asia/Kolkata");
+  //a.format();
+  return a.format("DD/MM/YYYY: hh:mm A");
+}
 
+function defaultDateTimeLongFormat(date) {
+  //debugger;
+
+  // console.log(date);
+
+  // let usaTime = date.toLocaleString("en-US", {
+  //   timeZone: "America/New_York",
+  // });
+  // console.log(usaTime);
+
+  // let indTime = date.toLocaleString("en-IN", {
+  //   timeZone: "Asia/Kolkata",
+  // });
+  // console.log(indTime);
+  //var a = moment.tz(date, "Asia/Kolkata");
+
+  return moment(date).add(ADD_MINUTES, "minutes").format("LLLL");
+}
+
+function defaultDateTimeFromNow(date) {
+  return moment(date).add(ADD_MINUTES, "minutes").fromNow();
+}
 export {
   alphaNumOnly,
   alphaOnly,
@@ -195,8 +221,10 @@ export {
   validateEmail,
   arrayNotNull,
   notNull,
-  //defaultDate,
-  //defaultDateTime,
+  defaultDate,
+  defaultDateTime,
+  defaultDateTimeLongFormat,
+  defaultDateTimeFromNow,
   upperCase,
   getCurrentDate,
   getCurrentDateTime,

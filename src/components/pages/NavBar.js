@@ -166,7 +166,7 @@ function NavBar({ history }) {
             </Link>
           </li>
           {isAuthenticated() && (
-            <li className="nav-item dropdown">
+            <li className="nav-item dropdown dropleft">
               <Link
                 className="nav-link active nav-link-topmenu dropdown-toggle text-center"
                 to="/"
@@ -204,13 +204,13 @@ function NavBar({ history }) {
                 {accessLevel === Role.SuperAdmin && (
                   <Fragment>
                     <hr />
-                    <Link className="dropdown-item" to="/quiz">
+                    <Link className="dropdown-item" to="/account/list">
                       Manage Accounts
                     </Link>
-                    <Link className="dropdown-item" to="/quiz">
+                    <Link className="dropdown-item" to="/user/list">
                       Manage Users
                     </Link>
-                    <Link className="dropdown-item" to="/quiz">
+                    <Link className="dropdown-item" to="/question/list">
                       Manage Questions
                     </Link>
                     <hr />
@@ -219,10 +219,10 @@ function NavBar({ history }) {
                 {accessLevel === Role.Admin && (
                   <Fragment>
                     <hr />
-                    <Link className="dropdown-item" to="/quiz">
+                    <Link className="dropdown-item" to="/user/list">
                       Manage Users
                     </Link>
-                    <Link className="dropdown-item" to="/quiz">
+                    <Link className="dropdown-item" to="/question/list">
                       Manage Questions
                     </Link>
                     <hr />
