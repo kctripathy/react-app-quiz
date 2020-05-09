@@ -152,7 +152,7 @@ class QuizApp extends Component {
               id="inputGroupSelect01"
               onChange={this.onChangeClassDropDown}
             >
-              <option selected>Please choose a class...</option>
+              <option selected>Select a class...</option>
               {this.state.quizClassess.map((q) => (
                 <option key={q.classSubjectID} value={q.classID}>
                   {q.classDesc}
@@ -184,16 +184,12 @@ class QuizApp extends Component {
     //console.log("available subjects ===========", this.state.quizSubjects);
     //debugger;
     return (
-      <div
-        className="btn-group dropdown d-flex flex-columns flex-lg-rows pl-5 pr-5"
-        role="group"
-        aria-label="Subjects"
-      >
+      <div className="w-100">
         {this.state.quizSubjects.map((q) => (
           <button
             type="button"
             onClick={this.onChange}
-            className="btn btn-outline-secondary text-uppercase btn-sm ml-1 mr-1 p-1 pt-2 pb-2"
+            className="btn btn-outline-secondary text-uppercase btn-sm m-1 p-1"
             style={{ width: "175px" }}
             key={q.classSubjectID}
             value={q.classSubjectID}
@@ -216,12 +212,12 @@ class QuizApp extends Component {
         mode={this.state.mode}
       />
     ) : this.state.error.length === 0 ? (
-      <h2
-        className="alert alert-success text-center"
-        style={{ padding: "50px", marginTop: "20px" }}
+      <h4
+        className="bg-light text-center text-secondary "
+        style={{ padding: "100px", marginTop: "20px", borderRadius: "20px" }}
       >
-        Please select a class & subject to load quiz
-      </h2>
+        Please select a class and then a subject to start...
+      </h4>
     ) : (
       ""
     );
@@ -248,7 +244,7 @@ class QuizApp extends Component {
           <div className="col-12 text-center">
             <div className="row m-0 p-0">
               <div
-                className="col-lg-12 col-sm-12 text-right pl-5 pr-5 w-50"
+                className="col-lg-12 col-sm-12 text-right pl-5 pr-5"
                 style={{
                   display:
                     this.state.accessLevel === Role.Student ? "none" : "",
@@ -256,7 +252,7 @@ class QuizApp extends Component {
               >
                 {this.availableClasses()}
               </div>
-              <div className="col-lg-12 col-sm-12 text-center p-0">
+              <div className="col-lg-12 col-sm-12 text-center d-flex flex-columns flex-lg-row p-0">
                 {this.availableSubjects()}
               </div>
             </div>

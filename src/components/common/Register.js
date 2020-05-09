@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { register, isAuthenticated } from "../auth";
 import { Role } from "../../constants";
+import Spinner from "./Spinner";
 
 import {
   updateUser,
@@ -10,6 +11,7 @@ import {
 } from "../admin/index";
 
 function Register(props) {
+  const [isProcessing, setIsProcessing] = useState(false);
   const [values, setValues] = useState({
     Id: 0,
     AccountId: 1,
@@ -45,7 +47,11 @@ function Register(props) {
     redirectToReferer,
   } = values;
 
+  //===================================================
+  //
+  //===================================================
   useEffect(() => {
+    //debugger;
     const user = isAuthenticated();
     getAllClassSubjectsByAccountId(user.accountId).then((data1) => {
       if (data1 !== undefined) {
@@ -68,7 +74,8 @@ function Register(props) {
         accountId: props.user[0].accountId,
         FullName: props.user[0].fullname,
         UserEmail: props.user[0].userEmail,
-        UserPhone: props.user[0].userPhone,
+        UserPhone: props.user[0].userPhone || "0000000000",
+        UserPassword: props.user[0].userPassword,
         AccessLevel: props.user[0].accessLevel,
         ClassId: props.user[0].classId,
         AllowLogin: props.user[0].allowLogin,
@@ -76,8 +83,11 @@ function Register(props) {
         error: "",
       });
     }
-  }, []);
+  }, [props]);
 
+  //===================================================
+  //
+  //===================================================
   const handleOnChange = (name) => (e) => {
     setValues({
       ...values,
@@ -85,6 +95,9 @@ function Register(props) {
     });
   };
 
+  //===================================================
+  //
+  //===================================================
   const handleClassChange = (e) => {
     //e.preventDefault();
     setValues({
@@ -93,6 +106,9 @@ function Register(props) {
     });
   };
 
+  //===================================================
+  //
+  //===================================================
   const handleAccessLevelChange = (e) => {
     //e.preventDefault();
     setValues({
@@ -100,6 +116,10 @@ function Register(props) {
       AccessLevel: Number(e.target.value),
     });
   };
+
+  //===================================================
+  //
+  //===================================================
 
   const handleAllowLoginChange = (e) => {
     //e.preventDefault();
@@ -109,13 +129,17 @@ function Register(props) {
       AllowLogin: e.target.checked,
     });
   };
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
 
+  //===================================================
+  //
+  //===================================================
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    const newClassId = ClassId || 1;
     if (props.mode === "edit") {
       //alert('updated....');
-
-      updateUser({
+      await updateUser({
         Id,
         AccountId,
         FullName,
@@ -123,12 +147,13 @@ function Register(props) {
         UserEmail,
         UserPassword,
         UserPhone,
-        ClassId,
+        ClassId: newClassId,
         AccessLevel,
         AllowLogin,
       })
         .then((response) => {
-          console.log(response);
+          //console.log(response);
+          setIsProcessing(false);
           if (response.status.code === "1") {
             setValues({
               ...values,
@@ -136,6 +161,7 @@ function Register(props) {
               error: "",
             });
           } else {
+            setIsProcessing(false);
             setValues({
               ...values,
               error: "Failed to update the record",
@@ -145,45 +171,62 @@ function Register(props) {
         })
         .catch((err) => {
           console.log(err);
+          setIsProcessing(false);
           setValues({ ...values, error: err, success: "" });
         });
+
       return;
     }
-    const user = isAuthenticated();
-    const userClassId = user.accessLevel > 1 ? ClassId : 1;
-    register({
-      AccountId: user.accountId,
+    //const user = isAuthenticated();
+    //const userClassId = user.accessLevel > 1 ? ClassId : 1;
+    await register({
+      AccountId: isAuthenticated().accountId,
       FullName,
       UserName,
       UserEmail,
       UserPhone,
       UserPassword,
-      ClassId: userClassId,
+      ClassId: newClassId,
       AccessLevel,
-    }).then((data) => {
-      if (data === undefined) {
-        setValues({ ...values, error: "some error occured", success: false });
-      } else if (data.error) {
-        setValues({ ...values, error: data.error, success: false });
-      } else if (data.status.code < 0) {
-        setValues({ ...values, error: data.status.message, success: false });
-      } else {
+    })
+      .then((data) => {
+        setIsProcessing(false);
+
+        if (data === undefined) {
+          setValues({ ...values, error: "some error occured", success: false });
+        } else if (data.error) {
+          setValues({ ...values, error: data.error, success: false });
+        } else if (data.status.code < 0) {
+          setValues({ ...values, error: data.status.message, success: false });
+        } else {
+          setValues({
+            ...values,
+            FullName: "",
+            UserName: "",
+            UserEmail: "",
+            UserPhone: "",
+            UserPassword: "",
+            classId: 0,
+            subjectIds: [],
+            error: "",
+            success: "Succesfully created the new account ",
+          });
+        }
+      })
+      .catch((err) => {
+        setIsProcessing(false);
         setValues({
           ...values,
-          FullName: "",
-          UserName: "",
-          UserEmail: "",
-          UserPhone: "",
-          UserPassword: "",
-          classId: 0,
-          subjectIds: [],
-          error: "",
-          success: "Succesfully created the new account ",
+          error: "Some error occured: " + err,
+          success: false,
         });
-      }
-    });
+        console.log(err);
+      });
   };
 
+  //===================================================
+  //
+  //===================================================
   const showError = () => (
     <div
       className="alert alert-danger"
@@ -193,6 +236,9 @@ function Register(props) {
     </div>
   );
 
+  //===================================================
+  //
+  //===================================================
   const showSuccess = () => (
     <div
       className="alert alert-success"
@@ -202,7 +248,19 @@ function Register(props) {
     </div>
   );
 
+  //===================================================
+  //
+  //===================================================
+  const showProcessing = () =>
+    isProcessing && (
+      <div className="col-12 text-center">
+        <Spinner />
+      </div>
+    );
+
+  //===================================================
   //This section will be shown to everyone for registering an account
+  //===================================================
   const userRegistrationForm = () => (
     <form onSubmit={handleFormSubmit}>
       <div className="card border-dark rounded-0">
@@ -317,7 +375,9 @@ function Register(props) {
     </form>
   );
 
+  //===================================================
   //This section will only be shown to admin while creating a new user
+  //===================================================
   const newUserAdditionalInformation = () => {
     return (
       <Fragment>
@@ -338,31 +398,7 @@ function Register(props) {
               placeholder="Enter phone number"
               required
             />
-          </div>
-        </div>
-        <div className="form-group">
-          <div className="input-group mb-2">
-            <div className="input-group-prepend">
-              <div className="input-group-text user-additional-info-label">
-                Class:{" "}
-              </div>
-            </div>
-            <select
-              className="input-group-prepend"
-              onChange={handleClassChange}
-              name="ClassId"
-              value={ClassId}
-              required
-            >
-              <option value="">--Select User's Class--</option>
-              {userClasses &&
-                userClasses.length > 0 &&
-                userClasses.map((uc) => (
-                  <option key={uc.classSubjectID} value={uc.classID}>
-                    {uc.classDesc}
-                  </option>
-                ))}
-            </select>
+            <label className="text-white ml-2">-</label>
           </div>
         </div>
 
@@ -374,18 +410,49 @@ function Register(props) {
               </div>
             </div>
             <select
-              className="input-group-prepend"
+              className="input-group-prepend col-4"
               onChange={handleAccessLevelChange}
               name="AccessLevel"
               value={AccessLevel}
             >
-              <option value={Role.User}>User</option>
               <option value={Role.Student}>Student</option>
               <option value={Role.Teacher}>Teacher</option>
-              <option value={Role.Admin}>Administrator</option>
+              <option value={Role.Admin}>Admin</option>
+              <option value={Role.User}>User</option>
             </select>
+
+            <div
+              className="input-group-append ml-2"
+              style={{ display: AccessLevel == Role.Student ? "" : "none" }}
+            >
+              {/* <div className="form-group"> */}
+              {/* <div className="input-group mb-2"> */}
+              <div className="input-group-prepend">
+                <div className="input-group-text user-additional-info-label">
+                  Class:{" "}
+                </div>
+              </div>
+              <select
+                className="input-group-prepend col-12"
+                onChange={handleClassChange}
+                name="ClassId"
+                value={ClassId}
+              >
+                <option value="">--- SELECT CLASS ---</option>
+                {userClasses &&
+                  userClasses.length > 0 &&
+                  userClasses.map((uc) => (
+                    <option key={uc.classSubjectID} value={uc.classID}>
+                      {uc.classDesc}
+                    </option>
+                  ))}
+              </select>
+              {/* </div> */}
+              {/* </div> */}
+            </div>
           </div>
         </div>
+
         <div className="form-group">
           <div className="input-group mb-2">
             <div className="input-group-prepend">
@@ -409,25 +476,33 @@ function Register(props) {
     );
   };
 
+  //===================================================
+  //
+  //===================================================
   const redirectUser = () => {
     if (redirectToReferer) {
       return <Redirect to="/login" />;
     }
   };
 
+  //===================================================
+  //
+  //===================================================
   return (
-    // <Layout>
     <div className="row d-flex register m-0 p-0">
       <div className="col-lg-1 col-sm-12">&nbsp;</div>
       <div className="col-lg-10 col-sm-12">
         {showError()}
         {showSuccess()}
+        {showProcessing()}
         {userRegistrationForm()}
         {redirectUser()}
       </div>
-      <div className="col-lg-1 col-sm-12">&nbsp;</div>
+      <div className="col-lg-1 col-sm-12">
+        &nbsp;
+        {/* <pre>{JSON.stringify(props, null, 4)}</pre> */}
+      </div>
     </div>
-    // </Layout>
   );
 }
 

@@ -24,7 +24,7 @@ function UserList({ usersData, fetchUsers }) {
         field: "",
         sortable: true,
         filter: true,
-        width: 50,
+        width: 25,
         checkboxSelection: true,
         pinned: "left",
       },
@@ -33,14 +33,14 @@ function UserList({ usersData, fetchUsers }) {
         field: "fullname",
         sortable: true,
         filter: true,
-        width: 100,
+        width: 150,
       },
       {
-        headerName: "Name",
+        headerName: "Role",
         field: "accessLevel",
         sortable: true,
         filter: true,
-        width: 100,
+        width: 70,
         cellRenderer: function (params) {
           return ` ${getRoleDescription(params.value)}`;
         },
@@ -50,7 +50,7 @@ function UserList({ usersData, fetchUsers }) {
         field: "className",
         sortable: true,
         filter: true,
-        width: 100,
+        width: 70,
       },
       {
         headerName: "Email",
@@ -64,7 +64,15 @@ function UserList({ usersData, fetchUsers }) {
         field: "userPhone",
         sortable: true,
         filter: true,
-        width: 130,
+        width: 100,
+      },
+      ,
+      {
+        headerName: "Is Active?",
+        field: "allowLogin",
+        sortable: true,
+        filter: true,
+        width: 70,
       },
       {
         headerName: "Edit",
@@ -104,19 +112,47 @@ function UserList({ usersData, fetchUsers }) {
   });
 
   gridOptions.getRowStyle = function (params) {
-    //console.log(params)
-    //debugger;
-    if (params.data.Status === "Pending") {
-      return { background: "#ffff66", fontWeight: "bold" };
-    } else if (params.data.Status === "Approved") {
-      return { background: "#b3ff66", color: "#003300" };
-    } else if (params.data.Status === "Rejected") {
-      return {
-        background: "#ffe6e6",
-        color: "#ff0000",
-      };
+    if (params.data.allowLogin) {
+      return { background: "#dffec0", color: "#003300" };
+    } else {
+      return { background: "#ffe6e6", color: "#ff0000" };
     }
   };
+
+  const getSelectedRowsAndDoOperation = () => {
+    console.log("getSelectedRowsAndDoOperation");
+  };
+
+  const operationButtons = () =>
+    usersData &&
+    usersData.users.length > 0 && (
+      <div className="col-12 p-0 mt-2 text-center">
+        <button
+          className="btn btn-success m-2 btn-width-150"
+          type="button"
+          name="APPROVE"
+          onClick={getSelectedRowsAndDoOperation}
+        >
+          <i className="fas fa-check-circle mr-1"></i>ACTIVATE
+        </button>
+        <button
+          className="btn btn-warning m-2 btn-width-150"
+          type="button"
+          name="REJECT"
+          onClick={getSelectedRowsAndDoOperation}
+        >
+          <i className="fas fa-ban mr-1"></i> DEACTIVATE
+        </button>
+        <button
+          className="btn btn-danger m-2 btn-width-150"
+          type="button"
+          name="DELETE"
+          onClick={getSelectedRowsAndDoOperation}
+        >
+          <i className="fas fa-times mr-1"></i>DELETE
+        </button>
+      </div>
+    );
 
   const showUsersListOfAdmin = () => (
     <LayoutAdmin title="List of users">
@@ -140,6 +176,7 @@ function UserList({ usersData, fetchUsers }) {
           ></AgGridReact>
         </div>
       )}
+      {operationButtons()}
     </LayoutAdmin>
   );
 

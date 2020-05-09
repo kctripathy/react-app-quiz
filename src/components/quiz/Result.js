@@ -7,7 +7,7 @@ function Result(props) {
   let totalNotAttended = 0;
 
   questions.forEach((q) => {
-    debugger;
+    //debugger;
     let isQuestionAttended = q.options.some((x) => x.selected === true);
     if (isQuestionAttended) {
       q.isCorrect = q.options.every((x) => x.selected === x.isAnswer);
@@ -18,29 +18,22 @@ function Result(props) {
   });
 
   const showResult = () => (
-    <div className="row m-0 p-2 mb-2 d-flex flex-row text-center">
-      <div className="col-4 bg-light p-1">
+    <div className="row m-0 p-2 d-flex flex-row text-center">
+      <div className="col-4 text-success bg-light p-1">
         <b>
           Correct:{" "}
-          <span className="badge badge-success  p-1 pl-4 pr-4">
-            {totalCorrect}
-          </span>
+          <span className="badge badge-success  p-2">{totalCorrect}</span>
         </b>
       </div>
-      <div className="col-4 bg-light p-1">
+      <div className="col-4 text-primary bg-light p-1">
         <b>
-          Not Attempted:{" "}
-          <span className="badge badge-primary  p-1 pl-4 pr-4">
-            {totalNotAttended}
-          </span>
+          Unattempted:{" "}
+          <span className="badge badge-primary  p-2">{totalNotAttended}</span>
         </b>
       </div>
-      <div className="col-4 bg-light p-1">
+      <div className="col-4 text-danger bg-light p-1">
         <b>
-          Wrong:{" "}
-          <span className="badge badge-danger  p-1 pl-4 pr-4">
-            {totalWrong}
-          </span>
+          Wrong: <span className="badge badge-danger  p-2">{totalWrong}</span>
         </b>
       </div>
     </div>
@@ -94,8 +87,8 @@ function Result(props) {
               {q.isCorrect
                 ? "Correct Answer!"
                 : q.options.some((x) => x.selected === true)
-                ? "Wrong! The green color option is the correct answer."
-                : "You didn't attend this question!"}
+                ? "Wrong Answer."
+                : "Unattempted!"}
               .
             </div>
           </div>

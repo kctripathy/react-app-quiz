@@ -12,14 +12,14 @@ export default function AdminLeftMenu({ accessLevel }) {
       <MenuListItem title="Dashboard" destination="/superAdmin/dashboard" />
       <MenuListItem title="Profile" destination="/superAdmin/profile" />
 
-      <MenuListItem title="Account Management" menuType="Separator" />
+      <MenuListItem title="" menuType="Separator" />
       <MenuListItem title="Add New Account" destination="/account/add" />
       <MenuListItem
         title="View / Manage Accounts"
         destination="/account/list"
       />
 
-      <MenuListItem title="Class n Subjects Management" menuType="Separator" />
+      <MenuListItem title="" menuType="Separator" />
       <MenuListItem title="Manage Classes" destination="/classes" />
       <MenuListItem title="Manage Subjects" destination="/subjects" />
       <MenuListItem
@@ -39,11 +39,11 @@ export default function AdminLeftMenu({ accessLevel }) {
       <MenuListItem title="Dashboard" destination="/admin/dashboard" />
       <MenuListItem title="Profile" destination="/admin/profile" />
 
-      <MenuListItem title="Users Management" menuType="Separator" />
+      <MenuListItem title="" menuType="Separator" />
       <MenuListItem title="Add New User" destination="/user/add" />
       <MenuListItem title="View / Manage Users" destination="/user/list" />
 
-      <MenuListItem title="Questions Management" menuType="Separator" />
+      <MenuListItem title="" menuType="Separator" />
       <MenuListItem title="Add New Question" destination="/question/add" />
       <MenuListItem
         title="View / Manage Questions"

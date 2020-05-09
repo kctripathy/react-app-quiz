@@ -31,7 +31,7 @@ class Questions extends Component {
     return this.props.quiz.loading ? (
       <Spinner />
     ) : (
-      <div className="text-center">
+      <div className="text-center p-0 m-0">
         {this.props.quiz.config.allowBack && (
           <button
             id="first"
@@ -69,6 +69,7 @@ class Questions extends Component {
       </div>
     );
   };
+
   render() {
     let questions = this.props.quiz.questions
       ? this.props.quiz.questions.slice(
@@ -80,9 +81,9 @@ class Questions extends Component {
       <div id="quiz" className="d-block">
         <div className="row m-0 p-0">
           <div className="col-12">
-            <h4 className="page-title text-center font-weight-normal">
+            <h3 className="page-title text-center text-secondary font-weight-bold">
               {this.props.quiz.name}
-            </h4>
+            </h3>
           </div>
           <div className="col-12">
             {questions.map((q) => (
@@ -118,7 +119,7 @@ class Questions extends Component {
               </div>
             ))}
           </div>
-          <div className="col-12 mt-2 mb-2 text-center">
+          <div className="col-lg-12 col-sm-12 p-0 mt-2 mb-2 text-center">
             {this.showLoadingOrNavigationButtons()}
           </div>
         </div>

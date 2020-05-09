@@ -4,6 +4,7 @@ import {
   defaultDateTimeLongFormat,
   defaultDateTimeFromNow,
 } from "../common/CommonFunctions";
+
 export default function UserLastLogin() {
   const user = isAuthenticated();
 

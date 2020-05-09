@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import Register from "../common/Register";
 import LayoutAdmin from "../pages/LayoutAdmin";
 import LayoutSuperAdmin from "../pages/LayoutSuperAdmin";
 import { isAuthenticated } from "../auth";
 import { Role } from "../../constants";
+//import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsers } from "../../constants/actionMethods";
 
-function UserEdit({ usersData, match }) {
+const UserEdit = ({ match }) => {
+  const state = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const accessLevel = isAuthenticated().accessLevel;
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [match.params.userId]);
+  //===================================================
+  //
+  //===================================================
   const showUser = () => {
-    const user = usersData.users.filter(
+    const user = state.users.filter(
       (u) => u.id === Number(match.params.userId)
     );
     //debugger;
@@ -25,13 +37,19 @@ function UserEdit({ usersData, match }) {
     );
   };
 
+  //===================================================
+  //
+  //===================================================
   const editAdminUsers = () => (
     <LayoutAdmin title="Edit User">
       {showUser()}
-      {/* {JSON.stringify(user)} */}
+      <pre>{JSON.stringify(state, null, 4)}</pre>
     </LayoutAdmin>
   );
 
+  //===================================================
+  //
+  //===================================================
   const editSuperAdminUsers = () => (
     <LayoutSuperAdmin title="Edit User">
       {showUser()}
@@ -40,16 +58,19 @@ function UserEdit({ usersData, match }) {
   );
 
   return accessLevel === Role.Admin ? editAdminUsers() : editSuperAdminUsers();
-}
+};
 
-const mapStateToProps = (state) => {
-  return {
-    usersData: state.user,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //fetchUsers: () => dispatch(fetchUsers())
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(UserEdit);
+export default UserEdit;
+
+// const mapStateToProps = (state) => {
+//   return {
+//     usersData: state.user,
+//   };
+// };
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     fetchUsers: () => dispatch(fetchUsers()),
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(UserEdit);

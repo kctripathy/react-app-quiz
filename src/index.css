@@ -57,9 +57,10 @@ body {
   color: darkcyan !important;
 }
 .active-left-menu {
-  border-right: solid 2px darkcyan;
-  background-color: #eee;
+  border-right: solid 5px darkcyan;
+  background-color: #05ebeb21;
   width: 99%;
+  border-radius: 0px 20px 20px 0px;
 }
 
 .active-left-menu > a {
@@ -68,7 +69,7 @@ body {
 }
 
 .active-left-menu:hover {
-  border-right: solid 2px cyan;
+  border-right: solid 2px orangered;
   color: white;
 }
 
@@ -263,6 +264,17 @@ body {
   padding: 5px !important;
   font-weight: bold;
 }
+
+.list-item-separator-blank {
+  background-color: #eee;
+  height: 2px !important;
+  text-align: left;
+  padding: 5px !important;
+  font-weight: bold;
+  margin-left: 5px;
+  width: 100%;
+}
+
 .jumbotron {
   margin-top: -9px;
   min-height: 340px;

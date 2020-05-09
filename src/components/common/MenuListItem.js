@@ -62,19 +62,7 @@ function MenuListItem({
         </li>
       );
     } else {
-      return (
-        <li
-          style={{
-            marginLeft: "5px",
-            height: "5px !important",
-            backgroundColor: "#eee",
-            width: "100%",
-            listStyleType: "none",
-          }}
-        >
-          &nbsp;
-        </li>
-      );
+      return <li className="list-item-separator-blank"></li>;
     }
   };
 
